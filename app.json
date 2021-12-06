@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "feat-training",
+    "icon": "./assets/featicon.png",
+    "slug": "feat-training",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover"
+    },
+    "packagerOpts": {
+      "config": "metro.config.js",
+      "sourceExts": [
+        "expo.ts",
+        "expo.tsx",
+        "expo.js",
+        "expo.jsx",
+        "ts",
+        "tsx",
+        "js",
+        "jsx",
+        "json",
+        "wasm",
+        "svg"
+      ]
+    },
+    "android": {
+      "package": "featby.cja.com"
+    }
+  },
+  "name": "feat-training"
+}
