@@ -22,10 +22,9 @@ const [exercises, setExercises] = useState([]);
 const [checklist, isChecklist] = useState(false);
 const { user, date } = route.params;
 const [selected, setSelected] = useState('');
-const [exercise, setExercise] = useState([]);
 const [type, setType] = useState('workout type');
 const [reps, setReps] = useState([]);
-const [repinput, setRepinput] = useState(0);
+const [repinput, setRepinput] = useState('');
 const [sets, setSets] = useState('');
 const [equipment, setEquipment] = useState('');
 const [load, setLoad] = useState('');
@@ -36,6 +35,9 @@ const [exlabels, setExlabels] = useState([]);
 const [wrkttypes, setWrkttpyes] = useState([]);
 const [equips, setEquips] = useState([]);
 const [mylink, setLink] = useState('');
+const [exercise, setExercise] = useState([]);
+const [equipdrop, isEquipdrop] = useState(false);
+const [exdrop, isExdrop] = useState(false);
 let tempexercise = [];
 
   useEffect(() => {
@@ -58,6 +60,17 @@ let tempexercise = [];
       });
       setExlabels(exercises);
     });
+
+    firebase.firestore()
+    .collection('Equipments')
+    .get()
+    .then((snap) => {
+      let equipments = [];
+      snap.forEach((doc) => {
+        equipments.push({name: doc.id, id: doc.id});
+      });
+      setEquips(equipments);
+    })
   }, []);
 
   const addWorkout = () => {
@@ -80,13 +93,11 @@ let tempexercise = [];
             var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
             batch.set(docRef, {
                 id: idGenerator(),
-                type: 'normal',
+                type: 'for time 1',
                 exercise: exercise,
                 reps: reps,
                 sets: sets,
                 rest: Number(rest),
-                equipment: equipment,
-                load: load,
                 note: note,
                 timer: Number(timer),
                 date: doc,
@@ -140,7 +151,11 @@ let idGenerator = () => {
         </Text>
         <View  style={{height:500, width:290,marginBottom:50}}>
         <SearchableDropdown 
-          onItemSelect={(item) => setSelected(item)}
+          onTextChange={(text) => setSelected(text)}
+          onItemSelect={(item) => {
+            setSelected(item);
+            isExdrop(true);
+          }}
           //onItemSelect called after the selection from the dropdown
           containerStyle={{ paddingBottom: 10 }}
           //suggestion container style
@@ -185,13 +200,16 @@ let idGenerator = () => {
           underlineColorAndroid="transparent"
           //To remove the underline from the android input
         />
-        <ShortField placeholder="load"   >
+        <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)}  >
 
         </ShortField>
         <SearchableDropdown 
-          onTextChange={(text) => console.log(text)}
+          onTextChange={(text) => setEquipment(text)}
           //On text change listner on the searchable input
-          onItemSelect={(item) => setExercise(item)}
+          onItemSelect={(item) => {
+            setEquipment(item);
+            isEquipdrop(true);
+          }}
           //onItemSelect called after the selection from the dropdown
           containerStyle={{ paddingTop: 10 }}
           //suggestion container style
@@ -228,7 +246,7 @@ let idGenerator = () => {
             //to restrict the items dropdown hieght
             maxHeight: '43%',
           }}
-          items={exlabels}
+          items={equips}
           //mapping of item array
           defaultIndex={2}
           //default selected item index
@@ -241,7 +259,14 @@ let idGenerator = () => {
         />
         <TouchableOpacity 
           onPress={() => {
-            exercise.push(selected);
+            exercise.push({
+              ex: exdrop ? selected.name : selected ,
+              load: load,
+              equipment: exdrop ? equipment.name : equipment
+            });
+            setLoad('');
+            isEquipdrop(false);
+            isExdrop(false);
             console.log(exercise);
           }}
         >
@@ -259,14 +284,14 @@ let idGenerator = () => {
           onPress={() => {
             reps.push(repinput);
             console.log(reps);
-            setRepinput(0);
+            setRepinput('');
           }}
          >
         <Text style={{color:'#32877D', fontSize:16,marginTop:10,marginLeft:5,marginBottom:10}}>
            + Add another reps
           </Text>
            </TouchableOpacity>
-        <LargeField placeholder="note" >
+        <LargeField placeholder="note" onChangeText={(text) => setNote(text)} >
 
         </LargeField>
         <LongButton     

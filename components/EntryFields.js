@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   shortfield: {
     backgroundColor: "#FFFFFF",
     height: 50,
-    width: "50%",
+    width: "48%",
     borderRadius: 30,
     elevation: 5,
     fontFamily: "OpenSans_300Light_Italic",

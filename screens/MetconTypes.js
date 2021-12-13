@@ -28,8 +28,9 @@ export default function MetconTypes({ navigation, route }) {
                 <BackButton onPress={() => navigation.goBack()} />
             </View>
             <Text style={styles.heading}>METCON Types</Text>
-            <ScrollView style={styles.scrollview}>
+            <ScrollView style={styles.scrollview} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
                 <WorkoutButton 
+                    marginTop={10}
                     wrkt='For Time 1'
                     color="#000000"
                     onPress={() => navigation.navigate('ForTimeCreate1', { user: user, date: date })}
@@ -65,11 +66,11 @@ export default function MetconTypes({ navigation, route }) {
                     onPress={() => navigation.navigate('EmomCreate3', { user: user, date: date })}
                 />
                 <WorkoutButton 
-                    wrkt='METCON Type 8'
+                    wrkt='Emom 4'
                     color="#000000"
                 />
                 <WorkoutButton 
-                    wrkt='METCON Type 9'
+                    wrkt='Emom 5'
                     color="#000000"
                 />
             </ScrollView>
@@ -91,6 +92,7 @@ const styles = StyleSheet.create({
         marginTop: 100
     },
     scrollview: {
+        flex: 1,
         paddingRight: 40,
         paddingLeft: 40,
     }

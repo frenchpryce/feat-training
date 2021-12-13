@@ -80,20 +80,22 @@ export default function UserList({ navigation, route }) {
       { loading && loading2 ? <Loading/> :
       <ScrollView style={styles.view} >
               { allprogs.map((programs, index) => (
-              <View>
+              <View key={index}>
                 <Text style={styles.heading}>{programs.title}</Text>
                 <View style={styles.container}>
                     <ScrollView horizontal={true}>
                     { userlist
                     .filter((type) => type.programtype == programs.title )
                     .map((user, index) => (
+                        <View key={index}>
                         <PicButton
-                            key={index}
+                            mykey={index.toString()}
                             color='#000000'
                             user={user.firstname}
                             source={user.imagelink}
                             onPress={() => navigation.navigate('Menu', { user: user.userid, type: 'trainer' })}
                         />
+                        </View>
                     ))}
                     </ScrollView>
                 </View>

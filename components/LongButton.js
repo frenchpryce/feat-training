@@ -146,7 +146,8 @@ const CaloriesBadge = (props) => {
 const WorkoutButton = (props) => {
     return (
         <TouchableOpacity
-            style={styles.wrktbutton}
+            key={props.mykey}
+            style={[styles.wrktbutton, { marginTop: props.marginTop }]}
             onPress={props.onPress}
             onLongPress={props.onLongPress}
         >
@@ -157,7 +158,7 @@ const WorkoutButton = (props) => {
 
 const PicButton = (props) => {
     return (
-        <View style={styles.picbutton}>
+        <View style={styles.picbutton} key={props.mykey}>
             <TouchableOpacity
                 style={styles.picbutton}
                 onPress={props.onPress}
@@ -259,7 +260,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     wrktbutton: {
-        width: '100%',
+        width: '98%',
         height: 60,
         borderRadius: 15,
         justifyContent: 'center',

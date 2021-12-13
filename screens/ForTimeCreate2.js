@@ -81,7 +81,14 @@ let tempexercise = [];
             var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
             thisdate = doc;
             batch.set(docRef, {
-                exercise: exerciseset
+              id: idGenerator(),
+              type: 'for time 2',
+              exercise: exercise,
+              note: note,
+              timer: Number(timer),
+              date: doc,
+              category: 'workout',
+              status: 'unfinished',
             })
         })
         batch.commit()
@@ -250,23 +257,16 @@ let tempexercise = [];
         />
         <TouchableOpacity
           onPress={() => {
-            exerciseset.push({
-                id: idGenerator(),
-                type: 'normal',
-                exercise: exercise,
+              setSets('1');
+              exercise.push({
+                exercise: selected,
                 reps: reps,
-                sets: sets,
-                rest: Number(rest),
-                equipment: equipment,
                 load: load,
-                note: note,
-                timer: Number(timer),
-                date: thisdate,
-                category: 'workout',
-                status: 'unfinished',
-              })
-
-            console.log(exerciseset);
+                equipment: equipment
+              });
+              setLoad('');
+              setReps('');
+              console.log(exercise);
             }}
         >
         <Text style={{color:'#32877D', fontSize:16,marginTop:10,marginLeft:5,marginBottom:10}}>
@@ -274,13 +274,14 @@ let tempexercise = [];
           </Text>
            </TouchableOpacity>
        
-        <LargeField placeholder="note" >
+        <LargeField placeholder="note" onChangeText={(text) => setNote(text)}>
 
         </LargeField>
         <LongButton     
             title='Next'
             bgcolor='#32877D'
             marginTop={20}    
+            onPress={() => addWorkout()}
         >
         </LongButton>
          </View>

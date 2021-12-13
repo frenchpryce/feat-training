@@ -7,29 +7,28 @@ import {
   ImageBackground,
   TouchableOpacity,
   Alert,
-  RefreshControl
+  RefreshControl,
 } from "react-native";
 import { BackButton, WorkoutButton } from "../components/LongButton";
 import { Calendar } from "react-native-calendars";
 import { WrktModal } from "../components/Modals";
-import firebase from '../database';
-import Loading from '../components/Loading';
-import { useIsFocused } from '@react-navigation/native';
+import firebase from "../database";
+import Loading from "../components/Loading";
+import { useIsFocused } from "@react-navigation/native";
 
-let date = '2021-07-20';
+let date = "2021-07-20";
 let templist = [];
 let days = [];
 let selectedDay = {};
 
 export default function UserWorkout2({ navigation, route }) {
-
   const user = route.params.user;
   const [wrktlist, setWrktlist] = useState([]);
   const [longday, isLongday] = useState(false);
   const [popped, isPopped] = useState(false);
   const [thisday, setThisday] = useState({});
   const [manyday, setManyday] = useState({});
-  const [compdate, setCompdate] = useState('');
+  const [compdate, setCompdate] = useState("");
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dateField, setDateField] = useState();
@@ -37,89 +36,86 @@ export default function UserWorkout2({ navigation, route }) {
   const isFocused = useIsFocused();
 
   const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getData();
     wait(3000).then(() => setRefreshing(false));
-  },[refreshing])
-  
+  }, [refreshing]);
+
   useEffect(() => {
-    if(isFocused){
+    if (isFocused) {
       getData();
       setRefreshing(false);
     }
-  },[date, isFocused, refreshing])
+  }, [date, isFocused, refreshing]);
 
   const getData = () => {
     templist = [];
-    firebase.firestore()
-    .collection('Users')
-    .doc(user)
-    .collection('wrktmeal')
-    .get()
-    .then((col) => {
-      col.forEach((doc) => {
-        templist.push({
-          date: doc.data().date,
-          category: doc.data().category,
-          type: doc.data().type,
-          status: doc.data().status,
-          id: doc.id,
-          exercise: doc.data().exercise.name
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc(user)
+      .collection("wrktmeal")
+      .get()
+      .then((col) => {
+        col.forEach((doc) => {
+          templist.push({
+            date: doc.data().date,
+            category: doc.data().category,
+            type: doc.data().type,
+            status: doc.data().status,
+            id: doc.id,
+          });
         });
-      })
-     setWrktlist(templist);
-     console.log(wrktlist);
-     setLoading(false);
-    })
-  }
+        setWrktlist(templist);
+        console.log(wrktlist);
+        setLoading(false);
+      });
+  };
 
   const deleteData = (id) => {
-    Alert.alert(
-      'Delete Meal',
-      'Are you sure to delete this workout?',
-      [
-        {
-          text: 'No',
-          style: 'cancel'
-        },
-        {
-          text: 'Yes',
-          onPress: () => {
-            firebase.firestore()
-            .collection('Users')
+    Alert.alert("Delete Meal", "Are you sure to delete this workout?", [
+      {
+        text: "No",
+        style: "cancel",
+      },
+      {
+        text: "Yes",
+        onPress: () => {
+          firebase
+            .firestore()
+            .collection("Users")
             .doc(user)
-            .collection('wrktmeal')
+            .collection("wrktmeal")
             .doc(id)
             .delete()
             .then(() => {
               setRefreshing(true);
-              console.log('deleted');
-            })
-          }
-        }
-      ]
-    );
-  }
+              console.log("deleted");
+            });
+        },
+      },
+    ]);
+  };
 
   const setNormalWorkout = () => {
-    for(let i=0; i<days.length; i++) {
+    for (let i = 0; i < days.length; i++) {
       days[i] = days[i].key;
     }
     console.log(days);
     navigation.navigate("NormalWrkt", { user: user, date: days });
-  }
+  };
 
   const setMetconWorkout = () => {
-    for(let i=0; i<days.length; i++) {
+    for (let i = 0; i < days.length; i++) {
       days[i] = days[i].key;
     }
     console.log(days);
     navigation.navigate("MetconTypes", { user: user, date: days });
-  }
+  };
 
   return (
     <ImageBackground
@@ -134,108 +130,129 @@ export default function UserWorkout2({ navigation, route }) {
           left: 40,
         }}
       >
-        <BackButton onPress={() => navigation.navigate('Menu', {user:user, type: 'trainer'})} />
-      </View>
-      { loading ? <Loading /> : 
-      <View style={styles.container}>
-        <Text style={styles.heading}>Workouts</Text>
-        <View style={styles.calendarView}>
-          <Calendar
-            theme={{
-              arrowColor: "black",
-              dayTextColor: "black",
-              todayTextColor: "#32877D",
-              selectedDayBackgroundColor: "#32877D",
-              selectedDayTextColor: "#FFFFFF",
-              textDayHeaderFontFamily: "Poppins_300Light",
-              textDayFontFamily: "Poppins_300Light",
-              textMonthFontFamily: "Poppins_300Light",
-            }}
-            onDayPress={(day) => {
-              date = day.dateString;
-              setDateField(day.dateString);
-              isPopped(false);
-              isLongday(false);
-              days = [];
-              selectedDay = {};
-              selectedDay = {
-                [day.dateString]: {
-                  selected: true, color: "#9EC3BF", key: day.dateString
-                }
-              }
-              days.push({
-                key: day.dateString
-              })
-              days.forEach((data) => setCompdate(data.key));
-              setThisday(selectedDay);
-            }}
-            onDayLongPress={(longday) => {
-              selectedDay = {};
-              if(popped == false) {
-                days.pop();
-                isPopped(true);
-                isLongday(true);
-              }
-              if(longday) {
-                days.push({
-                  key: longday.dateString, selected: true, color: "#9EC3BF"
-                })
-                for(let i=0; i<days.length; i++) {
-                  selectedDay[days[i].key] = {'selected': days[i].selected, 'color': days[i].color, 'key': days[i].key};
-                }
-                setManyday(selectedDay);
-              }
-            }}
-            markedDates={ longday == true ? manyday : thisday }
-            markingType="period"
-          />
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            isChoosing(true);
-          }}
-        >
-          <Text style={styles.text}>
-            + Add a workout
-          </Text>
-        </TouchableOpacity>
-        <Text style={styles.date}>{dateField}</Text>
-        <ScrollView style={{ width: "100%" }}
-          renderToHardwareTextureAndroid
-          shouldRasterizeIOS
-          refreshControl={
-            <RefreshControl 
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            />
+        <BackButton
+          onPress={() =>
+            navigation.navigate("Menu", { user: user, type: "trainer" })
           }
-        >
-        {wrktlist.filter((wrkt) => ((wrkt.date == compdate) && (wrkt.category == 'workout'))).map((label, index) => (
-          <WorkoutButton wrkt={label.exercise} color="#000000" onLongPress={() => deleteData(label.id)}/>
-        ))}
-        </ScrollView>
-        <WrktModal 
-          visible={choose}
-          onRequestClose={() => {
-            isChoosing(false);
-          }}
-          title1='Normal'
-          title2='METCON'
-          bgcolor1='#32877D'
-          bgcolor2='#2F2E41'
-          onPress1={() => {
-            isChoosing(false);
-            setNormalWorkout();
-          }}
-          onPress2={() => {
-            isChoosing(false);
-            setMetconWorkout();
-          }}
-          marginTop={10}
-          warning='Choose a Workout'
         />
       </View>
-      }
+      {loading ? (
+        <Loading />
+      ) : (
+        <View style={styles.container}>
+          <Text style={styles.heading}>Workouts</Text>
+          <View style={styles.calendarView}>
+            <Calendar
+              theme={{
+                arrowColor: "black",
+                dayTextColor: "black",
+                todayTextColor: "#32877D",
+                selectedDayBackgroundColor: "#32877D",
+                selectedDayTextColor: "#FFFFFF",
+                textDayHeaderFontFamily: "Poppins_300Light",
+                textDayFontFamily: "Poppins_300Light",
+                textMonthFontFamily: "Poppins_300Light",
+              }}
+              onDayPress={(day) => {
+                date = day.dateString;
+                setDateField(day.dateString);
+                isPopped(false);
+                isLongday(false);
+                days = [];
+                selectedDay = {};
+                selectedDay = {
+                  [day.dateString]: {
+                    selected: true,
+                    color: "#9EC3BF",
+                    key: day.dateString,
+                  },
+                };
+                days.push({
+                  key: day.dateString,
+                });
+                days.forEach((data) => setCompdate(data.key));
+                setThisday(selectedDay);
+              }}
+              onDayLongPress={(longday) => {
+                selectedDay = {};
+                if (popped == false) {
+                  days.pop();
+                  isPopped(true);
+                  isLongday(true);
+                }
+                if (longday) {
+                  days.push({
+                    key: longday.dateString,
+                    selected: true,
+                    color: "#9EC3BF",
+                  });
+                  for (let i = 0; i < days.length; i++) {
+                    selectedDay[days[i].key] = {
+                      selected: days[i].selected,
+                      color: days[i].color,
+                      key: days[i].key,
+                    };
+                  }
+                  setManyday(selectedDay);
+                }
+              }}
+              markedDates={longday == true ? manyday : thisday}
+              markingType="period"
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              isChoosing(true);
+            }}
+          >
+            <Text style={styles.text}>+ Add a workout</Text>
+          </TouchableOpacity>
+          <Text style={styles.date}>{dateField}</Text>
+          <ScrollView
+            style={{ width: "100%" }}
+            renderToHardwareTextureAndroid
+            shouldRasterizeIOS
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            {wrktlist
+              .filter(
+                (wrkt) => wrkt.date == compdate && wrkt.category == "workout"
+              )
+              .map((label, index) => (
+                <View key={index}>
+                <WorkoutButton
+                  mykey={index.toString()}
+                  wrkt={label.type}
+                  color="#000000"
+                  onLongPress={() => deleteData(label.id)}
+                />
+                </View>
+              ))}
+          </ScrollView>
+          <WrktModal
+            visible={choose}
+            onRequestClose={() => {
+              isChoosing(false);
+            }}
+            title1="Normal"
+            title2="METCON"
+            bgcolor1="#32877D"
+            bgcolor2="#2F2E41"
+            onPress1={() => {
+              isChoosing(false);
+              setNormalWorkout();
+            }}
+            onPress2={() => {
+              isChoosing(false);
+              setMetconWorkout();
+            }}
+            marginTop={10}
+            warning="Choose a Workout"
+          />
+        </View>
+      )}
     </ImageBackground>
   );
 }
@@ -278,7 +295,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingBottom: 20,
     marginBottom: 15,
-    color: "#37877D"
+    color: "#37877D",
   },
   date: {
     fontFamily: "OpenSans_700Bold",

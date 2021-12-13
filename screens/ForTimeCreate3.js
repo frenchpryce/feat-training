@@ -16,7 +16,7 @@ import firebase from '../database';
 import SearchableDropdown from 'react-native-searchable-dropdown';
 
 //Item array for the dropdown
-export default function ForTimeCreate3({navigation}) {
+export default function ForTimeCreate3({navigation, route}) {
 const items = [
   //name key is must.It is to show the text in front
   { id: 1, name: 'Jump Squat' },
@@ -32,28 +32,102 @@ const items = [
 ];
 
 
-  const [exercises, setExercises] = useState([]);
+const [exercises, setExercises] = useState([]);
+const [checklist, isChecklist] = useState(false);
+const { user, date } = route.params;
+const [selected, setSelected] = useState('');
+const [exercise, setExercise] = useState([]);
+const [type, setType] = useState('workout type');
+const [reps, setReps] = useState([]);
+const [repinput, setRepinput] = useState('');
+const [sets, setSets] = useState('');
+const [equipment, setEquipment] = useState('');
+const [load, setLoad] = useState('');
+const [rest, setRest] = useState('');
+const [note, setNote] = useState('');
+const [timer, setTimer] = useState('');
+const [exlabels, setExlabels] = useState([]);
+const [wrkttypes, setWrkttpyes] = useState([]);
+const [equips, setEquips] = useState([]);
+const [mylink, setLink] = useState('');
+const [circuit, setCircuit] = useState([]);
+let tempexercise = [];
 
-  useEffect(() => {
-    // fetch('https://aboutreact.herokuapp.com/demosearchables.php')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Successful response from the API Call
-    //     setServerData(responseJson.results);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
-    firebase.firestore()
-    .collection('Exercises')
-    .get()
-    .then((snap) => {
-      snap.forEach((doc) => {
-        exercises.push({ key: doc.id, label: doc.id });
-      });
-      setExercises(exercises);
+useEffect(() => {
+  // fetch('https://aboutreact.herokuapp.com/demosearchables.php')
+  //   .then((response) => response.json())
+  //   .then((responseJson) => {
+  //     //Successful response from the API Call
+  //     setServerData(responseJson.results);
+  //   })
+  //   .catch((error) => {
+  //     console.error(error);
+  //   });
+  firebase.firestore()
+  .collection('Exercises')
+  .get()
+  .then((snap) => {
+    let exercises = [];
+    snap.forEach((doc) => {
+      exercises.push({ name: doc.id, id: doc.id });
     });
-  }, []);
+    setExlabels(exercises);
+  });
+}, []);
+
+const addWorkout = () => {
+  if(exercise == null || reps == null ) {
+      Alert.alert(
+          'Invalid Input',
+          'Please fill up the necessary fields',
+          [
+              {
+                  text: 'Close',
+                  style: 'cancel'
+              }
+          ]
+      );
+  } else {
+      var db = firebase.firestore();
+      var batch = db.batch();
+      date.forEach((doc) => {
+          console.log(doc);
+          var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
+          batch.set(docRef, {
+              id: idGenerator(),
+              type: 'for time 3',
+              circuits: circuit,
+              date: doc,
+              category: 'workout',
+              status: 'unfinished',
+          })
+      })
+      batch.commit()
+      .then(() => {
+          setExercise([]);
+          setType('workout type');
+          setReps('');
+          setSets('');
+          setEquipment('');
+          setRest('');
+          setLoad('');
+          setNote('');
+          setTimer('');
+
+          navigation.reset({
+              index: 0,
+              routes: [{ name: 'UserWorkout2', params: {user: user}}],
+          })
+      })
+  }
+}
+
+let idGenerator = () => {
+  let id = () => {
+      return Math.floor((1+Math.random()) * 0x10000).toString(16).substring(1);
+  }
+  return id()+id()+'-'+id()+'-'+id()+'-'+id()+'-'+id()+id()+id();
+}
 
   return (
     <View style={styles.container} >
@@ -75,7 +149,7 @@ const items = [
         <SearchableDropdown 
           onTextChange={(text) => console.log(text)}
           //On text change listner on the searchable input
-          onItemSelect={(item) => alert(JSON.stringify(item))}
+          onItemSelect={(item) => setSelected(item)}
           //onItemSelect called after the selection from the dropdown
           containerStyle={{ paddingBottom: 10 }}
           //suggestion container style
@@ -111,7 +185,7 @@ const items = [
             //to restrict the items dropdown hieght
             maxHeight: '43%',
           }}
-          items={exercises}
+          items={exlabels}
           //mapping of item array
           defaultIndex={2}
           //default selected item index
@@ -123,15 +197,15 @@ const items = [
           //To remove the underline from the android input
         />
         <View style={{flexDirection:'row'}}>
-        <ShortField placeholder="reps"   >
+        <ShortField placeholder="reps" value={reps} onChangeText={(text) => setReps(text)} >
 
         </ShortField>
-        <ShortField placeholder="rounds/sets"   >
+        <ShortField placeholder="rounds/sets" value={sets} onChangeText={(text) => setSets(text)} >
 
         </ShortField>
         </View>
         <View style={{marginTop:10}}>
-        <ShortField placeholder="load"   >
+        <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)} >
 
         </ShortField>
         </View>
@@ -177,7 +251,7 @@ const items = [
             //to restrict the items dropdown hieght
             maxHeight: '43%',
           }}
-          items={exercises}
+          items={exlabels}
           //mapping of item array
           defaultIndex={2}
           //default selected item index
@@ -188,7 +262,21 @@ const items = [
           underlineColorAndroid="transparent"
           //To remove the underline from the android input
         />
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+              exercise.push({
+                exercise: selected,
+                reps: reps,
+                load: load,
+                sets: sets,
+                equipment: equipment
+              });
+              setLoad('');
+              setReps('');
+              setSets('');
+              console.log(exercise);
+          }}
+        >
         <Text style={{color:'#32877D', fontSize:16,marginTop:10,marginLeft:5,marginBottom:10}}>
            + Add another exercise
           </Text>
@@ -197,13 +285,24 @@ const items = [
         <LargeField placeholder="note" >
 
         </LargeField>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            circuit.push({
+              exercise: exercise
+            })
+            setExercise([]);
+            console.log(exercise)
+            console.log(circuit);
+          }}
+        >
         <Text style={{color:'#32877D', fontSize:16,marginTop:10,marginLeft:5,marginBottom:10}}>
            + Add another circuit
           </Text>
            </TouchableOpacity>
         <LongButton     title='Next'
-                    bgcolor='#32877D'>
+                    bgcolor='#32877D' 
+                    onPress={() => addWorkout()}
+                    >
 
             </LongButton>
          </View>

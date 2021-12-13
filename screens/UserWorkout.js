@@ -86,7 +86,7 @@ export default function UserWorkout({ navigation, route }) {
           left: 40,
         }}
       >
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={() => navigation.navigate('Menu', { user: user })} />
       </View>
       { loading ? <Loading /> : 
       <ScrollView style={styles.container} contentContainerStyle={{ alignItems: 'center' }}>
@@ -128,11 +128,13 @@ export default function UserWorkout({ navigation, route }) {
           }
         >
         {wrktlist.filter((wrkt) => ((wrkt.date == compdate) && (wrkt.category == 'workout') && (wrkt.status == 'unfinished'))).map((label, index) => (
-          <WorkoutButton wrkt={label.exercise} color="#000000" onPress={() => {
-            if(label.type == 'normal'){
-              navigation.navigate('ForTimeScreen1', { user: user });
+          <View key={index}>
+          <WorkoutButton wrkt={label.type} color="#000000" onPress={() => {
+            if(label.type == 'for time 1'){
+              navigation.navigate('ForTimeScreen1', { user: user, id: label.id });
             }
           }}/>
+          </View>
         ))}
         </ScrollView>
       </ScrollView>
