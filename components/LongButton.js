@@ -249,7 +249,8 @@ const styles = StyleSheet.create({
     backbutton: {
         elevation: 5,
         width: 20,
-        height:20
+        height:20,
+        zIndex: 1
     },
     badges: {
         width: 145,

@@ -36,6 +36,8 @@ const [wrkttypes, setWrkttpyes] = useState([]);
 const [equips, setEquips] = useState([]);
 const [mylink, setLink] = useState('');
 const [exerciseset, setExerciseset] = useState([]);
+const [equipdrop, isEquipdrop] = useState(false);
+const [exdrop, isExdrop] = useState(false);
 let thisdate;
 let tempexercise = [];
 
@@ -59,6 +61,17 @@ let tempexercise = [];
       });
       setExlabels(exercises);
     });
+
+    firebase.firestore()
+    .collection('Equipments')
+    .get()
+    .then((snap) => {
+      let equipments = [];
+      snap.forEach((doc) => {
+        equipments.push({name: doc.id, id: doc.id});
+      });
+      setEquips(equipments);
+    })
   }, []);
 
   const addWorkout = () => {
@@ -136,9 +149,12 @@ let tempexercise = [];
         </Text>
         <View  style={{height:500, width:290,marginBottom:50}}>
         <SearchableDropdown 
-          onTextChange={(text) => console.log(text)}
+          onTextChange={(text) => setSelected(text)}
           //On text change listner on the searchable input
-          onItemSelect={(item) => setSelected(item)}
+          onItemSelect={(item) => {
+            setSelected(item);
+            isExdrop(true);
+          }}
           //onItemSelect called after the selection from the dropdown
           containerStyle={{ paddingBottom: 10 }}
           //suggestion container style
@@ -205,9 +221,12 @@ let tempexercise = [];
         </View>
       
         <SearchableDropdown 
-          onTextChange={(text) => console.log(text)}
+          onTextChange={(text) => setEquipment(text)}
           //On text change listner on the searchable input
-          onItemSelect={(item) => alert(JSON.stringify(item))}
+          onItemSelect={(item) => {
+            setEquipment(item);
+            isEquipdrop(true);
+          }}
           //onItemSelect called after the selection from the dropdown
           containerStyle={{ paddingTop: 10 }}
           //suggestion container style
@@ -244,7 +263,7 @@ let tempexercise = [];
             //to restrict the items dropdown hieght
             maxHeight: '43%',
           }}
-          items={exlabels}
+          items={equips}
           //mapping of item array
           defaultIndex={2}
           //default selected item index
@@ -257,17 +276,18 @@ let tempexercise = [];
         />
         <TouchableOpacity
           onPress={() => {
-              setSets('1');
               exercise.push({
-                exercise: selected,
-                reps: reps,
+                ex: exdrop ? selected.name : selected ,
                 load: load,
-                equipment: equipment
+                reps: reps,
+                equipment: equipdrop ? equipment.name : equipment
               });
               setLoad('');
               setReps('');
+              isEquipdrop(false);
+              isExdrop(false);
               console.log(exercise);
-            }}
+          }}
         >
         <Text style={{color:'#32877D', fontSize:16,marginTop:10,marginLeft:5,marginBottom:10}}>
            + Add another exercise

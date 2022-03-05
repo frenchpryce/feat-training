@@ -27,6 +27,7 @@ export default function UserWorkout({ navigation, route }) {
   const [wrktlist, setWrktlist] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [dateField, setDateField] = useState();
 
   const isFocused = useIsFocused();
   
@@ -77,7 +78,7 @@ export default function UserWorkout({ navigation, route }) {
     <ImageBackground
       style={styles.view}
       source={require("../assets/bg7.png")}
-      resizeMode="cover"
+      resizeMode="contain"
     >
       <View
         style={{
@@ -104,6 +105,7 @@ export default function UserWorkout({ navigation, route }) {
               textMonthFontFamily: "Poppins_300Light",
             }}
             onDayPress={(day) => {
+              setDateField(day.dateString);
               onday = [];
               onday.push({
                 key: day.dateString
@@ -114,6 +116,7 @@ export default function UserWorkout({ navigation, route }) {
             markingType="period"
           />
         </View>
+        <Text style={styles.date}>{dateField}</Text>
         <Text style={styles.text}>
           Click a date to see a list of workouts below
         </Text>
@@ -130,8 +133,21 @@ export default function UserWorkout({ navigation, route }) {
         {wrktlist.filter((wrkt) => ((wrkt.date == compdate) && (wrkt.category == 'workout') && (wrkt.status == 'unfinished'))).map((label, index) => (
           <View key={index}>
           <WorkoutButton wrkt={label.type} color="#000000" onPress={() => {
-            if(label.type == 'for time 1'){
-              navigation.navigate('ForTimeScreen1', { user: user, id: label.id });
+            switch(label.type) {
+              case 'for time 1': 
+                navigation.navigate('ForTimeScreen1', { user: user, id: label.id });
+                break;
+              case 'for time 2':
+                navigation.navigate('ForTimeScreen2', { user: user, id: label.id });
+                break;
+              case 'for time 3':
+                navigation.navigate('ForTimeScreen3', { user: user, id: label.id });
+                break;
+              case 'for time 4':
+                navigation.navigate('ForTimeScreen4', { user: user, id: label.id });
+                break;
+              default:
+                break;
             }
           }}/>
           </View>
@@ -151,7 +167,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#FFFFFF00",
     paddingLeft: 40,
     paddingRight: 40,
   },
@@ -167,7 +183,7 @@ const styles = StyleSheet.create({
   calendarView: {
     height: "auto",
     width: "100%",
-    elevation: 5,
+    elevation: 1,
     backgroundColor: "#FFFFFF",
     marginBottom: 20,
   },

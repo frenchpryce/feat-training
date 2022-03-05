@@ -17,7 +17,7 @@ import firebase from "../database";
 import Loading from "../components/Loading";
 import Timer from 'react-compound-timer';
 
-export default function ForTimeScreen1({ navigation, route }) {
+export default function ForTimeScreen4({ navigation, route }) {
   const { user, id } = route.params;
   const [pressed, isPressed] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -180,6 +180,33 @@ export default function ForTimeScreen1({ navigation, route }) {
                 paddingLeft: 115,
               }}
             >
+              Reps
+            </Text>
+          </View>
+          <View style={{ height: 100, width: 290, marginBottom: 10 }}>
+            <ScrollView nestedScrollEnabled={true}>
+              {/* <Text>{JSON.stringify(exercises)}</Text> */}
+              {exercises.map((label, index) => (
+                <View
+                  key={index}
+                  style={{
+                    paddingTop: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <TouchableOpacity onPress={() => {}}>
+                    <Text style={styles.listyle[index]}>{label.exercise.name}</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.listyle}>
+                    {label.reps}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
+          <View>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
               Load
             </Text>
           </View>
@@ -194,171 +221,12 @@ export default function ForTimeScreen1({ navigation, route }) {
                     justifyContent: "space-between",
                   }}
                 >
-                  <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle[index]}>{label.exercise.name}</Text>
-                  </TouchableOpacity>
                   <Text style={styles.listyle}>
-                    {label.load} {label.equipment}
+                    {label.load}
                   </Text>
                 </View>
               ))}
-              {/* <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor2("#32877D");
-                    setFont2("Poppins_700Bold");
-                    setColor("black");
-                    setFont("");
-                    setColor3("black");
-                    setFont3("");
-                    setColor4("black");
-                    setFont4("");
-                    setColor5("black");
-                    setFont5("");
-                  }}
-                >
-                  <Text style={{ color: colortext2, fontFamily: fonttext2 }}>
-                    Exercise 2
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext2, fontFamily: fonttext2 }}>
-                  15
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor3("#32877D");
-                    setFont3("Poppins_700Bold");
-                    setColor("black");
-                    setFont("");
-                    setColor2("black");
-                    setFont2("");
-                    setColor4("black");
-                    setFont4("");
-                    setColor5("black");
-                    setFont5("");
-                  }}
-                >
-                  <Text style={{ color: colortext3, fontFamily: fonttext3 }}>
-                    Exercise 3
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext3, fontFamily: fonttext3 }}>
-                  15
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor4("#32877D");
-                    setFont4("Poppins_700Bold");
-                    setColor2("black");
-                    setFont2("");
-                    setColor("black");
-                    setFont("");
-                    setColor3("black");
-                    setFont3("");
-                    setColor5("black");
-                    setFont5("");
-                  }}
-                >
-                  <Text style={{ color: colortext4, fontFamily: fonttext4 }}>
-                    Exercise 4
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext4, fontFamily: fonttext4 }}>
-                  15
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor5("#32877D");
-                    setFont5("Poppins_700Bold");
-                    setColor2("black");
-                    setFont2("");
-                    setColor3("black");
-                    setFont3("");
-                    setColor("black");
-                    setFont("");
-                    setColor4("black");
-                    setFont4("");
-                  }}
-                >
-                  <Text style={{ color: colortext5, fontFamily: fonttext5 }}>
-                    Exercise 5
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext5, fontFamily: fonttext5 }}>
-                  15
-                </Text>
-              </View> */}
             </ScrollView>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
-              Reps
-            </Text>
-          </View>
-          <View
-            style={{
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              {reps.map((label, index) => (
-                <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setColor("#32877D");
-                      setFont("Poppins_700Bold");
-                    }}
-                  >
-                    <Text style={styles.listyle}>{label}</Text>
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
           </View>
         </View>
 

@@ -1,17 +1,61 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { useFonts, Poppins_700Bold, Poppins_400Regular, Poppins_100Thin, Poppins_300Light } from '@expo-google-fonts/poppins';
-import { OpenSans_300Light, OpenSans_300Light_Italic, OpenSans_400Regular, OpenSans_700Bold } from '@expo-google-fonts/open-sans';
-import { CalorieTrack, EditProfile, Login, MainScreen, MealPlans, MealScreen, Menu, Register, UserList, UserMeal, UserMeal2, UserProfile, UserProfile2, UserWorkout, UserWorkout2, Welcome, WorkoutPlans,NormalWrkt, MetconTypes, UserCalorie, UserCalorie2, ForTimeScreen1, Amrap, ForTimeCreate1, ForTimCreate3, ForTimCreate4, EmomCreate1, EmomCreate2, EmomCreate3, MealCreate } from './screens';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Loading from './components/Loading';
-import ForTimeCreate2 from './screens/ForTimeCreate2';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import {
+  useFonts,
+  Poppins_700Bold,
+  Poppins_400Regular,
+  Poppins_100Thin,
+  Poppins_300Light,
+} from "@expo-google-fonts/poppins";
+import {
+  OpenSans_300Light,
+  OpenSans_300Light_Italic,
+  OpenSans_400Regular,
+  OpenSans_700Bold,
+} from "@expo-google-fonts/open-sans";
+import {
+  CalorieTrack,
+  EditProfile,
+  Login,
+  MainScreen,
+  MealPlans,
+  MealScreen,
+  Menu,
+  Register,
+  UserList,
+  UserMeal,
+  UserMeal2,
+  UserProfile,
+  UserProfile2,
+  UserWorkout,
+  UserWorkout2,
+  Welcome,
+  WorkoutPlans,
+  NormalWrkt,
+  MetconTypes,
+  UserCalorie,
+  UserCalorie2,
+  ForTimeScreen1,
+  ForTimeScreen2,
+  ForTimeScreen3,
+  ForTimeScreen4,
+  Amrap,
+  ForTimeCreate1,
+  ForTimCreate3,
+  ForTimCreate4,
+  EmomCreate1,
+  EmomCreate2,
+  EmomCreate3,
+  MealCreate,
+} from "./screens";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Loading from "./components/Loading";
+import ForTimeCreate2 from "./screens/ForTimeCreate2";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-
   let [fontsloaded] = useFonts({
     Poppins_700Bold,
     Poppins_400Regular,
@@ -20,56 +64,75 @@ export default function App() {
     OpenSans_300Light,
     OpenSans_300Light_Italic,
     OpenSans_700Bold,
-    OpenSans_400Regular
+    OpenSans_400Regular,
   });
 
-  if(!fontsloaded) {
-    return (
-      <View style={styles.view}>
-
-      </View>
-    )
+  if (!fontsloaded) {
+    return <View style={styles.view}></View>;
   } else {
     return (
       <NavigationContainer>
-        <Stack.Navigator 
+        <Stack.Navigator
           screenOptions={{
             headerShown: false,
-            animation: 'fade',
+            animation: "fade",
           }}
         >
-          <Stack.Screen name='WelcomeScreen' component={Welcome} options={{ animation: 'fade' }}/>
-          <Stack.Screen name='WelcomeScreen2' component={WorkoutPlans} options={{ animation: 'slide_from_right' }}/>
-          <Stack.Screen name='WelcomeScreen3' component={MealPlans} options={{ animation: 'slide_from_right' }}/>
-          <Stack.Screen name="WelcomeScreen4" component={CalorieTrack} options={{ animation: 'slide_from_right' }}/>
-          <Stack.Screen name="MainScreen" component={MainScreen} options={{ animation: 'slide_from_right' }}/>
-          <Stack.Screen name="Login" component={Login}/>
-          <Stack.Screen name="Loading" component={Loading}/>
-          <Stack.Screen name="Register" component={Register}/>
-          <Stack.Screen name="Menu" component={Menu}/>
-          <Stack.Screen name="UserProfile" component={UserProfile}/>
-          <Stack.Screen name="UserProfile2" component={UserProfile2}/>
-          <Stack.Screen name="EditProfile" component={EditProfile}/>
-          <Stack.Screen name="UserWorkout" component={UserWorkout}/>
-          <Stack.Screen name="UserWorkout2" component={UserWorkout2}/>
-          <Stack.Screen name="UserMeal" component={UserMeal}/>
-          <Stack.Screen name="UserMeal2" component={UserMeal2}/>
-          <Stack.Screen name="MealScreen" component={MealScreen}/>
-          <Stack.Screen name="UserList" component={UserList}/>
-          <Stack.Screen name="NormalWrkt" component={NormalWrkt}/>
-          <Stack.Screen name="MetconTypes" component={MetconTypes}/>
-          <Stack.Screen name="UserCalorie" component={UserCalorie}/>
-          <Stack.Screen name="UserCalorie2" component={UserCalorie2}/>
-          <Stack.Screen name="ForTimeScreen1" component={ForTimeScreen1}/>
-          <Stack.Screen name="Amrap" component={Amrap}/>
-          <Stack.Screen name="ForTimeCreate1" component={ForTimeCreate1}/>
-          <Stack.Screen name="ForTimeCreate2" component={ForTimeCreate2}/>
-          <Stack.Screen name="ForTimeCreate3" component={ForTimCreate3}/>
-          <Stack.Screen name="ForTimeCreate4" component={ForTimCreate4}/>
-          <Stack.Screen name="EmomCreate1" component={EmomCreate1}/>
-          <Stack.Screen name="EmomCreate2" component={EmomCreate2}/>
-          <Stack.Screen name="EmomCreate3" component={EmomCreate3}/>
-          <Stack.Screen name="MealCreate" component={MealCreate}/>
+          <Stack.Screen
+            name="WelcomeScreen"
+            component={Welcome}
+            options={{ animation: "fade" }}
+          />
+          <Stack.Screen
+            name="WelcomeScreen2"
+            component={WorkoutPlans}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="WelcomeScreen3"
+            component={MealPlans}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="WelcomeScreen4"
+            component={CalorieTrack}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="MainScreen"
+            component={MainScreen}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Loading" component={Loading} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Menu" component={Menu} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="UserProfile2" component={UserProfile2} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="UserWorkout" component={UserWorkout} />
+          <Stack.Screen name="UserWorkout2" component={UserWorkout2} />
+          <Stack.Screen name="UserMeal" component={UserMeal} />
+          <Stack.Screen name="UserMeal2" component={UserMeal2} />
+          <Stack.Screen name="MealScreen" component={MealScreen} />
+          <Stack.Screen name="UserList" component={UserList} />
+          <Stack.Screen name="NormalWrkt" component={NormalWrkt} />
+          <Stack.Screen name="MetconTypes" component={MetconTypes} />
+          <Stack.Screen name="UserCalorie" component={UserCalorie} />
+          <Stack.Screen name="UserCalorie2" component={UserCalorie2} />
+          <Stack.Screen name="ForTimeScreen1" component={ForTimeScreen1} />
+          <Stack.Screen name="ForTimeScreen2" component={ForTimeScreen2} />
+          <Stack.Screen name="ForTimeScreen3" component={ForTimeScreen3} />
+          <Stack.Screen name="ForTimeScreen4" component={ForTimeScreen4} />
+          <Stack.Screen name="Amrap" component={Amrap} />
+          <Stack.Screen name="ForTimeCreate1" component={ForTimeCreate1} />
+          <Stack.Screen name="ForTimeCreate2" component={ForTimeCreate2} />
+          <Stack.Screen name="ForTimeCreate3" component={ForTimCreate3} />
+          <Stack.Screen name="ForTimeCreate4" component={ForTimCreate4} />
+          <Stack.Screen name="EmomCreate1" component={EmomCreate1} />
+          <Stack.Screen name="EmomCreate2" component={EmomCreate2} />
+          <Stack.Screen name="EmomCreate3" component={EmomCreate3} />
+          <Stack.Screen name="MealCreate" component={MealCreate} />
         </Stack.Navigator>
       </NavigationContainer>
     );
@@ -79,8 +142,8 @@ export default function App() {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-    paddingTop: 40
-  }
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    paddingTop: 40,
+  },
 });

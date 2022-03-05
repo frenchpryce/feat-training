@@ -262,7 +262,7 @@ let idGenerator = () => {
             exercise.push({
               ex: exdrop ? selected.name : selected ,
               load: load,
-              equipment: exdrop ? equipment.name : equipment
+              equipment: equipdrop ? equipment.name : equipment
             });
             setLoad('');
             isEquipdrop(false);
