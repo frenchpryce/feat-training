@@ -36,7 +36,10 @@ const [wrkttypes, setWrkttpyes] = useState([]);
 const [equips, setEquips] = useState([]);
 const [mylink, setLink] = useState('');
 const [exercise, setExercise] = useState([]);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
 const [equipdrop, isEquipdrop] = useState(false);
 const [exdrop, isExdrop] = useState(false);
 let tempexercise = [];
@@ -152,7 +155,10 @@ let idGenerator = () => {
         </Text>
         <View  style={{height:500, width:290,marginBottom:50}}>
         <SearchableDropdown 
+<<<<<<< HEAD
           selectedItems={selected}
+=======
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
           onTextChange={(text) => setSelected(text)}
           onItemSelect={(item) => {
             setSelected(item);
@@ -202,10 +208,17 @@ let idGenerator = () => {
           underlineColorAndroid="transparent"
           //To remove the underline from the android input
         />
+<<<<<<< HEAD
           <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)}>
           </ShortField>
         <SearchableDropdown 
           selectedItems={equipment}
+=======
+        <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)}  >
+
+        </ShortField>
+        <SearchableDropdown 
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
           onTextChange={(text) => setEquipment(text)}
           //On text change listner on the searchable input
           onItemSelect={(item) => {
@@ -316,7 +329,11 @@ const styles = StyleSheet.create({
     paddingTop:30,
     backgroundColor: '#fff',
     alignItems: 'center',
+<<<<<<< HEAD
     justifyContent: 'center',
+=======
+    justifyContent: 'flex-start',
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   },
   BackImage:{
     height:25, 

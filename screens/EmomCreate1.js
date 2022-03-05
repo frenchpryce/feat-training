@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // import React in our code
 import React, { useState, useEffect } from "react";
 
@@ -44,6 +45,47 @@ export default function EmomCreate1({ navigation, route }) {
   const [equipdrop, isEquipdrop] = useState(false);
   const [exdrop, isExdrop] = useState(false);
   let tempexercise = [];
+=======
+// Example of Searchable Dropdown / Picker in React Native
+// https://aboutreact.com/example-of-searchable-dropdown-picker-in-react-native/
+
+// import React in our code
+import React, { useState, useEffect } from 'react';
+
+// import all the components we are going to use
+import { SafeAreaView, StyleSheet, Text, View, ScrollView, Image, TouchableOpacity } from 'react-native';
+import {ShortField, LongField, LargeField } from '../components/EntryFields';
+import { ExerciseText } from '../components/Texts';
+import { LongButton, BackButton } from '../components/LongButton';
+import firebase from '../database';
+
+//import SearchableDropdown component
+import SearchableDropdown from 'react-native-searchable-dropdown';
+
+//Item array for the dropdown
+export default function EmomCreate1({navigation, route}) {
+
+const [exercises, setExercises] = useState([]);
+const [checklist, isChecklist] = useState(false);
+const { user, date } = route.params;
+const [selected, setSelected] = useState('');
+const [exercise, setExercise] = useState([]);
+const [type, setType] = useState('workout type');
+const [reps, setReps] = useState('');
+const [sets, setSets] = useState('');
+const [equipment, setEquipment] = useState('');
+const [load, setLoad] = useState('');
+const [rest, setRest] = useState('');
+const [note, setNote] = useState('');
+const [timer, setTimer] = useState('');
+const [exlabels, setExlabels] = useState([]);
+const [wrkttypes, setWrkttpyes] = useState([]);
+const [equips, setEquips] = useState([]);
+const [mylink, setLink] = useState('');
+const [exerciseset, setExerciseset] = useState([]);
+let thisdate;
+let tempexercise = [];
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
 
   useEffect(() => {
     // fetch('https://aboutreact.herokuapp.com/demosearchables.php')
@@ -55,6 +97,7 @@ export default function EmomCreate1({ navigation, route }) {
     //   .catch((error) => {
     //     console.error(error);
     //   });
+<<<<<<< HEAD
     firebase
       .firestore()
       .collection("Exercises")
@@ -154,15 +197,94 @@ export default function EmomCreate1({ navigation, route }) {
   return (
     <View style={styles.container}>
       <View
+=======
+    firebase.firestore()
+    .collection('Exercises')
+    .get()
+    .then((snap) => {
+      let exercises = [];
+      snap.forEach((doc) => {
+        exercises.push({ name: doc.id, id: doc.id });
+      });
+      setExlabels(exercises);
+    });
+  }, []);
+
+  const addWorkout = () => {
+    if(exercise == null || reps == null ) {
+        Alert.alert(
+            'Invalid Input',
+            'Please fill up the necessary fields',
+            [
+                {
+                    text: 'Close',
+                    style: 'cancel'
+                }
+            ]
+        );
+    } else {
+        var db = firebase.firestore();
+        var batch = db.batch();
+        date.forEach((doc) => {
+            console.log(doc);
+            var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
+            thisdate = doc;
+            batch.set(docRef, {
+              id: idGenerator(),
+              type: 'emom 1',
+              exercise: exercise,
+              sets: sets,
+              note: note,
+              date: doc,
+              category: 'workout',
+              status: 'unfinished',
+            })
+        })
+        batch.commit()
+        .then(() => {
+            setExercise([]);
+            setType('workout type');
+            setReps([]);
+            setSets('');
+            setEquipment('');
+            setRest('');
+            setLoad('');
+            setNote('');
+            setTimer('');
+
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'UserWorkout2', params: {user: user}}],
+            })
+        })
+    }
+  }
+
+  let idGenerator = () => {
+    let id = () => {
+        return Math.floor((1+Math.random()) * 0x10000).toString(16).substring(1);
+    }
+    return id()+id()+'-'+id()+'-'+id()+'-'+id()+'-'+id()+id()+id();
+  }
+
+  return (
+    <View style={styles.container} >
+       <View
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
         style={{
           position: "absolute",
           top: 40,
           left: 40,
+<<<<<<< HEAD
           zIndex: 1,
+=======
+          zIndex: 1
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
         }}
       >
         <BackButton onPress={() => navigation.goBack()} />
       </View>
+<<<<<<< HEAD
       <View style={styles.workoutname}>
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
@@ -302,11 +424,136 @@ export default function EmomCreate1({ navigation, route }) {
           </View>
           <TouchableOpacity
             onPress={() => {
+=======
+      <View style={styles.workoutname} >
+        <Text style={{fontFamily:"Poppins_700Bold", fontSize:30, marginTop: 40 }}>
+          EMOM 1
+        </Text>
+        <View  style={{height:500, width:290,marginBottom:50}}>
+        <SearchableDropdown 
+          onTextChange={(text) => console.log(text)}
+          //On text change listner on the searchable input
+          onItemSelect={(item) => setSelected(item)}
+          //onItemSelect called after the selection from the dropdown
+          containerStyle={{ paddingBottom: 10 }}
+          //suggestion container style
+          textInputStyle={{
+            //inserted text style
+            padding: 12, borderRadius:15,
+            backgroundColor: '#FFFF',
+            width:'100%',
+            borderRadius: 30,
+            elevation: 5,
+            fontFamily: 'OpenSans_300Light_Italic',
+            fontSize: 16,
+            textAlign:'center',
+          }}
+          itemStyle={{
+            //single dropdown item style
+            marginTop:5,
+            padding:10,
+            backgroundColor: '#FAF9F8',
+            borderColor: '#bbb',
+            borderWidth: 1,
+            height:50,
+            width:'100%',
+            justifyContent:'center',
+            alignItems:'center'
+          }}
+          itemTextStyle={{
+            //text style of a single dropdown item
+            color: '#222',
+          }}
+          itemsContainerStyle={{
+            //items container style you can pass maxHeight
+            //to restrict the items dropdown hieght
+            maxHeight: '43%',
+          }}
+          items={exlabels}
+          //mapping of item array
+          defaultIndex={2}
+          //default selected item index
+          placeholder="exercise"
+          //place holder for the search input
+          resetValue={false}
+          //reset textInput Value with true and false state
+          underlineColorAndroid="transparent"
+          //To remove the underline from the android input
+        />
+        <View style={{flexDirection:'row'}}>
+        <ShortField placeholder="reps" value={reps} onChangeText={(text) => setReps(text)} >
+
+        </ShortField>
+        <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)} >
+
+        </ShortField>
+        </View>
+      
+        <SearchableDropdown 
+          onTextChange={(text) => console.log(text)}
+          //On text change listner on the searchable input
+          onItemSelect={(item) => alert(JSON.stringify(item))}
+          //onItemSelect called after the selection from the dropdown
+          containerStyle={{ paddingTop: 10 }}
+          //suggestion container style
+          textInputStyle={{
+            //inserted text style
+            padding: 12, borderRadius:15,
+            backgroundColor: '#FFFF',
+            width:'100%',
+            borderRadius: 30,
+            elevation: 5,
+            fontFamily: 'OpenSans_300Light_Italic',
+            fontSize: 16,
+            textAlign:'center',
+          }}
+          itemStyle={{
+            //single dropdown item style
+            marginTop:5,
+            padding:10,
+            backgroundColor: '#FAF9F8',
+            borderColor: '#bbb',
+            borderWidth: 1,
+            height:50,
+            width:'100%',
+            justifyContent:'center',
+            alignItems:'center'
+            
+          }}
+          itemTextStyle={{
+            //text style of a single dropdown item
+            color: '#222',
+          }}
+          itemsContainerStyle={{
+            //items container style you can pass maxHeight
+            //to restrict the items dropdown hieght
+            maxHeight: '43%',
+          }}
+          items={exlabels}
+          //mapping of item array
+          defaultIndex={2}
+          //default selected item index
+          placeholder="equipment"
+          //place holder for the search input
+          resetValue={false}
+          //reset textInput Value with true and false state
+          underlineColorAndroid="transparent"
+          //To remove the underline from the android input
+        />
+         <View style={{marginTop:10}}>
+        <ShortField placeholder="ex time" value={timer} onChangeText={(text) => setTimer(text)} >
+
+        </ShortField>
+        </View>
+        <TouchableOpacity
+          onPress={() => {
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
               exercise.push({
                 exercise: selected,
                 reps: reps,
                 load: load,
                 equipment: equipment,
+<<<<<<< HEAD
                 time: timer,
               });
               setLoad("");
@@ -350,10 +597,47 @@ export default function EmomCreate1({ navigation, route }) {
     </View>
   );
 }
+=======
+                time: timer
+              });
+              setLoad('');
+              setReps('');
+              setTimer('');
+              console.log(exercise);
+          }}
+        >
+        <Text style={{color:'#32877D', fontSize:16,marginTop:10,marginLeft:5,marginBottom:10}}>
+           + Add another exercise
+          </Text>
+           </TouchableOpacity>
+       
+        <LargeField placeholder="note" onChangeText={(text) => setNote(text)} >
+
+        </LargeField>
+        <View style={{marginBottom:20}}>
+            <ShortField placeholder="rounds" marginTop={10} onChangeText={(text) => setSets(text)}>
+
+            </ShortField>
+            </View>
+        <LongButton     title='Next'
+                    bgcolor='#32877D'
+                    marginTop={20}
+                    onPress={() => addWorkout()}
+                    >
+
+            </LongButton>
+         </View>
+      </View>
+    </View>
+  );
+};
+
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
     paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
@@ -369,12 +653,34 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
+=======
+    paddingTop:30,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
+  BackImage:{
+    height:25, 
+    width:25,
+    marginRight:270,
+    marginBottom:10,
+  },
+  workoutname: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   },
   titleText: {
     padding: 8,
     fontSize: 16,
+<<<<<<< HEAD
     textAlign: "center",
     fontWeight: "bold",
+=======
+    textAlign: 'center',
+    fontWeight: 'bold',
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   },
   headingText: {
     padding: 8,

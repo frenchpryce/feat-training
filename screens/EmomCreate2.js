@@ -44,9 +44,12 @@ export default function EmomCreate2({ navigation, route }) {
   const [extime, setExtime] = useState("");
   const [round, setRound] = useState([]);
   let thisdate;
+<<<<<<< HEAD
   
   const [equipdrop, isEquipdrop] = useState(false);
   const [exdrop, isExdrop] = useState(false);
+=======
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   let tempexercise = [];
 
   useEffect(() => {
@@ -70,6 +73,7 @@ export default function EmomCreate2({ navigation, route }) {
         });
         setExlabels(exercises);
       });
+<<<<<<< HEAD
 
     firebase
       .firestore()
@@ -82,6 +86,8 @@ export default function EmomCreate2({ navigation, route }) {
         });
         setEquips(equipments);
       });
+=======
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   }, []);
 
   const addWorkout = () => {
@@ -175,11 +181,15 @@ export default function EmomCreate2({ navigation, route }) {
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
           <SearchableDropdown
+<<<<<<< HEAD
             selectedItems={selected}
             onItemSelect={(item) => {
               setSelected(item);
               isExdrop(true);
             }}
+=======
+            onItemSelect={(item) => setSelected(item)}
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingBottom: 10 }}
             //suggestion container style
@@ -243,6 +253,7 @@ export default function EmomCreate2({ navigation, route }) {
           </View>
 
           <SearchableDropdown
+<<<<<<< HEAD
             selectedItems={equipment}
             onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
@@ -250,6 +261,11 @@ export default function EmomCreate2({ navigation, route }) {
               setEquipment(item);
               isEquipdrop(true);
             }}
+=======
+            onTextChange={(text) => console.log(text)}
+            //On text change listner on the searchable input
+            onItemSelect={(item) => alert(JSON.stringify(item))}
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingTop: 10 }}
             //suggestion container style
@@ -286,7 +302,11 @@ export default function EmomCreate2({ navigation, route }) {
               //to restrict the items dropdown hieght
               maxHeight: "43%",
             }}
+<<<<<<< HEAD
             items={equips}
+=======
+            items={exlabels}
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
             //mapping of item array
             defaultIndex={2}
             //default selected item index
@@ -380,7 +400,11 @@ export default function EmomCreate2({ navigation, route }) {
             </Text>
           </TouchableOpacity>
           <LongButton
+<<<<<<< HEAD
             title="Finish"
+=======
+            title="Next"
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
             bgcolor="#32877D"
             marginTop={10}
             onPress={() => addWorkout()}
@@ -397,7 +421,11 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
+<<<<<<< HEAD
     justifyContent: "center",
+=======
+    justifyContent: "flex-start",
+>>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   },
   BackImage: {
     height: 25,
