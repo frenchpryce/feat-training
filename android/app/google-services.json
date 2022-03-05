@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "76918616939",
+    "project_id": "feat-db",
+    "storage_bucket": "feat-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76918616939:android:e03ae4a250419d2f77d22e",
+        "android_client_info": {
+          "package_name": "com.feat.training"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76918616939-h6ud3sbavcu8jb9b3f8nu2ustegvpmeo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmuUc8x3PpRzkpJq417HtXKGzPW_Q2dgE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76918616939-h6ud3sbavcu8jb9b3f8nu2ustegvpmeo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
