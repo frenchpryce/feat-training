@@ -23,7 +23,6 @@ export { default as ForTimeScreen1 } from './ForTimeScreen1';
 export { default as ForTimeScreen2 } from './ForTimeScreen2';
 export { default as ForTimeScreen3 } from './ForTimeScreen3';
 export { default as ForTimeScreen4 } from './ForTimeScreen4';
-<<<<<<< HEAD
 export { default as EmomScreen1 } from './EmomScreen1';
 export { default as EmomScreen2 } from './EmomScreen2';
 export { default as EmomScreen3 } from './EmomScreen3';
@@ -31,8 +30,6 @@ export { default as EmomScreen4 } from './EmomScreen4';
 export { default as EmomScreen5 } from './EmomScreen5';
 export { default as EmomScreen6 } from './EmomScreen6';
 export { default as EmomScreen7 } from './EmomScreen7';
-=======
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
 export { default as Amrap } from './Amrap';
 export { default as ForTimeCreate1 } from './ForTimeCreate1';
 export { default as ForTimCreate2 } from './ForTimeCreate2';

@@ -47,7 +47,6 @@ import {
   EmomCreate2,
   EmomCreate3,
   MealCreate,
-<<<<<<< HEAD
   EmomScreen1,
   EmomScreen2,
   EmomScreen3,
@@ -55,8 +54,6 @@ import {
   EmomScreen5,
   EmomScreen6,
   EmomScreen7,
-=======
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
 } from "./screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -134,7 +131,6 @@ export default function App() {
           <Stack.Screen name="ForTimeScreen2" component={ForTimeScreen2} />
           <Stack.Screen name="ForTimeScreen3" component={ForTimeScreen3} />
           <Stack.Screen name="ForTimeScreen4" component={ForTimeScreen4} />
-<<<<<<< HEAD
           <Stack.Screen name="EmomScreen1" component={EmomScreen1} />
           <Stack.Screen name="EmomScreen2" component={EmomScreen2} />
           <Stack.Screen name="EmomScreen3" component={EmomScreen3} />
@@ -142,8 +138,6 @@ export default function App() {
           <Stack.Screen name="EmomScreen5" component={EmomScreen5} />
           <Stack.Screen name="EmomScreen6" component={EmomScreen6} />
           <Stack.Screen name="EmomScreen7" component={EmomScreen7} />
-=======
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
           <Stack.Screen name="Amrap" component={Amrap} />
           <Stack.Screen name="ForTimeCreate1" component={ForTimeCreate1} />
           <Stack.Screen name="ForTimeCreate2" component={ForTimeCreate2} />

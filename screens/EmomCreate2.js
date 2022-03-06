@@ -44,12 +44,6 @@ export default function EmomCreate2({ navigation, route }) {
   const [extime, setExtime] = useState("");
   const [round, setRound] = useState([]);
   let thisdate;
-<<<<<<< HEAD
-  
-  const [equipdrop, isEquipdrop] = useState(false);
-  const [exdrop, isExdrop] = useState(false);
-=======
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   let tempexercise = [];
 
   useEffect(() => {
@@ -73,21 +67,6 @@ export default function EmomCreate2({ navigation, route }) {
         });
         setExlabels(exercises);
       });
-<<<<<<< HEAD
-
-    firebase
-      .firestore()
-      .collection("Equipments")
-      .get()
-      .then((snap) => {
-        let equipments = [];
-        snap.forEach((doc) => {
-          equipments.push({ name: doc.id, id: doc.id });
-        });
-        setEquips(equipments);
-      });
-=======
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   }, []);
 
   const addWorkout = () => {
@@ -111,7 +90,7 @@ export default function EmomCreate2({ navigation, route }) {
         thisdate = doc;
         batch.set(docRef, {
           id: idGenerator(),
-          type: "emom 2",
+          type: "emom 3",
           exercise: exercise,
           note: note,
           sets: sets,
@@ -177,19 +156,13 @@ export default function EmomCreate2({ navigation, route }) {
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
         >
-          EMOM 2
+          EMOM 3
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
           <SearchableDropdown
-<<<<<<< HEAD
-            selectedItems={selected}
-            onItemSelect={(item) => {
-              setSelected(item);
-              isExdrop(true);
-            }}
-=======
-            onItemSelect={(item) => setSelected(item)}
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
+            onTextChange={(text) => console.log(text)}
+            //On text change listner on the searchable input
+            onItemSelect={(item) => alert(JSON.stringify(item))}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingBottom: 10 }}
             //suggestion container style
@@ -253,19 +226,9 @@ export default function EmomCreate2({ navigation, route }) {
           </View>
 
           <SearchableDropdown
-<<<<<<< HEAD
-            selectedItems={equipment}
             onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
-            onItemSelect={(item) => {
-              setEquipment(item);
-              isEquipdrop(true);
-            }}
-=======
-            onTextChange={(text) => console.log(text)}
-            //On text change listner on the searchable input
-            onItemSelect={(item) => alert(JSON.stringify(item))}
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
+            onItemSelect={(item) => setSelected(item)}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingTop: 10 }}
             //suggestion container style
@@ -302,11 +265,7 @@ export default function EmomCreate2({ navigation, route }) {
               //to restrict the items dropdown hieght
               maxHeight: "43%",
             }}
-<<<<<<< HEAD
-            items={equips}
-=======
             items={exlabels}
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
             //mapping of item array
             defaultIndex={2}
             //default selected item index
@@ -317,24 +276,6 @@ export default function EmomCreate2({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View
-            style={{
-              marginTop: 10,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
-            <ShortField
-              placeholder="ex time"
-              value={extime}
-              onChangeText={(text) => setExtime(text)}
-            ></ShortField>
-            <ShortField
-              placeholder="rest time"
-              value={rest}
-              onChangeText={(text) => setRest(text)}
-            ></ShortField>
-          </View>
           <TouchableOpacity
             onPress={() => {
               exercise.push({
@@ -342,13 +283,9 @@ export default function EmomCreate2({ navigation, route }) {
                 reps: reps,
                 load: load,
                 equipment: equipment,
-                extime: extime,
-                rest: rest,
               });
               setLoad("");
               setReps("");
-              setExtime("");
-              setRest("");
               console.log(exercise);
             }}
           >
@@ -365,16 +302,17 @@ export default function EmomCreate2({ navigation, route }) {
             </Text>
           </TouchableOpacity>
 
-          <LargeField placeholder="note"></LargeField>
-          <View
-            style={{ marginBottom: 10, flexDirection: "row", marginTop: 10 }}
-          >
-            <ShortField
-              placeholder="time"
-              value={timer}
-              onChangeText={(text) => setTimer(text)}
-            ></ShortField>
-          </View>
+          <LargeField
+            placeholder="note"
+            value={note}
+            onChangeText={(text) => setNote(text)}
+          ></LargeField>
+          <ShortField
+            placeholder="time"
+            marginTop={10}
+            value={timer}
+            onChangeText={(text) => setTimer(text)}
+          ></ShortField>
           <TouchableOpacity
             onPress={() => {
               round.push({
@@ -393,20 +331,15 @@ export default function EmomCreate2({ navigation, route }) {
                 fontSize: 16,
                 marginTop: 10,
                 marginLeft: 5,
-                marginBottom: 10,
               }}
             >
-              + Add another round
+              + Add another set of minutes
             </Text>
           </TouchableOpacity>
           <LongButton
-<<<<<<< HEAD
-            title="Finish"
-=======
             title="Next"
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
             bgcolor="#32877D"
-            marginTop={10}
+            marginTop={20}
             onPress={() => addWorkout()}
           ></LongButton>
         </View>
@@ -421,11 +354,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
-<<<<<<< HEAD
     justifyContent: "center",
-=======
     justifyContent: "flex-start",
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   },
   BackImage: {
     height: 25,

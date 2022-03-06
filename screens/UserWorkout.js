@@ -146,7 +146,6 @@ export default function UserWorkout({ navigation, route }) {
               case 'for time 4':
                 navigation.navigate('ForTimeScreen4', { user: user, id: label.id });
                 break;
-<<<<<<< HEAD
               case 'emom 1':
                 navigation.navigate('EmomScreen1', { user: user, id: label.id });
                 break;
@@ -168,8 +167,6 @@ export default function UserWorkout({ navigation, route }) {
               case 'emom 7':
                 navigation.navigate('EmomScreen7', { user: user, id: label.id });
                 break;
-=======
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
               default:
                 break;
             }

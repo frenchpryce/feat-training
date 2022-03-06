@@ -354,11 +354,8 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
-<<<<<<< HEAD
     justifyContent: "center",
-=======
     justifyContent: "flex-start",
->>>>>>> 9c96a9db431cfa606e87d4795879e9cab41eb2c5
   },
   BackImage: {
     height: 25,
