@@ -40,6 +40,9 @@ export default function EmomCreate1({ navigation, route }) {
   const [extime, setExtime] = useState("");
   const [round, setRound] = useState([]);
   let thisdate;
+
+  const [equipdrop, isEquipdrop] = useState(false);
+  const [exdrop, isExdrop] = useState(false);
   let tempexercise = [];
 
   useEffect(() => {
@@ -63,6 +66,17 @@ export default function EmomCreate1({ navigation, route }) {
         });
         setExlabels(exercises);
       });
+
+    firebase.firestore()
+      .collection('Equipments')
+      .get()
+      .then((snap) => {
+        let equipments = [];
+        snap.forEach((doc) => {
+          equipments.push({name: doc.id, id: doc.id});
+        });
+        setEquips(equipments);
+      })
   }, []);
 
   const addWorkout = () => {
@@ -86,7 +100,7 @@ export default function EmomCreate1({ navigation, route }) {
         thisdate = doc;
         batch.set(docRef, {
           id: idGenerator(),
-          type: "emom 3",
+          type: "emom 1",
           exercise: exercise,
           note: note,
           sets: sets,
@@ -156,9 +170,12 @@ export default function EmomCreate1({ navigation, route }) {
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
           <SearchableDropdown
-            onTextChange={(text) => console.log(text)}
+            selectedItems={selected}
             //On text change listner on the searchable input
-            onItemSelect={(item) => alert(JSON.stringify(item))}
+            onItemSelect={(item) => {
+              setSelected(item);
+              isExdrop(true);
+            }}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingBottom: 10 }}
             //suggestion container style
@@ -222,9 +239,12 @@ export default function EmomCreate1({ navigation, route }) {
           </View>
 
           <SearchableDropdown
-            onTextChange={(text) => console.log(text)}
+            selectedItems={equipment}
             //On text change listner on the searchable input
-            onItemSelect={(item) => setSelected(item)}
+            onItemSelect={(item) => {
+              setEquipment(item);
+              isEquipdrop(true);
+            }}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingTop: 10 }}
             //suggestion container style
@@ -261,7 +281,7 @@ export default function EmomCreate1({ navigation, route }) {
               //to restrict the items dropdown hieght
               maxHeight: "43%",
             }}
-            items={exlabels}
+            items={equips}
             //mapping of item array
             defaultIndex={2}
             //default selected item index
@@ -272,6 +292,12 @@ export default function EmomCreate1({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
+          <ShortField
+              placeholder="ex time"
+              value={load}
+              marginTop={10}
+              onChangeText={(text) => setExtime(text)}
+            ></ShortField>
           <TouchableOpacity
             onPress={() => {
               exercise.push({
@@ -304,34 +330,11 @@ export default function EmomCreate1({ navigation, route }) {
             onChangeText={(text) => setNote(text)}
           ></LargeField>
           <ShortField
-            placeholder="time"
+            placeholder="rounds"
             marginTop={10}
-            value={timer}
-            onChangeText={(text) => setTimer(text)}
+            value={sets}
+            onChangeText={(text) => setSets(text)}
           ></ShortField>
-          <TouchableOpacity
-            onPress={() => {
-              round.push({
-                exercise: exercise,
-                time: timer,
-              });
-              setExercise([]);
-              setTimer("");
-
-              console.log(round);
-            }}
-          >
-            <Text
-              style={{
-                color: "#32877D",
-                fontSize: 16,
-                marginTop: 10,
-                marginLeft: 5,
-              }}
-            >
-              + Add another set of minutes
-            </Text>
-          </TouchableOpacity>
           <LongButton
             title="Next"
             bgcolor="#32877D"
