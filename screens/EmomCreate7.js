@@ -10,13 +10,12 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
   ScrollView,
   Image,
-  Alert,
   TouchableOpacity,
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
-import { ExerciseText } from "../components/Texts";
 import { LongButton, BackButton } from "../components/LongButton";
 import firebase from "../database";
 
@@ -24,21 +23,7 @@ import firebase from "../database";
 import SearchableDropdown from "react-native-searchable-dropdown";
 
 //Item array for the dropdown
-export default function ForTimeCreate4({ navigation, route }) {
-  const items = [
-    //name key is must.It is to show the text in front
-    { id: 1, name: "Jump Squat" },
-    { id: 2, name: "Lateral Walks" },
-    { id: 3, name: "Alternating Jump Lunges" },
-    { id: 4, name: "Mt.Climbers" },
-    { id: 5, name: "Burpees" },
-    { id: 6, name: "Inclined Push Up" },
-    { id: 7, name: "Squats" },
-    { id: 8, name: "Revese Lunges" },
-    { id: 9, name: "Plank Shoulder Tap" },
-    { id: 10, name: "KB Swings" },
-  ];
-
+export default function EmomCreate7({ navigation, route }) {
   const [exercises, setExercises] = useState([]);
   const [checklist, isChecklist] = useState(false);
   const { user, date } = route.params;
@@ -52,15 +37,18 @@ export default function ForTimeCreate4({ navigation, route }) {
   const [rest, setRest] = useState("");
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState("");
+  const [totaltime, setTotaltime] = useState("");
   const [exlabels, setExlabels] = useState([]);
   const [wrkttypes, setWrkttpyes] = useState([]);
   const [equips, setEquips] = useState([]);
   const [mylink, setLink] = useState("");
   const [exerciseset, setExerciseset] = useState([]);
-  const [equipdrop, isEquipdrop] = useState(false);
-  const [exdrop, isExdrop] = useState(false);
+  const [extime, setExtime] = useState("");
+  const [round, setRound] = useState([]);
   let thisdate;
   let tempexercise = [];
+  const [equipdrop, isEquipdrop] = useState(false);
+  const [exdrop, isExdrop] = useState(false);
 
   useEffect(() => {
     firebase
@@ -74,17 +62,17 @@ export default function ForTimeCreate4({ navigation, route }) {
         });
         setExlabels(exercises);
       });
-
-    firebase.firestore()
-    .collection('Equipments')
-    .get()
-    .then((snap) => {
-      let equipments = [];
-      snap.forEach((doc) => {
-        equipments.push({name: doc.id, id: doc.id});
+    firebase
+      .firestore()
+      .collection("Equipments")
+      .get()
+      .then((snap) => {
+        let equipments = [];
+        snap.forEach((doc) => {
+          equipments.push({ name: doc.id, id: doc.id });
+        });
+        setEquips(equipments);
       });
-      setEquips(equipments);
-    })
   }, []);
 
   const addWorkout = () => {
@@ -116,11 +104,11 @@ export default function ForTimeCreate4({ navigation, route }) {
               thisdate = doc;
               batch.set(docRef, {
                 id: idGenerator(),
-                type: "for time 4",
+                type: "emom 3",
                 exercise: exercise,
-                sets: sets,
                 note: note,
-                timer: Number(timer),
+                sets: sets,
+                totaltime: totaltime,
                 date: doc,
                 category: "workout",
                 status: "unfinished",
@@ -136,7 +124,7 @@ export default function ForTimeCreate4({ navigation, route }) {
               setLoad("");
               setNote("");
               setTimer("");
-
+              setExtime("");
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -144,7 +132,7 @@ export default function ForTimeCreate4({ navigation, route }) {
             });
           }
         }
-      ]);
+      ])
     }
   };
 
@@ -186,14 +174,16 @@ export default function ForTimeCreate4({ navigation, route }) {
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
         >
-          For Time 4
+          EMOM 7
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
-          <SearchableDropdown
+        <SearchableDropdown
             selectedItems={selected}
-            onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
-            onItemSelect={(item) => setSelected(item)}
+            onItemSelect={(item) => {
+              setSelected(item);
+              isExdrop(true);
+            }}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingBottom: 10 }}
             //suggestion container style
@@ -241,7 +231,9 @@ export default function ForTimeCreate4({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
             <ShortField
               placeholder="reps"
               value={reps}
@@ -253,10 +245,8 @@ export default function ForTimeCreate4({ navigation, route }) {
               onChangeText={(text) => setLoad(text)}
             ></ShortField>
           </View>
-
           <SearchableDropdown
             selectedItems={equipment}
-            onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
             onItemSelect={(item) => {
               setEquipment(item);
@@ -309,6 +299,20 @@ export default function ForTimeCreate4({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}
+          >
+            <ShortField
+              placeholder="ex time"
+              value={extime}
+              onChangeText={(text) => setReps(text)}
+            ></ShortField>
+            <ShortField
+              placeholder="rest time"
+              value={rest}
+              onChangeText={(text) => setLoad(text)}
+            ></ShortField>
+          </View>
           <TouchableOpacity
             onPress={() => {
               exercise.push({
@@ -316,10 +320,13 @@ export default function ForTimeCreate4({ navigation, route }) {
                 reps: reps,
                 load: load,
                 equipment: equipment,
+                extime: extime,
+                rest: rest
               });
               setLoad("");
               setReps("");
-              setSets("");
+              setExtime("");
+              setRest("");
               console.log(exercise);
             }}
           >
@@ -338,14 +345,21 @@ export default function ForTimeCreate4({ navigation, route }) {
 
           <LargeField
             placeholder="note"
+            value={note}
             onChangeText={(text) => setNote(text)}
           ></LargeField>
-          <View style={{ marginBottom: 20 }}>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}
+          >
             <ShortField
-              placeholder="rounds/sets"
-              marginTop={10}
-              value={sets}
-              onChangeText={(text) => setSets(text)}
+              placeholder="time"
+              value={timer}
+              onChangeText={(text) => setReps(text)}
+            ></ShortField>
+            <ShortField
+              placeholder="total time"
+              value={totaltime}
+              onChangeText={(text) => setLoad(text)}
             ></ShortField>
           </View>
           <LongButton
@@ -376,7 +390,6 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   workoutname: {
-    paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",

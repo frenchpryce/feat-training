@@ -12,6 +12,7 @@ import {
   View,
   ScrollView,
   Image,
+  Alert,
   TouchableOpacity,
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
@@ -97,41 +98,52 @@ export default function ForTimeCreate3({ navigation, route }) {
         },
       ]);
     } else {
-      var db = firebase.firestore();
-      var batch = db.batch();
-      date.forEach((doc) => {
-        console.log(doc);
-        var docRef = db
-          .collection("Users")
-          .doc(user)
-          .collection("wrktmeal")
-          .doc();
-        batch.set(docRef, {
-          id: idGenerator(),
-          type: "for time 3",
-          circuits: circuit,
-          date: doc,
-          category: "workout",
-          status: "unfinished",
-          timer: Number(timer),
-        });
-      });
-      batch.commit().then(() => {
-        setExercise([]);
-        setType("workout type");
-        setReps("");
-        setSets("");
-        setEquipment("");
-        setRest("");
-        setLoad("");
-        setNote("");
-        setTimer("");
+      Alert.alert("Submitting", "Done creating exercises?", [
+        {
+          text: "Back",
+          style: "cancel",
+        },
+        {
+          text: "Done",
+          onPress: () => {
+            var db = firebase.firestore();
+              var batch = db.batch();
+              date.forEach((doc) => {
+                console.log(doc);
+                var docRef = db
+                  .collection("Users")
+                  .doc(user)
+                  .collection("wrktmeal")
+                  .doc();
+                batch.set(docRef, {
+                  id: idGenerator(),
+                  type: "for time 3",
+                  circuits: circuit,
+                  date: doc,
+                  category: "workout",
+                  status: "unfinished",
+                  timer: Number(timer),
+                });
+              });
+              batch.commit().then(() => {
+                setExercise([]);
+                setType("workout type");
+                setReps("");
+                setSets("");
+                setEquipment("");
+                setRest("");
+                setLoad("");
+                setNote("");
+                setTimer("");
 
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "UserWorkout2", params: { user: user } }],
-        });
-      });
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "UserWorkout2", params: { user: user } }],
+                });
+              });
+          }
+        }
+      ]);
     }
   };
 
@@ -231,7 +243,7 @@ export default function ForTimeCreate3({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View style={{ flexDirection: "row" }}>
+          <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
             <ShortField
               placeholder="reps"
               value={reps}

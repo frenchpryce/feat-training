@@ -46,15 +46,6 @@ export default function EmomCreate1({ navigation, route }) {
   let tempexercise = [];
 
   useEffect(() => {
-    // fetch('https://aboutreact.herokuapp.com/demosearchables.php')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Successful response from the API Call
-    //     setServerData(responseJson.results);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
     firebase
       .firestore()
       .collection("Exercises")
@@ -88,43 +79,54 @@ export default function EmomCreate1({ navigation, route }) {
         },
       ]);
     } else {
-      var db = firebase.firestore();
-      var batch = db.batch();
-      date.forEach((doc) => {
-        console.log(doc);
-        var docRef = db
-          .collection("Users")
-          .doc(user)
-          .collection("wrktmeal")
-          .doc();
-        thisdate = doc;
-        batch.set(docRef, {
-          id: idGenerator(),
-          type: "emom 1",
-          exercise: exercise,
-          note: note,
-          sets: sets,
-          date: doc,
-          category: "workout",
-          status: "unfinished",
-        });
-      });
-      batch.commit().then(() => {
-        setExercise([]);
-        setType("workout type");
-        setReps("");
-        setSets("");
-        setEquipment("");
-        setRest("");
-        setLoad("");
-        setNote("");
-        setTimer("");
-        setExtime("");
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "UserWorkout2", params: { user: user } }],
-        });
-      });
+      Alert.alert("Submitting", "Done creating exercises?", [
+        {
+          text: "Back",
+          style: "cancel",
+        },
+        {
+          text: "Done",
+          onPress: () => {
+            var db = firebase.firestore();
+            var batch = db.batch();
+            date.forEach((doc) => {
+              console.log(doc);
+              var docRef = db
+                .collection("Users")
+                .doc(user)
+                .collection("wrktmeal")
+                .doc();
+              thisdate = doc;
+              batch.set(docRef, {
+                id: idGenerator(),
+                type: "emom 1",
+                exercise: exercise,
+                note: note,
+                round: sets,
+                date: doc,
+                category: "workout",
+                status: "unfinished",
+              });
+            });
+            batch.commit().then(() => {
+              setExercise([]);
+              setType("workout type");
+              setReps("");
+              setSets("");
+              setEquipment("");
+              setRest("");
+              setLoad("");
+              setNote("");
+              setTimer("");
+              setExtime("");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "UserWorkout2", params: { user: user } }],
+              });
+            });
+          }
+        }
+      ])
     }
   };
 
@@ -166,7 +168,7 @@ export default function EmomCreate1({ navigation, route }) {
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
         >
-          EMOM 3
+          EMOM 1
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
           <SearchableDropdown

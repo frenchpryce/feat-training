@@ -46,6 +46,10 @@ import {
   EmomCreate1,
   EmomCreate2,
   EmomCreate3,
+  EmomCreate4,
+  EmomCreate5,
+  EmomCreate6,
+  EmomCreate7,
   MealCreate,
   EmomScreen1,
   EmomScreen2,
@@ -146,6 +150,10 @@ export default function App() {
           <Stack.Screen name="EmomCreate1" component={EmomCreate1} />
           <Stack.Screen name="EmomCreate2" component={EmomCreate2} />
           <Stack.Screen name="EmomCreate3" component={EmomCreate3} />
+          <Stack.Screen name="EmomCreate4" component={EmomCreate4} />
+          <Stack.Screen name="EmomCreate5" component={EmomCreate5} />
+          <Stack.Screen name="EmomCreate6" component={EmomCreate6} />
+          <Stack.Screen name="EmomCreate7" component={EmomCreate7} />
           <Stack.Screen name="MealCreate" component={MealCreate} />
         </Stack.Navigator>
       </NavigationContainer>

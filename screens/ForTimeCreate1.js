@@ -83,46 +83,61 @@ let tempexercise = [];
                 {
                     text: 'Close',
                     style: 'cancel'
-                }
+                },
             ]
         );
     } else {
-        var db = firebase.firestore();
-        var batch = db.batch();
-        date.forEach((doc) => {
-            console.log(doc);
-            var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
-            batch.set(docRef, {
-                id: idGenerator(),
-                type: 'for time 1',
-                exercise: exercise,
-                reps: reps,
-                sets: sets,
-                rest: Number(rest),
-                note: note,
-                timer: Number(timer),
-                date: doc,
-                category: 'workout',
-                status: 'unfinished',
-            })
-        })
-        batch.commit()
-        .then(() => {
-            setExercise([]);
-            setType('workout type');
-            setReps([]);
-            setSets('');
-            setEquipment('');
-            setRest('');
-            setLoad('');
-            setNote('');
-            setTimer('');
+      Alert.alert(
+        "Submitting", "Done creating exercises?",
+        [
+            {
+              text: "Back",
+              style: "cancel",
+            },
+            {
+              text: "Done",
+              onPress: () => {
+                var db = firebase.firestore();
+                var batch = db.batch();
+                date.forEach((doc) => {
+                    console.log(doc);
+                    var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
+                    batch.set(docRef, {
+                        id: idGenerator(),
+                        type: 'for time 1',
+                        exercise: exercise,
+                        reps: reps,
+                        sets: sets,
+                        rest: Number(rest),
+                        note: note,
+                        timer: Number(timer),
+                        date: doc,
+                        category: 'workout',
+                        status: 'unfinished',
+                    })
+                })
+                batch.commit()
+                .then(() => {
+                    setExercise([]);
+                    setType('workout type');
+                    setReps([]);
+                    setSets('');
+                    setEquipment('');
+                    setRest('');
+                    setLoad('');
+                    setNote('');
+                    setTimer('');
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'UserWorkout2', params: {user: user}}],
-            })
-        })
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'UserWorkout2', params: {user: user}}],
+                    })
+                })
+              }
+            }
+        ]
+      );
+        
     }
 }
 
@@ -204,8 +219,6 @@ let idGenerator = () => {
         />
           <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)}>
           </ShortField>
-        <ShortField placeholder="load" value={load} onChangeText={(text) => setLoad(text)}  >
-        </ShortField>
         <SearchableDropdown 
           selectedItems={equipment}
           onTextChange={(text) => setEquipment(text)}

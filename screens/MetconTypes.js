@@ -68,10 +68,22 @@ export default function MetconTypes({ navigation, route }) {
                 <WorkoutButton 
                     wrkt='Emom 4'
                     color="#000000"
+                    onPress={() => navigation.navigate('EmomCreate4', { user: user, date: date })}
                 />
                 <WorkoutButton 
                     wrkt='Emom 5'
                     color="#000000"
+                    onPress={() => navigation.navigate('EmomCreate5', { user: user, date: date })}
+                />
+                <WorkoutButton 
+                    wrkt='Emom 6'
+                    color="#000000"
+                    onPress={() => navigation.navigate('EmomCreate6', { user: user, date: date })}
+                />
+                <WorkoutButton 
+                    wrkt='Emom 7'
+                    color="#000000"
+                    onPress={() => navigation.navigate('EmomCreate7', { user: user, date: date })}
                 />
             </ScrollView>
         </ImageBackground>

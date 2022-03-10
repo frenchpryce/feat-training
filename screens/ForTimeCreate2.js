@@ -42,15 +42,6 @@ let thisdate;
 let tempexercise = [];
 
   useEffect(() => {
-    // fetch('https://aboutreact.herokuapp.com/demosearchables.php')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Successful response from the API Call
-    //     setServerData(responseJson.results);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
     firebase.firestore()
     .collection('Exercises')
     .get()
@@ -83,46 +74,61 @@ let tempexercise = [];
                 {
                     text: 'Close',
                     style: 'cancel'
-                }
+                },
             ]
         );
     } else {
-        var db = firebase.firestore();
-        var batch = db.batch();
-        date.forEach((doc) => {
-            console.log(doc);
-            var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
-            thisdate = doc;
-            batch.set(docRef, {
-              id: idGenerator(),
-              type: 'for time 2',
-              exercise: exercise,
-              note: note,
-              timer: Number(timer),
-              date: doc,
-              category: 'workout',
-              status: 'unfinished',
-            })
-        })
-        batch.commit()
-        .then(() => {
-            setExercise([]);
-            setType('workout type');
-            setReps([]);
-            setSets('');
-            setEquipment('');
-            setRest('');
-            setLoad('');
-            setNote('');
-            setTimer('');
+      Alert.alert(
+        "Submitting", "Done creating exercises?",
+        [
+            {
+              text: "Back",
+              style: "cancel",
+            },
+            {
+              text: "Done",
+              onPress: () => {
+                var db = firebase.firestore();
+                var batch = db.batch();
+                date.forEach((doc) => {
+                    console.log(doc);
+                    var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
+                    thisdate = doc;
+                    batch.set(docRef, {
+                      id: idGenerator(),
+                      type: 'for time 2',
+                      exercise: exercise,
+                      note: note,
+                      timer: Number(timer),
+                      date: doc,
+                      category: 'workout',
+                      status: 'unfinished',
+                    })
+                })
+                batch.commit()
+                .then(() => {
+                    setExercise([]);
+                    setType('workout type');
+                    setReps([]);
+                    setSets('');
+                    setEquipment('');
+                    setRest('');
+                    setLoad('');
+                    setNote('');
+                    setTimer('');
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: 'UserWorkout2', params: {user: user}}],
-            })
-        })
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'UserWorkout2', params: {user: user}}],
+                    })
+                })
+              }
+            }
+        ]
+      );
+        
     }
-  }
+}
 
   let idGenerator = () => {
     let id = () => {
@@ -202,7 +208,7 @@ let tempexercise = [];
           underlineColorAndroid="transparent"
           //To remove the underline from the android input
         />
-        <View style={{flexDirection:'row'}}>
+        <View style={{flexDirection:'row', justifyContent: 'space-between'}}>
         <ShortField placeholder="reps"   
           value={reps}
           onChangeText={(text) => {

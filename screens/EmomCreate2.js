@@ -12,6 +12,7 @@ import {
   View,
   ScrollView,
   Image,
+  Alert,
   TouchableOpacity,
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
@@ -45,17 +46,10 @@ export default function EmomCreate2({ navigation, route }) {
   const [round, setRound] = useState([]);
   let thisdate;
   let tempexercise = [];
+  const [equipdrop, isEquipdrop] = useState(false);
+  const [exdrop, isExdrop] = useState(false);
 
   useEffect(() => {
-    // fetch('https://aboutreact.herokuapp.com/demosearchables.php')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //     //Successful response from the API Call
-    //     setServerData(responseJson.results);
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
     firebase
       .firestore()
       .collection("Exercises")
@@ -66,6 +60,17 @@ export default function EmomCreate2({ navigation, route }) {
           exercises.push({ name: doc.id, id: doc.id });
         });
         setExlabels(exercises);
+      });
+    firebase
+      .firestore()
+      .collection("Equipments")
+      .get()
+      .then((snap) => {
+        let equipments = [];
+        snap.forEach((doc) => {
+          equipments.push({ name: doc.id, id: doc.id });
+        });
+        setEquips(equipments);
       });
   }, []);
 
@@ -78,43 +83,52 @@ export default function EmomCreate2({ navigation, route }) {
         },
       ]);
     } else {
-      var db = firebase.firestore();
-      var batch = db.batch();
-      date.forEach((doc) => {
-        console.log(doc);
-        var docRef = db
-          .collection("Users")
-          .doc(user)
-          .collection("wrktmeal")
-          .doc();
-        thisdate = doc;
-        batch.set(docRef, {
-          id: idGenerator(),
-          type: "emom 3",
-          exercise: exercise,
-          note: note,
-          sets: sets,
-          date: doc,
-          category: "workout",
-          status: "unfinished",
-        });
-      });
-      batch.commit().then(() => {
-        setExercise([]);
-        setType("workout type");
-        setReps("");
-        setSets("");
-        setEquipment("");
-        setRest("");
-        setLoad("");
-        setNote("");
-        setTimer("");
-        setExtime("");
-        navigation.reset({
-          index: 0,
-          routes: [{ name: "UserWorkout2", params: { user: user } }],
-        });
-      });
+      Alert.alert("Submitting", "Done creating exercises?", [
+        {
+          text: "Back",
+          style: "cancel",
+        },
+        {
+          text: "Done",
+          onPress: () => {
+            var db = firebase.firestore();
+            var batch = db.batch();
+            date.forEach((doc) => {
+              console.log(doc);
+              var docRef = db
+                .collection("Users")
+                .doc(user)
+                .collection("wrktmeal")
+                .doc();
+              thisdate = doc;
+              batch.set(docRef, {
+                id: idGenerator(),
+                type: "emom 2",
+                exercise: round,
+                date: doc,
+                category: "workout",
+                status: "unfinished",
+              });
+            });
+            batch.commit().then(() => {
+              setExercise([]);
+              setType("workout type");
+              setReps("");
+              setSets("");
+              setEquipment("");
+              setRest("");
+              setLoad("");
+              setNote("");
+              setTimer("");
+              setExtime("");
+              navigation.reset({
+                index: 0,
+                routes: [{ name: "UserWorkout2", params: { user: user } }],
+              });
+            });
+          }
+        }
+      ])
     }
   };
 
@@ -156,13 +170,16 @@ export default function EmomCreate2({ navigation, route }) {
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
         >
-          EMOM 3
+          EMOM 2
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
-          <SearchableDropdown
-            onTextChange={(text) => console.log(text)}
+        <SearchableDropdown
+            selectedItems={selected}
             //On text change listner on the searchable input
-            onItemSelect={(item) => alert(JSON.stringify(item))}
+            onItemSelect={(item) => {
+              setSelected(item);
+              isExdrop(true);
+            }}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingBottom: 10 }}
             //suggestion container style
@@ -224,11 +241,9 @@ export default function EmomCreate2({ navigation, route }) {
               onChangeText={(text) => setLoad(text)}
             ></ShortField>
           </View>
-
           <SearchableDropdown
-            onTextChange={(text) => console.log(text)}
-            //On text change listner on the searchable input
-            onItemSelect={(item) => setSelected(item)}
+            selectedItems={equipment}
+            onItemSelect={(item) => setEquipment(item)}
             //onItemSelect called after the selection from the dropdown
             containerStyle={{ paddingTop: 10 }}
             //suggestion container style
@@ -265,7 +280,7 @@ export default function EmomCreate2({ navigation, route }) {
               //to restrict the items dropdown hieght
               maxHeight: "43%",
             }}
-            items={exlabels}
+            items={equips}
             //mapping of item array
             defaultIndex={2}
             //default selected item index
@@ -276,6 +291,20 @@ export default function EmomCreate2({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}
+          >
+            <ShortField
+              placeholder="ex time"
+              value={extime}
+              onChangeText={(text) => setReps(text)}
+            ></ShortField>
+            <ShortField
+              placeholder="rest time"
+              value={rest}
+              onChangeText={(text) => setLoad(text)}
+            ></ShortField>
+          </View>
           <TouchableOpacity
             onPress={() => {
               exercise.push({
@@ -307,21 +336,30 @@ export default function EmomCreate2({ navigation, route }) {
             value={note}
             onChangeText={(text) => setNote(text)}
           ></LargeField>
-          <ShortField
-            placeholder="time"
-            marginTop={10}
-            value={timer}
-            onChangeText={(text) => setTimer(text)}
-          ></ShortField>
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}
+          >
+            <ShortField
+              placeholder="rounds"
+              value={sets}
+              onChangeText={(text) => setReps(text)}
+            ></ShortField>
+            <ShortField
+              placeholder="time"
+              value={timer}
+              onChangeText={(text) => setLoad(text)}
+            ></ShortField>
+          </View>
           <TouchableOpacity
             onPress={() => {
               round.push({
                 exercise: exercise,
                 time: timer,
+                set: sets,
               });
               setExercise([]);
               setTimer("");
-
+              setSets("");
               console.log(round);
             }}
           >
