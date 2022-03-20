@@ -4,10 +4,12 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TextInput,
   RefreshControl,
   Text,
   ScrollView,
   ImageBackground,
+  ToastAndroid
 } from "react-native";
 import { BackButton, TextButton } from "../components/LongButton";
 import { AlertModal } from "../components/Modals";
@@ -34,7 +36,16 @@ export default function UserProfile2({ navigation, route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [noimage, isNoimage] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [reminder, setReminder] = useState("");
   const isFocused = useIsFocused();
+
+  useEffect(() => {
+    if(isFocused) {
+      getData();
+      getArticles();
+      setRefreshing(false);
+    }
+  }, [isFocused, refreshing]);
 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -46,15 +57,6 @@ export default function UserProfile2({ navigation, route }) {
     setLoading(true);
     wait(3000).then(() => setRefreshing(false));
   },[refreshing])
-
-  useEffect(() => {
-    if(isFocused) {
-      console.log(user);
-      getData();
-      getArticles();
-      setRefreshing(false);
-    }
-  }, [isFocused, refreshing]);
 
   const getData = () => {
     firebase
@@ -107,6 +109,16 @@ export default function UserProfile2({ navigation, route }) {
         });
     }
   
+  const sendReminder = () => {
+    firebase
+      .firestore()
+      .collection("Reminders")
+      .doc(user)
+      .set({
+        foryou: reminder
+      });
+  }
+
   return (
     <ImageBackground
     source={require("../assets/bg4.png")}
@@ -186,7 +198,31 @@ export default function UserProfile2({ navigation, route }) {
         </View>
         <View style={styles.view}>
           <Text style={styles.heading}>Reminders</Text>
-          <View style={styles.reminderBox}></View>
+          <View style={[styles.reminderBox, {justifyContent: 'space-between'}]}>
+            <TextInput 
+              style={{height: "100%", backgroundColor: "transparent", padding: 10, textAlignVertical: 'top'}}
+              placeholder="Set reminder..."
+              value={reminder}
+              onChangeText={(text) => setReminder(text)}
+            />
+            <TouchableOpacity
+              style={{
+                alignSelf: 'flex-end',
+                justifyContent: 'flex-end',
+                bottom: 15,
+                right: 20,
+                zIndex: 1,
+                position: 'absolute'
+              }}
+              onPress={() => {
+                sendReminder();
+                setReminder("");
+                ToastAndroid.show("Reminder has been sent!", ToastAndroid.SHORT);
+              }}
+            >
+              <Text style={{color: 'red', fontWeight: 'bold'}}>Send</Text>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.heading}>Latest Articles</Text>
           {articles.map((artcle, index) => (
             <ArticleBox key={index} source={artcle.image} title={artcle.title} body={artcle.body}/>

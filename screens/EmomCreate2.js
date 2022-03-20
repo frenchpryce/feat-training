@@ -14,6 +14,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { LongButton, BackButton } from "../components/LongButton";
@@ -121,6 +122,7 @@ export default function EmomCreate2({ navigation, route }) {
               setNote("");
               setTimer("");
               setExtime("");
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -155,7 +157,7 @@ export default function EmomCreate2({ navigation, route }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20, flex: 1, backgroundColor: "#FFFFFF"}}>
       <View
         style={{
           position: "absolute",
@@ -172,7 +174,7 @@ export default function EmomCreate2({ navigation, route }) {
         >
           EMOM 2
         </Text>
-        <View style={{ height: 500, width: 290, marginBottom: 50 }}>
+        <View style={{ width: 290, marginBottom: 50 }}>
         <SearchableDropdown
             selectedItems={selected}
             //On text change listner on the searchable input
@@ -297,12 +299,12 @@ export default function EmomCreate2({ navigation, route }) {
             <ShortField
               placeholder="ex time"
               value={extime}
-              onChangeText={(text) => setReps(text)}
+              onChangeText={(text) => setExtime(text)}
             ></ShortField>
             <ShortField
               placeholder="rest time"
               value={rest}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setRest(text)}
             ></ShortField>
           </View>
           <TouchableOpacity
@@ -312,10 +314,14 @@ export default function EmomCreate2({ navigation, route }) {
                 reps: reps,
                 load: load,
                 equipment: equipment,
+                extime: extime,
+                rest: rest
               });
               setLoad("");
               setReps("");
-              console.log(exercise);
+              setExtime("");
+              setRest("");
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -342,12 +348,12 @@ export default function EmomCreate2({ navigation, route }) {
             <ShortField
               placeholder="rounds"
               value={sets}
-              onChangeText={(text) => setReps(text)}
+              onChangeText={(text) => setSets(text)}
             ></ShortField>
             <ShortField
               placeholder="time"
               value={timer}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setTimer(text)}
             ></ShortField>
           </View>
           <TouchableOpacity
@@ -356,11 +362,13 @@ export default function EmomCreate2({ navigation, route }) {
                 exercise: exercise,
                 time: timer,
                 set: sets,
+                note: note
               });
               setExercise([]);
               setTimer("");
               setSets("");
-              console.log(round);
+              setNote("");
+              ToastAndroid.show("Minutes has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -378,41 +386,19 @@ export default function EmomCreate2({ navigation, route }) {
             title="Next"
             bgcolor="#32877D"
             marginTop={20}
+            marginBottom={50}
             onPress={() => addWorkout()}
           ></LongButton>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 30,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-    justifyContent: "flex-start",
-  },
-  BackImage: {
-    height: 25,
-    width: 25,
-    marginRight: 270,
-    marginBottom: 10,
-  },
   workoutname: {
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
-  },
-  titleText: {
-    padding: 8,
-    fontSize: 16,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  headingText: {
-    padding: 8,
   },
 });

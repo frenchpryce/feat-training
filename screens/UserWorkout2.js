@@ -62,13 +62,15 @@ export default function UserWorkout2({ navigation, route }) {
       .get()
       .then((col) => {
         col.forEach((doc) => {
-          templist.push({
-            date: doc.data().date,
-            category: doc.data().category,
-            type: doc.data().type,
-            status: doc.data().status,
-            id: doc.id,
-          });
+          if(doc.data().category == "workout"){
+            templist.push({
+              date: doc.data().date,
+              category: doc.data().category,
+              type: doc.data().type,
+              status: doc.data().status,
+              id: doc.id,
+            });
+          }
         });
         setWrktlist(templist);
         console.log(wrktlist);

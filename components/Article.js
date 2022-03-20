@@ -5,6 +5,7 @@ const ArticleBox = (props) => {
     return (
         <TouchableOpacity
             style={styles.articleBox}
+            onPress={props.onPress}
         >
             <Image style={styles.featuredPhoto} source={{uri: props.source}} />
             <Text style={styles.title}>{props.title}</Text>

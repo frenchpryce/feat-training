@@ -8,7 +8,9 @@ import {
   View,
   ScrollView,
   Image,
+  Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { LongButton, BackButton } from "../components/LongButton";
@@ -119,6 +121,7 @@ export default function EmomCreate1({ navigation, route }) {
               setNote("");
               setTimer("");
               setExtime("");
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -296,7 +299,7 @@ export default function EmomCreate1({ navigation, route }) {
           />
           <ShortField
               placeholder="ex time"
-              value={load}
+              value={extime}
               marginTop={10}
               onChangeText={(text) => setExtime(text)}
             ></ShortField>
@@ -306,11 +309,13 @@ export default function EmomCreate1({ navigation, route }) {
                 exercise: selected,
                 reps: reps,
                 load: load,
+                extime: extime,
                 equipment: equipment,
               });
               setLoad("");
               setReps("");
-              console.log(exercise);
+              setExtime("");
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text

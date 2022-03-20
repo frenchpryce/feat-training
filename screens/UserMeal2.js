@@ -39,13 +39,13 @@ export default function UserMeal2({ navigation, route }) {
   const getData = () => {
     templist = [];
     firebase.firestore()
-    .collection('users')
+    .collection('Users')
     .doc(user)
     .collection('wrktmeal')
     .get()
     .then((col) => {
       col.forEach((doc) => {
-        if(doc.data().category == 'meal'){
+        if(doc.data().category == 'meals'){
           templist.push({
             date: doc.data().date,
             category: doc.data().category,
@@ -56,6 +56,7 @@ export default function UserMeal2({ navigation, route }) {
         }
       })
       setMeallist(templist);
+      console.log(meallist);
       setLoading(false);
     })
   }
@@ -91,7 +92,7 @@ export default function UserMeal2({ navigation, route }) {
           text: 'Yes',
           onPress: () => {
             firebase.firestore()
-            .collection('users')
+            .collection('Users')
             .doc(user)
             .collection('wrktmeal')
             .doc(id)
@@ -127,7 +128,7 @@ export default function UserMeal2({ navigation, route }) {
           left: 40,
         }}
       >
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={() => navigation.navigate("Menu", {user: user, type: "trainer"})} />
       </View>
       { loading ? <Loading /> : 
       <View style={styles.container}>
@@ -204,12 +205,14 @@ export default function UserMeal2({ navigation, route }) {
             />
           }
         >
-        {meallist.filter((meals) => ((meals.date == compdate) && (meals.category == 'meal'))).map((label, index) => (
+        {meallist.filter((meals) => ((meals.date.key == compdate) && (meals.category == 'meals'))).map((label, index) => (
+          <View key={index}>
           <WorkoutButton
             wrkt="Breakfast"
             color="#000000"
             onLongPress={() => deleteData(label.id)}
           />
+          </View>
         ))}
         </ScrollView>
       </View>
@@ -229,19 +232,19 @@ export default function UserMeal2({ navigation, route }) {
         bgcolor4="#736E9E"
         onPress1={() => {
           isChoosing(false);
-          navigation.navigate("MealCreate", { user: user, type: 'Breakfast'});
+          navigation.navigate("MealCreate", { user: user, type: 'Breakfast', date: days});
         }}
         onPress2={() => {
           isChoosing(false);
-          navigation.navigate("MealCreate", { user: user, type: 'Lunch'});
+          navigation.navigate("MealCreate", { user: user, type: 'Lunch', date: days});
         }}
         onPress3={() => {
           isChoosing(false);
-          navigation.navigate("MealCreate", { user: user, type: 'Dinner'});
+          navigation.navigate("MealCreate", { user: user, type: 'Dinner', date: days});
         }}
         onPress4={() => {
           isChoosing(false);
-          navigation.navigate("MealCreate", { user: user, type: 'Snacks'});
+          navigation.navigate("MealCreate", { user: user, type: 'Snacks', date: days});
         }}
         marginTop={10}
         warning='Choose a Workout'

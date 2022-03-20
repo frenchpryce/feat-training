@@ -22,7 +22,7 @@ export default function ForTimeScreen4({ navigation, route }) {
   const [pressed, isPressed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [exercises, setExercises] = useState([]);
-  const [reps, setReps] = useState([]);
+  const [sets, setSets] = useState("");
   const [dataid, setDataid] = useState('');
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState();
@@ -39,7 +39,8 @@ export default function ForTimeScreen4({ navigation, route }) {
           if (doc.data().id == id && doc.data().status == 'unfinished') {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
-            setReps(doc.data().reps);
+            setSets(doc.data().sets);
+            
             setNote(doc.data().note);
             if(doc.data().timer == 0) {
               setTimer(0);
@@ -49,6 +50,7 @@ export default function ForTimeScreen4({ navigation, route }) {
             setLoading(false);
           }
           console.log(timer);
+          console.log(sets);
         });
       });
   }, []);
@@ -205,9 +207,12 @@ export default function ForTimeScreen4({ navigation, route }) {
               ))}
             </ScrollView>
           </View>
-          <View>
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
               Load
+            </Text>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+              Sets
             </Text>
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
@@ -222,7 +227,10 @@ export default function ForTimeScreen4({ navigation, route }) {
                   }}
                 >
                   <Text style={styles.listyle}>
-                    {label.load}
+                    {label.load} {label.equipment.name}
+                  </Text>
+                  <Text style={styles.listyle}>
+                    {sets}
                   </Text>
                 </View>
               ))}

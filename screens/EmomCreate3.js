@@ -14,6 +14,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { LongButton, BackButton } from "../components/LongButton";
@@ -121,6 +122,7 @@ export default function EmomCreate3({ navigation, route }) {
               setNote("");
               setTimer("");
               setExtime("");
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -173,7 +175,7 @@ export default function EmomCreate3({ navigation, route }) {
         >
           EMOM 3
         </Text>
-        <View style={{ height: 500, width: 290, marginBottom: 50 }}>
+        <View style={{ width: 290, marginBottom: 50 }}>
         <SearchableDropdown
             selectedItems={selected}
             //On text change listner on the searchable input
@@ -291,7 +293,7 @@ export default function EmomCreate3({ navigation, route }) {
                 equipment: equipment,
               });
               setLoad("");
-              console.log(exercise);
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -335,13 +337,15 @@ export default function EmomCreate3({ navigation, route }) {
                 exercise: exercise,
                 time: timer,
                 reps: reps,
-                sets: sets
+                sets: sets,
+                note: note
               });
               setExercise([]);
+              setNote("");
               setTimer("");
               setReps("");
               setSets("");
-              console.log(round);
+              ToastAndroid.show("Minutes has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text

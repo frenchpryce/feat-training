@@ -58,6 +58,9 @@ import {
   EmomScreen5,
   EmomScreen6,
   EmomScreen7,
+  Subscription,
+  Details,
+  ArticleScreen
 } from "./screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -117,6 +120,8 @@ export default function App() {
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Loading" component={Loading} />
           <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Subscription" component={Subscription} />
+          <Stack.Screen name="Details" component={Details} />
           <Stack.Screen name="Menu" component={Menu} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="UserProfile2" component={UserProfile2} />
@@ -155,6 +160,7 @@ export default function App() {
           <Stack.Screen name="EmomCreate6" component={EmomCreate6} />
           <Stack.Screen name="EmomCreate7" component={EmomCreate7} />
           <Stack.Screen name="MealCreate" component={MealCreate} />
+          <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

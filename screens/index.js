@@ -43,3 +43,6 @@ export { default as EmomCreate5 } from './EmomCreate5';
 export { default as EmomCreate6 } from './EmomCreate6';
 export { default as EmomCreate7 } from './EmomCreate7';
 export { default as MealCreate } from './MealCreate';
+export { default as Subscription } from './Subscription';
+export { default as Details } from './Details';
+export { default as ArticleScreen } from './ArticleScreen';

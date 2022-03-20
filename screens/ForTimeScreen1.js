@@ -185,7 +185,7 @@ export default function ForTimeScreen1({ navigation, route }) {
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
-              {exercises.map((label, index) => (
+              {exercises.length && exercises.map((label, index) => (
                 <View
                   key={index}
                   style={{
@@ -195,129 +195,13 @@ export default function ForTimeScreen1({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle[index]}>{label.exercise.name}</Text>
+                    <Text style={styles.listyle[index]}>{label.ex}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
                     {label.load} {label.equipment}
                   </Text>
                 </View>
               ))}
-              {/* <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor2("#32877D");
-                    setFont2("Poppins_700Bold");
-                    setColor("black");
-                    setFont("");
-                    setColor3("black");
-                    setFont3("");
-                    setColor4("black");
-                    setFont4("");
-                    setColor5("black");
-                    setFont5("");
-                  }}
-                >
-                  <Text style={{ color: colortext2, fontFamily: fonttext2 }}>
-                    Exercise 2
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext2, fontFamily: fonttext2 }}>
-                  15
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor3("#32877D");
-                    setFont3("Poppins_700Bold");
-                    setColor("black");
-                    setFont("");
-                    setColor2("black");
-                    setFont2("");
-                    setColor4("black");
-                    setFont4("");
-                    setColor5("black");
-                    setFont5("");
-                  }}
-                >
-                  <Text style={{ color: colortext3, fontFamily: fonttext3 }}>
-                    Exercise 3
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext3, fontFamily: fonttext3 }}>
-                  15
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor4("#32877D");
-                    setFont4("Poppins_700Bold");
-                    setColor2("black");
-                    setFont2("");
-                    setColor("black");
-                    setFont("");
-                    setColor3("black");
-                    setFont3("");
-                    setColor5("black");
-                    setFont5("");
-                  }}
-                >
-                  <Text style={{ color: colortext4, fontFamily: fonttext4 }}>
-                    Exercise 4
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext4, fontFamily: fonttext4 }}>
-                  15
-                </Text>
-              </View>
-              <View
-                style={{
-                  paddingTop: 10,
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    setColor5("#32877D");
-                    setFont5("Poppins_700Bold");
-                    setColor2("black");
-                    setFont2("");
-                    setColor3("black");
-                    setFont3("");
-                    setColor("black");
-                    setFont("");
-                    setColor4("black");
-                    setFont4("");
-                  }}
-                >
-                  <Text style={{ color: colortext5, fontFamily: fonttext5 }}>
-                    Exercise 5
-                  </Text>
-                </TouchableOpacity>
-                <Text style={{ color: colortext5, fontFamily: fonttext5 }}>
-                  15
-                </Text>
-              </View> */}
             </ScrollView>
           </View>
           <View
@@ -346,7 +230,7 @@ export default function ForTimeScreen1({ navigation, route }) {
                 flexDirection: "row",
               }}
             >
-              {reps.map((label, index) => (
+              {reps.length && reps.map((label, index) => (
                 <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
                   <TouchableOpacity
                     onPress={() => {
@@ -361,7 +245,6 @@ export default function ForTimeScreen1({ navigation, route }) {
             </View>
           </View>
         </View>
-
         {/* <LongButton
           title="Next Round"
           bgcolor="#3F3D56"

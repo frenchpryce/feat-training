@@ -13,6 +13,7 @@ import {
   Alert,
   ScrollView,
   Image,
+  ToastAndroid,
   TouchableOpacity,
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
@@ -104,7 +105,7 @@ export default function EmomCreate7({ navigation, route }) {
               thisdate = doc;
               batch.set(docRef, {
                 id: idGenerator(),
-                type: "emom 3",
+                type: "emom 7",
                 exercise: exercise,
                 note: note,
                 sets: sets,
@@ -125,6 +126,7 @@ export default function EmomCreate7({ navigation, route }) {
               setNote("");
               setTimer("");
               setExtime("");
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -305,12 +307,12 @@ export default function EmomCreate7({ navigation, route }) {
             <ShortField
               placeholder="ex time"
               value={extime}
-              onChangeText={(text) => setReps(text)}
+              onChangeText={(text) => setExtime(text)}
             ></ShortField>
             <ShortField
               placeholder="rest time"
               value={rest}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setRest(text)}
             ></ShortField>
           </View>
           <TouchableOpacity
@@ -327,7 +329,7 @@ export default function EmomCreate7({ navigation, route }) {
               setReps("");
               setExtime("");
               setRest("");
-              console.log(exercise);
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -354,12 +356,12 @@ export default function EmomCreate7({ navigation, route }) {
             <ShortField
               placeholder="time"
               value={timer}
-              onChangeText={(text) => setReps(text)}
+              onChangeText={(text) => setTimer(text)}
             ></ShortField>
             <ShortField
               placeholder="total time"
               value={totaltime}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setTotaltime(text)}
             ></ShortField>
           </View>
           <LongButton

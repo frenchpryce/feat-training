@@ -8,17 +8,16 @@ import {
   Text,
   ScrollView,
   ImageBackground,
-  Alert
+  Alert,
 } from "react-native";
 import { BackButton, TextButton } from "../components/LongButton";
 import { AlertModal } from "../components/Modals";
 import { ArticleBox } from "../components/Article";
-import firebase from '../database';
+import firebase from "../database";
 import Loading from "../components/Loading";
-import { useIsFocused } from '@react-navigation/native';
+import { useIsFocused } from "@react-navigation/native";
 
 export default function UserProfile({ navigation, route }) {
-
   const user = route.params.user;
   // const [modalVis, setModalVis] = useState(false);
   const [name, setName] = useState();
@@ -34,24 +33,62 @@ export default function UserProfile({ navigation, route }) {
   const [refreshing, setRefreshing] = useState(false);
   const [noimage, isNoimage] = useState(true);
   const [articles, setArticles] = useState([]);
+  const [reminder, setReminder] = useState("");
+  const [verifdays, setVerifdays] = useState();
   const isFocused = useIsFocused();
+  const month = new Date().getMonth();
+  const date = new Date().getDate();
+  const year = new Date().getFullYear();
+
+  const getSubData = () => {
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc(user)
+      .get()
+      .then((snap) => {
+        let date1 = new Date(year, month, date);
+        console.log(date1);
+        let now = new Date(snap.data().startdate);
+        console.log(now);
+        let diffInTime = now.getTime() - date1.getTime();
+        let diffInDays = diffInTime / (1000* 3600 * 24);
+
+        console.log(diffInDays);
+        if(diffInDays <= -31){
+          Alert.alert(
+            "Verfication Failed",
+            "Please confirm with your coach that you are verified.",
+            [
+              {
+                text: "Back to Login",
+                onPress: () => {
+                  navigation.navigate("MainScreen");
+                }
+              },
+            ]
+          );
+        }
+      })
+  }
 
   const wait = (timeout) => {
-    return new Promise(resolve => setTimeout(resolve, timeout));
-  }
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getData();
     setLoading(true);
     wait(3000).then(() => setRefreshing(false));
-  },[refreshing])
+  }, [refreshing]);
 
   useEffect(() => {
-    if(isFocused) {
-      console.log(user);
+    if (isFocused) {
+      getSubData();
       getData();
       getArticles();
+      getReminders();
       setRefreshing(false);
     }
   }, [isFocused, refreshing]);
@@ -69,7 +106,7 @@ export default function UserProfile({ navigation, route }) {
         setWeight(snap.data().weight);
         setGoal(snap.data().goal);
         setBalance(snap.data().payment.balance);
-        if(snap.data().status == 'Unverified') {
+        if (snap.data().status == "Unverified") {
           setVerif(true);
         } else {
           setVerif(false);
@@ -79,166 +116,201 @@ export default function UserProfile({ navigation, route }) {
 
     firebase
       .storage()
-      .ref('uploads/' + user + '.jpg')
+      .ref("uploads/" + user + ".jpg")
       .getDownloadURL()
       .then((url) => {
-        try{
+        try {
           setImagelink(url);
           isNoimage(false);
           setLoading(false);
-        } catch(err) {
+        } catch (err) {
           isNoimage(true);
         }
       })
-      .catch((error)=>{})
-  }
+      .catch((error) => {});
+  };
 
   const getArticles = () => {
     let articles = [];
-      firebase
-        .firestore()
-        .collection("Articles")
-        .get()
-        .then((snap) => {
-          snap.forEach((doc) => {
-            articles.push(doc.data());
-          });
-          setArticles(articles);
+    firebase
+      .firestore()
+      .collection("Articles")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          articles.push(doc.data());
         });
-    }
-  
+        setArticles(articles);
+      });
+  };
+
+  const getReminders = () => {
+    firebase
+      .firestore()
+      .collection("Reminders")
+      .doc(user)
+      .get()
+      .then((snap) => {
+        setReminder(snap.data().foryou);
+        console.log(reminder);
+      },[])
+  }
+
   return (
     <ImageBackground
-    source={require("../assets/bg4.png")}
-    resizeMode="cover"
-    style={{
-      flex: 1,
-    }}
+      source={require("../assets/bg4.png")}
+      resizeMode="cover"
+      style={{
+        flex: 1,
+      }}
     >
-      { loading ? <Loading/> : 
-      <ScrollView style={{ backgroundColor: "#FFFFFF" }}
-        renderToHardwareTextureAndroid
-        shouldRasterizeIOS
-        refreshControl={
-          <RefreshControl 
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          />
-        }
-      >
-        <View style={styles.card}>
-          <Image
-            style={{
-              position: "absolute",
-              top: -100,
-              left: 0,
-              right: 0,
-            }}
-            source={require("../assets/wave.png")}
-          />
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              justifyContent: "space-between",
-            }}
-          >
+      {loading ? (
+        <Loading />
+      ) : (
+        <ScrollView
+          style={{ backgroundColor: "#FFFFFF" }}
+          renderToHardwareTextureAndroid
+          shouldRasterizeIOS
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={styles.card}>
+            <Image
+              style={{
+                position: "absolute",
+                top: -100,
+                left: 0,
+                right: 0,
+              }}
+              source={require("../assets/wave.png")}
+            />
             <View
               style={{
                 flex: 1,
-                justifyContent: "center",
-                marginRight: 40,
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
             >
               <View
                 style={{
-                  position: "absolute",
-                  top: 0,
+                  flex: 1,
+                  justifyContent: "center",
+                  marginRight: 40,
                 }}
               >
-                <BackButton onPress={() => navigation.goBack()} />
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                  }}
+                >
+                  <BackButton onPress={() => navigation.goBack()} />
+                </View>
+                <Image
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 50,
+                    backgroundColor: "#37877D",
+                    marginTop: -20,
+                  }}
+                  source={
+                    noimage
+                      ? require("../assets/noPic.png")
+                      : { uri: imagelink }
+                  }
+                />
               </View>
-              <Image
+              <View
                 style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 50,
-                  backgroundColor: "#37877D",
-                  marginTop: -20,
+                  flex: 2,
+                  justifyContent: "center",
+                  alignItems: "flex-start",
+                  marginTop: 30,
+                  marginBottom: 20,
                 }}
-                source={ noimage ? require('../assets/noPic.png') : { uri: imagelink } }
+              >
+                <Text style={styles.name}>{name}</Text>
+                <Text style={styles.email}>{email}</Text>
+                <Text style={styles.email}>Balance: PHP {balance}</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                position: "absolute",
+                bottom: 10,
+                left: 40,
+              }}
+            >
+              <TextButton
+                title="Edit"
+                color="#000000"
+                onPress={() =>
+                  navigation.navigate("EditProfile", { user: user })
+                }
               />
             </View>
             <View
               style={{
-                flex: 2,
-                justifyContent: "center",
-                alignItems: "flex-start",
-                marginTop: 30,
-                marginBottom: 20,
+                position: "absolute",
+                flexDirection: "row",
+                bottom: 10,
+                right: 40,
               }}
             >
-              <Text style={styles.name}>{name}</Text>
-              <Text style={styles.email}>{email}</Text>
-              <Text style={styles.email}>Balance: PHP {balance}</Text>
-            </View>
-          </View>
-          <View
-            style={{
-              position: "absolute",
-              bottom: 10,
-              left: 40,
-            }}
-          >
-            <TextButton
-              title="Edit"
-              color="#000000"
-              onPress={() => navigation.navigate("EditProfile", { user: user })}
-            />
-          </View>
-          <View
-            style={{
-              position: "absolute",
-              flexDirection: "row",
-              bottom: 10,
-              right: 40,
-            }}
-          >
-            <TextButton color="#FF6F61" title="Subscribe" marginRight={15} />
-            <TextButton
-              color="#37877D"
-              title="Logout"
-              onPress={() => {
-                Alert.alert(
-                  'Logging out',
-                  'Are you sure you want to logout?',
-                  [
+              <TextButton
+                color="#FF6F61"
+                title="Subscribe"
+                marginRight={15}
+                onPress={() => {
+                  navigation.navigate('Subscription', { user: user })
+                }}
+              />
+              <TextButton
+                color="#37877D"
+                title="Logout"
+                onPress={() => {
+                  Alert.alert(
+                    "Logging out",
+                    "Are you sure you want to logout?",
+                    [
                       {
-                          text: 'Yes',
-                          onPress: () => {
-                              navigation.navigate('MainScreen');
-                          }
+                        text: "Yes",
+                        onPress: () => {
+                          navigation.navigate("MainScreen");
+                        },
                       },
                       {
-                          text: 'No',
-                          style: 'cancel'
-                      }
-                  ]
-                )
-              }}
-            />
+                        text: "No",
+                        style: "cancel",
+                      },
+                    ]
+                  );
+                }}
+              />
+            </View>
           </View>
-        </View>
-        <View style={styles.view}>
-          <Text style={styles.heading}>Reminders</Text>
-          <View style={styles.reminderBox}></View>
-          <Text style={styles.heading}>Latest Articles</Text>
-          {articles.map((artcle, index) => (
-            <ArticleBox key={index} source={artcle.image} title={artcle.title} body={artcle.body}/>
-          ))}
-        </View>
-      </ScrollView>
-      }
+          <View style={styles.view}>
+            <Text style={styles.heading}>Reminders</Text>
+            <View style={styles.reminderBox}>
+              <Text style={styles.textstyle}>{reminder}</Text>
+            </View>
+            <Text style={styles.heading}>Latest Articles</Text>
+            {articles.map((artcle, index) => (
+              <ArticleBox
+                key={index}
+                source={artcle.image}
+                title={artcle.title}
+                body={artcle.body}
+                onPress={() => {
+                  navigation.navigate("ArticleScreen", { artcle: artcle })
+                }}
+              />
+            ))}
+          </View>
+        </ScrollView>
+      )}
     </ImageBackground>
   );
 }
@@ -275,6 +347,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: "#EBF3F2",
     elevation: 5,
+    padding: 20
   },
   articleBox: {
     width: "100%",
@@ -291,5 +364,10 @@ const styles = StyleSheet.create({
   email: {
     fontFamily: "Poppins_300Light",
     fontSize: 13,
+  },
+  textstyle: {
+    fontSize: 13,
+    color: "#000000",
+    fontFamily: "Poppins_300Light",
   },
 });

@@ -26,7 +26,9 @@ export default function EmomScreen2({ navigation, route }) {
   const [dataid, setDataid] = useState('');
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState();
-  const [round, setRound] = useRef(0);
+  const [currtime, setCurrtime] = useState(0);
+  const [currround, setCurround] = useState(0);
+  const [currnote, setCurrnote] = useState(0);
 
   useEffect(() => {
     firebase
@@ -40,12 +42,11 @@ export default function EmomScreen2({ navigation, route }) {
           if (doc.data().id == id && doc.data().status == 'unfinished') {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
-            setReps(doc.data().exercise);
-            setNote(doc.data().note);
-            if(doc.data().exercise[0].time == 0) {
+            setNote(doc.data().exercise);
+            if(doc.data().exercise[currtime].time == 0) {
               setTimer(0);
             } else {
-              setTimer(doc.data().exercise[0].time);
+              setTimer(doc.data().exercise[currtime].time);
             }
             setLoading(false);
           }
@@ -165,7 +166,7 @@ export default function EmomScreen2({ navigation, route }) {
           </Text>
           <View style={{ height: 60, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
-              <Text>{note}</Text>
+              <Text>{exercises[currnote].note}</Text>
             </ScrollView>
           </View>
           <View
@@ -186,7 +187,7 @@ export default function EmomScreen2({ navigation, route }) {
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
-              {exercises.map((label, index) => (
+              {exercises.length && exercises[currround].exercise.map((label, index) => (
                 <View
                   key={index}
                   style={{
@@ -231,7 +232,7 @@ export default function EmomScreen2({ navigation, route }) {
                 flexDirection: "row",
               }}
             >
-              {reps.map((label, index) => (
+              {exercises.length && exercises[currround].exercise.map((label, index) => (
                 <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
                   <TouchableOpacity>
                     <Text style={styles.listyle}>{label.reps}</Text>
@@ -245,6 +246,14 @@ export default function EmomScreen2({ navigation, route }) {
           title="Next Round"
           bgcolor="#3F3D56"
           marginBottom={10}
+          onPress={() => {
+            if(currround < exercises.length-1){
+              setCurround(currround+1);
+              setCurrnote(currnote+1);
+            } else {
+              doneWorkout();
+            }
+          }}
         ></LongButton>
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{

@@ -26,7 +26,8 @@ export default function EmomScreen7({ navigation, route }) {
   const [dataid, setDataid] = useState('');
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState();
-  const [round, setRound] = useRef(0);
+  // const [currround, setCurrround] = useState(0);
+  // const [currex, setCurrex] = useState(0);
 
   useEffect(() => {
     firebase
@@ -42,10 +43,10 @@ export default function EmomScreen7({ navigation, route }) {
             setExercises(doc.data().exercise);
             setReps(doc.data().exercise);
             setNote(doc.data().note);
-            if(doc.data().exercise[0].time == 0) {
+            if(doc.data().exercise[0].extime == 0) {
               setTimer(0);
             } else {
-              setTimer(doc.data().exercise[0].time);
+              setTimer(doc.data().exercise[0].extime);
             }
             setLoading(false);
           }
@@ -186,7 +187,7 @@ export default function EmomScreen7({ navigation, route }) {
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
-              {exercises.map((label, index) => (
+              {exercises.length && exercises.map((label, index) => (
                 <View
                   key={index}
                   style={{
@@ -231,7 +232,7 @@ export default function EmomScreen7({ navigation, route }) {
                 flexDirection: "row",
               }}
             >
-              {reps.map((label, index) => (
+              {exercises.length && exercises.map((label, index) => (
                 <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
                   <TouchableOpacity>
                     <Text style={styles.listyle}>{label.reps}</Text>
@@ -241,11 +242,11 @@ export default function EmomScreen7({ navigation, route }) {
             </View>
           </View>
         </View>
-        <LongButton
+        {/* <LongButton
           title="Next Round"
           bgcolor="#3F3D56"
           marginBottom={10}
-        ></LongButton>
+        ></LongButton> */}
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();

@@ -14,6 +14,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { LongButton, BackButton } from "../components/LongButton";
@@ -121,6 +122,7 @@ export default function EmomCreate4({ navigation, route }) {
               setNote("");
               setTimer("");
               setExtime("");
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -172,7 +174,7 @@ export default function EmomCreate4({ navigation, route }) {
         >
           EMOM 4
         </Text>
-        <View style={{ height: 500, width: 290, marginBottom: 50 }}>
+        <View style={{ width: 290, marginBottom: 50 }}>
         <SearchableDropdown
             selectedItems={selected}
             //On text change listner on the searchable input
@@ -299,12 +301,12 @@ export default function EmomCreate4({ navigation, route }) {
             <ShortField
               placeholder="ex time"
               value={extime}
-              onChangeText={(text) => setReps(text)}
+              onChangeText={(text) => setExtime(text)}
             ></ShortField>
             <ShortField
               placeholder="rest time"
               value={rest}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setRest(text)}
             ></ShortField>
           </View>
           <TouchableOpacity
@@ -321,7 +323,7 @@ export default function EmomCreate4({ navigation, route }) {
               setReps("");
               setExtime("");
               setRest("");
-              console.log(exercise);
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -347,13 +349,13 @@ export default function EmomCreate4({ navigation, route }) {
           >
             <ShortField
               placeholder="rounds"
-              value={round}
-              onChangeText={(text) => setReps(text)}
+              value={sets}
+              onChangeText={(text) => setSets(text)}
             ></ShortField>
             <ShortField
               placeholder="time"
               value={timer}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setTimer(text)}
             ></ShortField>
           </View>
           <TouchableOpacity
@@ -362,12 +364,13 @@ export default function EmomCreate4({ navigation, route }) {
                 exercise: exercise,
                 time: timer,
                 round: sets,
+                note: note
               });
               setExercise([]);
               setTimer("");
               setSets("");
-
-              console.log(round);
+              setNote("");
+              ToastAndroid.show("Minutes has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text

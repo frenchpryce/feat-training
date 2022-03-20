@@ -1,11 +1,77 @@
-import React, { useState } from "react";
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  FlatList,
+  Alert,
+} from "react-native";
 import { BackButton, LongButton } from "../components/LongButton";
-import { MealModal } from "../components/Modals";
 import Dinner from "../assets/dinner.svg";
+import firebase from "../database";
+import Loading from "../components/Loading";
 
-export default function MealScreen({ navigation }) {
-  const [doneMeal, isDoneMeal] = useState(false);
+export default function MealScreen({ navigation, route }) {
+  const { user, id } = route.params;
+  const [loading, setLoading] = useState(true);
+  const [meal, setMeal] = useState([]);
+  const [dataid, setDataid] = useState('');
+
+  useEffect(() => {
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc(user)
+      .collection("wrktmeal")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          if(doc.data().category == "meals"){
+            console.log(doc.data());
+            if (doc.data().id == id && doc.data().status == 'unfinished') {
+              setDataid(doc.id);
+              setMeal(doc.data());
+              console.log(meal);
+              setLoading(false);
+            }
+          }
+        });
+      });
+  }, []);
+
+  const doneMeal = () => {
+    Alert.alert(
+      'Finished Meal',
+      'Are you done with your meal?',
+      [
+        {
+          text: 'No',
+          style: 'cancel'
+        },
+        {
+            text: 'Yes',
+            onPress: () => {
+              firebase.firestore()
+              .collection('Users')
+              .doc(user)
+              .collection('wrktmeal')
+              .doc(dataid)
+              .update({
+                status: 'finished'
+              })
+          
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'UserMeal', params: {user: user}}],
+              })
+            }
+        },
+      ]
+    )
+  }
 
   return (
     <ScrollView style={styles.view}>
@@ -15,48 +81,32 @@ export default function MealScreen({ navigation }) {
           top: 40,
           left: 40,
         }}
-      >
+        >
         <BackButton onPress={() => navigation.goBack()} />
       </View>
+    {loading ? <Loading /> :
       <View style={styles.container}>
         <Dinner width={200} height={200} marginBottom={10} />
-        <Text style={styles.title}>Food name</Text>
+        <Text style={styles.title}>{meal.meal.name}</Text>
         <Text style={styles.heading}>Ingredients</Text>
-        <Text style={styles.body}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna,
-          tristique quis nullam duis justo.
-        </Text>
+        <Text style={styles.body}>{meal.ingred}</Text>
         <Text style={styles.heading}>Procedure</Text>
-        <Text style={styles.body}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna,
-          tristique quis nullam duis justo.
-        </Text>
-        <Text style={styles.heading}>Calories: 123</Text>
-        <Text style={styles.heading}>Fats: 123</Text>
-        <Text style={styles.heading}>Carbohydrates: 123</Text>
-        <Text style={styles.heading}>Proteins: 123</Text>
-        <Text style={styles.heading}>Serving: 123</Text>
+        <Text style={styles.body}>{meal.procd}</Text>
+        <Text style={styles.heading}>Calories: {meal.meal.cals}</Text>
+        <Text style={styles.heading}>Fats: {meal.meal.fats}</Text>
+        <Text style={styles.heading}>Carbohydrates: {meal.meal.carbs}</Text>
+        <Text style={styles.heading}>Proteins: {meal.meal.prots}</Text>
+        <Text style={styles.heading}>Serving: {meal.meal.serve}</Text>
         <LongButton
           title="Finish Meal"
           bgcolor="#32877D"
           marginTop={20}
           onPress={() => {
-            isDoneMeal(true);
+            doneMeal();
           }}
         />
       </View>
-      <MealModal
-        visible={doneMeal}
-        warning="Finish your meal!"
-        text="Are you done eating?"
-        title1="No"
-        title2="Yes"
-        bgcolor1="#FF6F61"
-        bgcolor2="#32877D"
-        marginRight={5}
-        onPress1={() => isDoneMeal(false)}
-        onPress2={() => navigation.navigate("UserMeal")}
-      />
+    }
     </ScrollView>
   );
 }

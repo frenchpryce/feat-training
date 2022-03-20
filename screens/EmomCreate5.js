@@ -14,6 +14,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { LongButton, BackButton } from "../components/LongButton";
@@ -123,6 +124,7 @@ export default function EmomCreate5({ navigation, route }) {
               setNote("");
               setTimer("");
               setExtime("");
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -303,12 +305,12 @@ export default function EmomCreate5({ navigation, route }) {
             <ShortField
               placeholder="ex time"
               value={extime}
-              onChangeText={(text) => setReps(text)}
+              onChangeText={(text) => setExtime(text)}
             ></ShortField>
             <ShortField
               placeholder="rest time"
               value={rest}
-              onChangeText={(text) => setLoad(text)}
+              onChangeText={(text) => setRest(text)}
             ></ShortField>
           </View>
           <TouchableOpacity
@@ -325,7 +327,7 @@ export default function EmomCreate5({ navigation, route }) {
               setReps("");
               setExtime("");
               setRest("");
-              console.log(exercise);
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -349,8 +351,8 @@ export default function EmomCreate5({ navigation, route }) {
             <ShortField
                 marginTop={10}
                 placeholder="rounds"
-                value={round}
-                onChangeText={(text) => setReps(text)}
+                value={sets}
+                onChangeText={(text) => setSets(text)}
             ></ShortField>
           <LongButton
             title="Next"

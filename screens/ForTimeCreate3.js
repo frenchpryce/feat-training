@@ -14,6 +14,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { ExerciseText } from "../components/Texts";
@@ -135,7 +136,7 @@ export default function ForTimeCreate3({ navigation, route }) {
                 setLoad("");
                 setNote("");
                 setTimer("");
-
+                ToastAndroid.show("Successful!", ToastAndroid.SHORT);
                 navigation.reset({
                   index: 0,
                   routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -332,7 +333,7 @@ export default function ForTimeCreate3({ navigation, route }) {
               setSets("");
               isEquipdrop(false);
               isExdrop(false);
-              console.log(exercise);
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -359,8 +360,7 @@ export default function ForTimeCreate3({ navigation, route }) {
                 note: note,
               });
               setExercise([]);
-              console.log(exercise);
-              console.log(circuit);
+              ToastAndroid.show("Circuit has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -378,7 +378,9 @@ export default function ForTimeCreate3({ navigation, route }) {
           <LongButton
             title="Next"
             bgcolor="#32877D"
-            onPress={() => addWorkout()}
+            onPress={() => {
+              addWorkout();
+            }}
           ></LongButton>
         </View>
       </View>

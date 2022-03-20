@@ -14,6 +14,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
 import { ExerciseText } from "../components/Texts";
@@ -25,19 +26,6 @@ import SearchableDropdown from "react-native-searchable-dropdown";
 
 //Item array for the dropdown
 export default function ForTimeCreate4({ navigation, route }) {
-  const items = [
-    //name key is must.It is to show the text in front
-    { id: 1, name: "Jump Squat" },
-    { id: 2, name: "Lateral Walks" },
-    { id: 3, name: "Alternating Jump Lunges" },
-    { id: 4, name: "Mt.Climbers" },
-    { id: 5, name: "Burpees" },
-    { id: 6, name: "Inclined Push Up" },
-    { id: 7, name: "Squats" },
-    { id: 8, name: "Revese Lunges" },
-    { id: 9, name: "Plank Shoulder Tap" },
-    { id: 10, name: "KB Swings" },
-  ];
 
   const [exercises, setExercises] = useState([]);
   const [checklist, isChecklist] = useState(false);
@@ -136,7 +124,7 @@ export default function ForTimeCreate4({ navigation, route }) {
               setLoad("");
               setNote("");
               setTimer("");
-
+              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
@@ -320,7 +308,7 @@ export default function ForTimeCreate4({ navigation, route }) {
               setLoad("");
               setReps("");
               setSets("");
-              console.log(exercise);
+              ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
             <Text
@@ -352,7 +340,9 @@ export default function ForTimeCreate4({ navigation, route }) {
             title="Next"
             bgcolor="#32877D"
             marginTop={20}
-            onPress={() => addWorkout()}
+            onPress={() => {
+              addWorkout();
+            }}
           ></LongButton>
         </View>
       </View>

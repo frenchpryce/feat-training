@@ -30,6 +30,41 @@ export default function UserWorkout({ navigation, route }) {
   const [dateField, setDateField] = useState();
 
   const isFocused = useIsFocused();
+  const month = new Date().getMonth();
+  const date = new Date().getDate();
+  const year = new Date().getFullYear();
+
+  const getSubData = () => {
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc(user)
+      .get()
+      .then((snap) => {
+        let date1 = new Date(year, month, date);
+        console.log(date1);
+        let now = new Date(snap.data().startdate);
+        console.log(now);
+        let diffInTime = now.getTime() - date1.getTime();
+        let diffInDays = diffInTime / (1000* 3600 * 24);
+
+        console.log(diffInDays);
+        if(diffInDays <= -31){
+          Alert.alert(
+            "Verfication Failed",
+            "Please confirm with your coach that you are verified.",
+            [
+              {
+                text: "Back to Login",
+                onPress: () => {
+                  navigation.navigate("MainScreen");
+                }
+              },
+            ]
+          );
+        }
+      })
+  }
   
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -44,6 +79,7 @@ export default function UserWorkout({ navigation, route }) {
 
   useEffect(() => {
     if(isFocused) {
+      getSubData();
       setRefreshing(false);
       getData();
     }
@@ -62,7 +98,6 @@ export default function UserWorkout({ navigation, route }) {
         }
       })
       setWrktlist(dates);
-      console.log(dates);
       for(let i=0;i<dates.length;i++) {
         markeddates[dates[i].date] = {
           'selected': true,
@@ -70,6 +105,7 @@ export default function UserWorkout({ navigation, route }) {
         }
       }
       setMarkedDates(markeddates);
+      console.log(markedDates);
     })
     setLoading(false);
   }

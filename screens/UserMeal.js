@@ -1,30 +1,115 @@
-import React, { useState} from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   StyleSheet,
   View,
   Text,
   ScrollView,
   ImageBackground,
+  Alert,
+  RefreshControl,
+  TouchableOpacity,
 } from "react-native";
 import { BackButton, WorkoutButton } from "../components/LongButton";
 import { Calendar } from "react-native-calendars";
+import Loading from "../components/Loading";
+import firebase from '../database';
+import { useIsFocused } from '@react-navigation/native';
 
-let date = '2021-07-20';
-let templist = [];
-let days = [];
-let selectedDay = {};
+export default function UserMeal({ navigation, route }) {
 
-export default function UserMeal({ navigation }) {
+  let dates = [];
+  let markeddates = {};
+  let onday = [];
 
-  const [longday, isLongday] = useState(false);
-  const [popped, isPopped] = useState(false);
-  const [thisday, setThisday] = useState({});
-  const [manyday, setManyday] = useState({});
+  const user = route.params.user;
   const [compdate, setCompdate] = useState('');
+  const [markedDates, setMarkedDates] = useState({});
+  const [meallist, setMeallist] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dateField, setDateField] = useState();
-  const [choose, isChoosing] = useState(false);
+
+  const isFocused = useIsFocused();
+  const month = new Date().getMonth();
+  const date = new Date().getDate();
+  const year = new Date().getFullYear();
+
+  const getSubData = () => {
+    firebase
+      .firestore()
+      .collection("Users")
+      .doc(user)
+      .get()
+      .then((snap) => {
+        let date1 = new Date(year, month, date);
+        console.log(date1);
+        let now = new Date(snap.data().startdate);
+        console.log(now);
+        let diffInTime = now.getTime() - date1.getTime();
+        let diffInDays = diffInTime / (1000* 3600 * 24);
+
+        console.log(diffInDays);
+        if(diffInDays <= -31){
+          Alert.alert(
+            "Verfication Failed",
+            "Please confirm with your coach that you are verified.",
+            [
+              {
+                text: "Back to Login",
+                onPress: () => {
+                  navigation.navigate("MainScreen");
+                }
+              },
+            ]
+          );
+        }
+      })
+  }
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setLoading(true);
+    getData();
+    wait(3000).then(() => setRefreshing(false));
+  },[refreshing])
+
+  useEffect(() => {
+    if(isFocused) {
+      getSubData();
+      setRefreshing(false);
+      getData();
+    }
+  },[isFocused]);
+
+  const getData = () => {
+    firebase.firestore()
+    .collection('Users')
+    .doc(user)
+    .collection('wrktmeal')
+    .get()
+    .then((snap) => {
+      snap.forEach((doc) => {
+        if(doc.data().category == 'meals' && doc.data().status == 'unfinished') {
+          dates.push(doc.data());
+        }
+      })
+      setMeallist(dates);
+      console.log(dates);
+      for(let i=0;i<dates.length;i++) {
+        markeddates[dates[i].date.key] = {
+          'selected': true,
+          'color': "#4CB6B6"
+        }
+      }
+      setMarkedDates(markeddates);
+      console.log(markedDates);
+    })
+    setLoading(false);
+  }
 
   return (
     <ImageBackground
@@ -41,6 +126,7 @@ export default function UserMeal({ navigation }) {
       >
         <BackButton onPress={() => navigation.goBack()} />
       </View>
+      { loading ? <Loading /> : 
       <View style={styles.container}>
         <Text style={styles.heading}>Meals</Text>
         <View style={styles.calendarView}>
@@ -56,24 +142,14 @@ export default function UserMeal({ navigation }) {
               textMonthFontFamily: "Poppins_300Light",
             }}
             onDayPress={(day) => {    
-                date = day.dateString;
               setDateField(day.dateString);
-              isPopped(false);
-              isLongday(false);
-              days = [];
-              selectedDay = {};
-              selectedDay = {
-                [day.dateString]: {
-                  selected: true, color: "#9EC3BF", key: day.dateString
-                }
-              }
-              days.push({
+              onday = [];
+              onday.push({
                 key: day.dateString
-              })
-              days.forEach((data) => setCompdate(data.key));
-              setThisday(selectedDay);
+              });
+              onday.forEach((data) => setCompdate(data.key));
             }}
-            markedDates={ longday == true ? manyday : thisday }
+            markedDates={markedDates}
             markingType="period"
           />
         </View>
@@ -81,18 +157,30 @@ export default function UserMeal({ navigation }) {
           Click a date to see a list of meals below
         </Text>
         <Text style={styles.date}>{dateField}</Text>
-        <ScrollView style={{ width: "100%" }}>
+        <ScrollView style={{ width: "100%" }}
+          renderToHardwareTextureAndroid
+          shouldRasterizeIOS
+          refreshControl={
+            <RefreshControl 
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            />
+          }
+        >
+          {meallist.filter((meal) => ((meal.date.key == compdate) && (meal.category == 'meals') && (meal.status == 'unfinished'))).map((label, index) => (
+          <View key={index}>
           <WorkoutButton
-            wrkt="Breakfast"
+            wrkt={label.meal.name}
             color="#000000"
             onPress={() => {
-              navigation.navigate("MealScreen");
+              navigation.navigate("MealScreen", { user: user, id: label.id });
             }}
           />
-          <WorkoutButton wrkt="Lunch" color="#000000" />
-          <WorkoutButton wrkt="Dinner" color="#000000" />
+          </View>
+          ))}
         </ScrollView>
       </View>
+    }
     </ImageBackground>
   );
 }

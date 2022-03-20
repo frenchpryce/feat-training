@@ -42,7 +42,7 @@ const TextButton = (props) => {
 const ShortButton = (props) => {
     return (
         <TouchableOpacity
-            style={[styles.center, styles.shortbutton, { backgroundColor: props.bgcolor }]}
+            style={[styles.center, styles.shortbutton, { backgroundColor: props.bgcolor, marginTop: props.marginTop, padding: props.padding }]}
             onPress={props.onPress}
         >
             <Text style={styles.text}>{props.title}</Text>

@@ -195,7 +195,7 @@ export default function ForTimeScreen2({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle[index]}>{label.exercise.name}</Text>
+                    <Text style={styles.listyle[index]}>{label.ex}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
                     {label.reps}
@@ -235,6 +235,7 @@ export default function ForTimeScreen2({ navigation, route }) {
           marginBottom={10}
         ></LongButton> */}
         <LongButton title="Finish Workout" bgcolor="#32877D"
+          marginBottom={50}
           onPress={() =>{
             doneWorkout();
           }}
