@@ -124,7 +124,7 @@ export default function UserMeal({ navigation, route }) {
           left: 40,
         }}
       >
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={() => navigation.navigate("Menu", {user: user})} />
       </View>
       { loading ? <Loading /> : 
       <View style={styles.container}>

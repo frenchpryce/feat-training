@@ -31,7 +31,8 @@ const TextButton = (props) => {
                 color: props.color,
                 marginRight: props.marginRight,
                 marginTop: props.marginTop,
-                marginBottom: props.marginBottom
+                marginBottom: props.marginBottom,
+                alignSelf: props.alignSelf
             }}
         >
             <Text style={[styles.textbutton, {color: props.color, width: props.width}]}>{props.title}</Text>

@@ -17,10 +17,37 @@ import Loading from "../components/Loading";
 export default function MealScreen({ navigation, route }) {
   const { user, id } = route.params;
   const [loading, setLoading] = useState(true);
-  const [meal, setMeal] = useState([]);
+  const [meal, setMeal] = useState({});
   const [dataid, setDataid] = useState('');
+  const [dailycal, setDailycal] = useState({});
+  const [weeklycal, setWeeklycal] = useState({});
+
+  const getData = () => {
+    firebase
+      .firestore()
+      .collection("Calories")
+      .doc(user)
+      .collection("daily")
+      .doc(user)
+      .get()
+      .then((snap) => {
+          setDailycal(snap.data());
+        })
+    
+    firebase
+      .firestore()
+      .collection("Calories")
+      .doc(user)
+      .collection("weekly")
+      .doc(user)
+      .get()
+      .then((snap) => {
+          setWeeklycal(snap.data());
+        })
+  }
 
   useEffect(() => {
+    getData();
     firebase
       .firestore()
       .collection("Users")
@@ -30,11 +57,9 @@ export default function MealScreen({ navigation, route }) {
       .then((snap) => {
         snap.forEach((doc) => {
           if(doc.data().category == "meals"){
-            console.log(doc.data());
             if (doc.data().id == id && doc.data().status == 'unfinished') {
               setDataid(doc.id);
               setMeal(doc.data());
-              console.log(meal);
               setLoading(false);
             }
           }
@@ -49,7 +74,7 @@ export default function MealScreen({ navigation, route }) {
       [
         {
           text: 'No',
-          style: 'cancel'
+          style: 'cancel',
         },
         {
             text: 'Yes',
@@ -62,6 +87,25 @@ export default function MealScreen({ navigation, route }) {
               .update({
                 status: 'finished'
               })
+
+              firebase
+                .firestore()
+                .collection('Calories')
+                .doc(user)
+                .collection('daily')
+                .doc(user)
+                .update({
+                  dcalintake: dailycal.dcalintake += (meal.meal.cals * meal.serve)
+                })
+              firebase
+                .firestore()
+                .collection('Calories')
+                .doc(user)
+                .collection('weekly')
+                .doc(user)
+                .update({
+                  wcalintake: (weeklycal.wcalintake + (meal.meal.cals * meal.serve))
+                })
           
               navigation.reset({
                 index: 0,
@@ -96,7 +140,7 @@ export default function MealScreen({ navigation, route }) {
         <Text style={styles.heading}>Fats: {meal.meal.fats}</Text>
         <Text style={styles.heading}>Carbohydrates: {meal.meal.carbs}</Text>
         <Text style={styles.heading}>Proteins: {meal.meal.prots}</Text>
-        <Text style={styles.heading}>Serving: {meal.meal.serve}</Text>
+        <Text style={styles.heading}>Serving: {meal.serve}</Text>
         <LongButton
           title="Finish Meal"
           bgcolor="#32877D"

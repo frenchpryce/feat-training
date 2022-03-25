@@ -15,8 +15,7 @@ import SearchableDropdown from "react-native-searchable-dropdown";
 import firebase from "../database";
 
 export default function ForTimeCreate1({ navigation, route }) {
-  const type = route.params.type;
-  const { user, date } = route.params;
+  const { user, date, type } = route.params;
   const [mealtypes, setMealtypes] = useState([]);
   const [selected, setSelected] = useState("");
   const [recipes, setRecipes] = useState([]);

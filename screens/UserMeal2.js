@@ -208,7 +208,7 @@ export default function UserMeal2({ navigation, route }) {
         {meallist.filter((meals) => ((meals.date.key == compdate) && (meals.category == 'meals'))).map((label, index) => (
           <View key={index}>
           <WorkoutButton
-            wrkt="Breakfast"
+            wrkt={label.type}
             color="#000000"
             onLongPress={() => deleteData(label.id)}
           />

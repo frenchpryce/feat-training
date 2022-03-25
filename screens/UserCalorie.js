@@ -13,13 +13,18 @@ import {
 } from "react-native";
 import { CalModal } from "../components/Modals";
 import { BackButton } from "../components/LongButton";
+import firebase from "../database";
 import { AnimatedCircularProgress } from "react-native-circular-progress";
 
-export default function UserCalorie({ navigation }) {
+export default function UserCalorie({ navigation, route }) {
+
+  const user = route.params.user;
   const [calVis, isCalVis] = useState(false);
   const month = new Date().getMonth();
   const date = new Date().getDate();
   const year = new Date().getFullYear();
+  const [dailycal, setDailycal] = useState({});
+  const [weeklycal, setWeeklycal] = useState({});
 
   const getSubData = () => {
     firebase
@@ -49,8 +54,33 @@ export default function UserCalorie({ navigation }) {
       });
   };
 
+  const getData = () => {
+    firebase
+      .firestore()
+      .collection("Calories")
+      .doc(user)
+      .collection("daily")
+      .doc(user)
+      .get()
+      .then((snap) => {
+        setDailycal(snap.data())
+      })
+
+    firebase
+      .firestore()
+      .collection("Calories")
+      .doc(user)
+      .collection("weekly")
+      .doc(user)
+      .get()
+      .then((snap) => {
+        setWeeklycal(snap.data())
+      })
+  }
+
   useEffect(() => {
     getSubData();
+    getData();
   },[])
 
   return (
@@ -97,6 +127,7 @@ export default function UserCalorie({ navigation }) {
                   {"\n"}
                   {"\n"}
                   {/* {dcaldata.dcalintake}kcal/{dcaldata.dcalamount}kcal */}
+                  {dailycal.dcalintake}kcal/{dailycal.dcalamount}kcal
                 </Text>
               )}
             </AnimatedCircularProgress>
@@ -129,6 +160,7 @@ export default function UserCalorie({ navigation }) {
                   {"\n"}
                   {"\n"}
                   {/* {dcaldata.dcalintake}kcal/{dcaldata.dcalamount}kcal */}
+                  {weeklycal.wcalintake}kcal/{weeklycal.wcalamount}kcal
                 </Text>
               )}
             </AnimatedCircularProgress>

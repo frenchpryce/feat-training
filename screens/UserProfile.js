@@ -26,7 +26,7 @@ export default function UserProfile({ navigation, route }) {
   const [weight, setWeight] = useState();
   const [goal, setGoal] = useState();
   const [balance, setBalance] = useState();
-  // const [imagelink, setImagelink] = useState('');
+  const [imagelink, setImagelink] = useState('');
   const [loading, setLoading] = useState(true);
   // const [reminder, setReminder] = useState('');
   const [verif, setVerif] = useState(false);
@@ -55,7 +55,14 @@ export default function UserProfile({ navigation, route }) {
         let diffInDays = diffInTime / (1000* 3600 * 24);
 
         console.log(diffInDays);
-        if(diffInDays <= -31){
+        if(diffInDays <= -31 && snap.data().programtype == "Free User"){
+          firebase
+            .firestore()
+            .collection("Users")
+            .doc(user)
+            .update({
+              status: "Unverified"
+            })
           Alert.alert(
             "Verfication Failed",
             "Please confirm with your coach that you are verified.",
@@ -247,7 +254,7 @@ export default function UserProfile({ navigation, route }) {
                 title="Edit"
                 color="#000000"
                 onPress={() =>
-                  navigation.navigate("EditProfile", { user: user })
+                  navigation.navigate("EditPage", { user: user })
                 }
               />
             </View>
