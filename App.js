@@ -61,7 +61,9 @@ import {
   Subscription,
   Details,
   ArticleScreen,
-  EditPage
+  EditPage,
+  AboutPage,
+  FAQsPage,
 } from "./screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -118,6 +120,8 @@ export default function App() {
             component={MainScreen}
             options={{ animation: "slide_from_right" }}
           />
+          <Stack.Screen name="AboutPage" component={AboutPage} />
+          <Stack.Screen name="FAQsPage" component={FAQsPage} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Loading" component={Loading} />
           <Stack.Screen name="Register" component={Register} />

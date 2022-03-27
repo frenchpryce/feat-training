@@ -47,3 +47,5 @@ export { default as Subscription } from './Subscription';
 export { default as Details } from './Details';
 export { default as ArticleScreen } from './ArticleScreen';
 export { default as EditPage } from './EditPage';
+export { default as AboutPage } from './About';
+export { default as FAQsPage } from './FAQ';
