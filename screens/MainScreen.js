@@ -48,10 +48,16 @@ export default function CalorieTrack({navigation}) {
                 }}
             >
                 <TextButton 
+                    onPress={() => {
+                        navigation.navigate("About");
+                    }}
                     title='About'
                     color='#FFFFFF'
                 />
                 <TextButton 
+                    onPress={() => {
+                        navigation.navigate("FAQsPage");
+                    }}
                     title='FAQ'
                     color='#FFFFFF'
                 />

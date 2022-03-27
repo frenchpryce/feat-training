@@ -62,13 +62,9 @@ import {
   Details,
   ArticleScreen,
   EditPage,
-<<<<<<< HEAD
-  AboutPage,
-  FAQsPage,
-=======
   About,
-  FAQ
->>>>>>> 1f3f819d604c2a70c79245094f01e8e3086210ff
+  FAQsPage,
+  AmrapCreate
 } from "./screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -125,7 +121,7 @@ export default function App() {
             component={MainScreen}
             options={{ animation: "slide_from_right" }}
           />
-          <Stack.Screen name="AboutPage" component={AboutPage} />
+          <Stack.Screen name="About" component={About} />
           <Stack.Screen name="FAQsPage" component={FAQsPage} />
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Loading" component={Loading} />
@@ -159,6 +155,7 @@ export default function App() {
           <Stack.Screen name="EmomScreen6" component={EmomScreen6} />
           <Stack.Screen name="EmomScreen7" component={EmomScreen7} />
           <Stack.Screen name="Amrap" component={Amrap} />
+          <Stack.Screen name="AmrapCreate" component={AmrapCreate} />
           <Stack.Screen name="ForTimeCreate1" component={ForTimeCreate1} />
           <Stack.Screen name="ForTimeCreate2" component={ForTimeCreate2} />
           <Stack.Screen name="ForTimeCreate3" component={ForTimCreate3} />
@@ -172,8 +169,6 @@ export default function App() {
           <Stack.Screen name="EmomCreate7" component={EmomCreate7} />
           <Stack.Screen name="MealCreate" component={MealCreate} />
           <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
-          <Stack.Screen name="About" component={About} />
-          <Stack.Screen name="FAQ" component={FAQ} />
         </Stack.Navigator>
       </NavigationContainer>
     );

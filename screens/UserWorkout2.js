@@ -119,6 +119,14 @@ export default function UserWorkout2({ navigation, route }) {
     navigation.navigate("MetconTypes", { user: user, date: days });
   };
 
+  const setAmrapWorkout = () => {
+    for (let i = 0; i < days.length; i++) {
+      days[i] = days[i].key;
+    }
+    console.log(days);
+    navigation.navigate("AmrapCreate", { user: user, date: days });
+  }
+
   return (
     <ImageBackground
       style={styles.view}

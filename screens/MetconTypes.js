@@ -31,6 +31,12 @@ export default function MetconTypes({ navigation, route }) {
             <ScrollView style={styles.scrollview} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }}>
                 <WorkoutButton 
                     marginTop={10}
+                    wrkt='AMRAP'
+                    color="#000000"
+                    onPress={() => navigation.navigate('AmrapCreate', { user: user, date: date })}
+                />
+                <WorkoutButton 
+                    marginTop={10}
                     wrkt='For Time 1'
                     color="#000000"
                     onPress={() => navigation.navigate('ForTimeCreate1', { user: user, date: date })}

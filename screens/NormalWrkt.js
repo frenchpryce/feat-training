@@ -17,21 +17,28 @@ import SearchableDropdown from 'react-native-searchable-dropdown';
 
 export default function NormalWrkt({navigation, route}) {
 
+    const [exercises, setExercises] = useState([]);
     const [checklist, isChecklist] = useState(false);
     const { user, date } = route.params;
-    const [exercise, setExercise] = useState('exercise');
-    const [type, setType] = useState('workout type');
-    const [reps, setReps] = useState('');
-    const [sets, setSets] = useState('');
-    const [equipment, setEquipment] = useState('');
-    const [load, setLoad] = useState('');
-    const [rest, setRest] = useState('');
-    const [note, setNote] = useState('');
-    const [timer, setTimer] = useState('');
+    const [selected, setSelected] = useState("");
+    const [type, setType] = useState("workout type");
+    const [reps, setReps] = useState([]);
+    const [repinput, setRepinput] = useState("");
+    const [sets, setSets] = useState("");
+    const [equipment, setEquipment] = useState("");
+    const [load, setLoad] = useState("");
+    const [rest, setRest] = useState("");
+    const [note, setNote] = useState("");
+    const [timer, setTimer] = useState("");
     const [exlabels, setExlabels] = useState([]);
     const [wrkttypes, setWrkttpyes] = useState([]);
     const [equips, setEquips] = useState([]);
-    const [mylink, setLink] = useState('');
+    const [mylink, setLink] = useState("");
+    const [exercise, setExercise] = useState([]);
+
+    const [equipdrop, isEquipdrop] = useState(false);
+    const [exdrop, isExdrop] = useState(false);
+    let tempexercise = [];
 
     useEffect(() => {
         console.log(date);
@@ -62,45 +69,56 @@ export default function NormalWrkt({navigation, route}) {
                 ]
             );
         } else {
-            var db = firebase.firestore();
-            var batch = db.batch();
-            date.forEach((doc) => {
-                console.log(doc);
-                var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
-                batch.set(docRef, {
-                    id: idGenerator(),
-                    type: 'normal',
-                    exercise: exercise,
-                    reps: reps,
-                    sets: sets,
-                    rest: Number(rest),
-                    equipment: equipment,
-                    load: load,
-                    note: note,
-                    timer: Number(timer),
-                    date: doc,
-                    category: 'workout',
-                    status: 'unfinished',
-                })
-            })
-            batch.commit()
-            .then(() => {
-                setExercise('exercise');
-                setType('workout type');
-                setReps('');
-                setSets('');
-                setEquipment('');
-                setRest('');
-                setLoad('');
-                setNote('');
-                setTimer('');
+            Alert.alert("Submitting", "Done creating exercises?", [
+                 {
+                    text: "Back",
+                    style: "cancel",
+                 },
+                 {
+                    text: "Done",
+                    onPress: () => {
+                        var db = firebase.firestore();
+                        var batch = db.batch();
+                        date.forEach((doc) => {
+                            console.log(doc);
+                            var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
+                            batch.set(docRef, {
+                                id: idGenerator(),
+                                type: 'normal',
+                                exercise: selected,
+                                reps: reps,
+                                sets: sets,
+                                rest: Number(rest),
+                                equipment: equipment,
+                                load: load,
+                                note: note,
+                                timer: Number(timer),
+                                date: doc,
+                                category: 'workout',
+                                status: 'unfinished',
+                            })
+                        })
+                        batch.commit()
+                        .then(() => {
+                            setSelected('exercise');
+                            setType('workout type');
+                            setReps('');
+                            setSets('');
+                            setEquipment('');
+                            setRest('');
+                            setLoad('');
+                            setNote('');
+                            setTimer('');
 
-                navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'UserWorkout2', params: {user: user}}],
-                })
-            })
-        }
+                            navigation.reset({
+                                index: 0,
+                                routes: [{ name: 'UserWorkout2', params: {user: user}}],
+                            })
+                        })
+                    }
+                }
+            ]);
+            }
     }
 
     let idGenerator = () => {
@@ -125,9 +143,10 @@ export default function NormalWrkt({navigation, route}) {
                 <Text style={styles.heading}>Normal Workout</Text>
                 <SafeAreaView>
                 <SearchableDropdown 
+                    selectedItems={selected}
                     onTextChange={(text) => console.log(text)}
                     //On text change listner on the searchable input
-                    onItemSelect={(item) => setExercise(item)}
+                    onItemSelect={(item) => setSelected(item)}
                     //onItemSelect called after the selection from the dropdown
                     containerStyle={{ paddingBottom: 10 }}
                     //suggestion container style

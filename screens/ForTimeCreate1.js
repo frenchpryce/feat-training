@@ -62,7 +62,7 @@ export default function ForTimeCreate1({ navigation, route }) {
       .then((snap) => {
         let exercises = [];
         snap.forEach((doc) => {
-          exercises.push({ name: doc.id, id: doc.id });
+          exercises.push({ name: doc.id, id: doc.id, lnk: doc.data().links });
         });
         setExlabels(exercises);
       });
@@ -185,7 +185,7 @@ export default function ForTimeCreate1({ navigation, route }) {
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
           <SearchableDropdown
             selectedItems={selected}
-            onTextChange={(text) => setSelected(text)}
+            onTextChange={(text) => console.log(text)}
             onItemSelect={(item) => {
               setSelected(item);
               isExdrop(true);
@@ -242,7 +242,7 @@ export default function ForTimeCreate1({ navigation, route }) {
           ></ShortField>
           <SearchableDropdown
             selectedItems={equipment}
-            onTextChange={(text) => setEquipment(text)}
+            onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
             onItemSelect={(item) => {
               setEquipment(item);
@@ -299,6 +299,7 @@ export default function ForTimeCreate1({ navigation, route }) {
             onPress={() => {
               exercise.push({
                 ex: exdrop ? selected.name : selected,
+                lnk: selected.lnk,
                 load: load,
                 equipment: equipdrop ? equipment.name : equipment,
               });

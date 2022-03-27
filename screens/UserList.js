@@ -59,6 +59,21 @@ export default function UserList({ navigation, route }) {
         setProgs(progs);
         setLoading(false);
       });
+
+    // firebase
+    //   .storage()
+    //   .ref("uploads/)
+    //   .getDownloadURL()
+    //   .then((url) => {
+    //     try {
+    //       setImagelink(url);
+    //       isNoimage(false);
+    //       setLoading(false);
+    //     } catch (err) {
+    //       isNoimage(true);
+    //     }
+    //   })
+    //   .catch((error) => {});
   }, []);
 
   return (

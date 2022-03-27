@@ -59,7 +59,7 @@ export default function EmomCreate7({ navigation, route }) {
       .then((snap) => {
         let exercises = [];
         snap.forEach((doc) => {
-          exercises.push({ name: doc.id, id: doc.id });
+          exercises.push({ name: doc.id, id: doc.id, lnk: doc.data().links });
         });
         setExlabels(exercises);
       });
@@ -181,6 +181,7 @@ export default function EmomCreate7({ navigation, route }) {
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
         <SearchableDropdown
             selectedItems={selected}
+            onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
             onItemSelect={(item) => {
               setSelected(item);
@@ -249,6 +250,7 @@ export default function EmomCreate7({ navigation, route }) {
           </View>
           <SearchableDropdown
             selectedItems={equipment}
+            onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
             onItemSelect={(item) => {
               setEquipment(item);
@@ -319,6 +321,7 @@ export default function EmomCreate7({ navigation, route }) {
             onPress={() => {
               exercise.push({
                 exercise: selected,
+                lnk: selected.lnk,
                 reps: reps,
                 load: load,
                 equipment: equipment,

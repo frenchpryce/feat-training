@@ -204,13 +204,13 @@ const CheckList = (props) => {
                         style={{
                             height: 200
                         }}>
-                        <Text style={styles.heading2, [{ textAlign: 'center' }]}>{props.workout}</Text>
-                        <Text style={styles.body, [{ textAlign: 'center' }]}>Exercise: {props.exercise}</Text>
-                        <Text style={styles.body, [{ textAlign: 'center' }]}>Reps: {props.reps}</Text>
-                        <Text style={styles.body, [{ textAlign: 'center' }]}>Rounds/Sets: {props.roundsets}</Text>
-                        <Text style={styles.body, [{ textAlign: 'center' }]}>Load/Equipment: {props.loadequip}</Text>
-                        <Text style={styles.body, [{ textAlign: 'center' }]}>Time: {props.time}</Text>
-                        <Text style={styles.body, [{ textAlign: 'center' }]}>Note: {props.note}</Text>
+                        <Text style={[styles.heading2, { textAlign: 'center' }]}>{props.workout}</Text>
+                        <Text style={[styles.body, { textAlign: 'center' }]}>Exercise: {props.exercise}</Text>
+                        <Text style={[styles.body, { textAlign: 'center' }]}>Reps: {props.reps}</Text>
+                        <Text style={[styles.body, { textAlign: 'center' }]}>Rounds/Sets: {props.roundsets}</Text>
+                        <Text style={[styles.body, { textAlign: 'center' }]}>Load/Equipment: {props.loadequip}</Text>
+                        <Text style={[styles.body, { textAlign: 'center' }]}>Time: {props.time}</Text>
+                        <Text style={[styles.body, { textAlign: 'center' }]}>Note: {props.note}</Text>
                     </ScrollView>
                     <ModalButton2
                         title={props.title1}

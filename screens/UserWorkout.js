@@ -170,6 +170,9 @@ export default function UserWorkout({ navigation, route }) {
           <View key={index}>
           <WorkoutButton wrkt={label.type} color="#000000" onPress={() => {
             switch(label.type) {
+              case 'amrap': 
+                navigation.navigate('Amrap', { user: user, id: label.id });
+                break;
               case 'for time 1': 
                 navigation.navigate('ForTimeScreen1', { user: user, id: label.id });
                 break;

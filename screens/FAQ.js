@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-<<<<<<< HEAD
     StyleSheet,
     View,
     Text,
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     heading: {
-        fontFamily: 'Poppins_500Medium',
+        fontFamily: 'Poppins_400Regular',
         fontSize: 25,
         color: '#006266'
     },
@@ -73,18 +72,3 @@ const styles = StyleSheet.create({
         color: '#006266',
     }
 })
-
-
-
-=======
-    View
-} from 'react-native';
-
-export default function FAQ({navigation}) {
-    return (
-        <View>
-
-        </View>
-    )
-}
->>>>>>> 1f3f819d604c2a70c79245094f01e8e3086210ff

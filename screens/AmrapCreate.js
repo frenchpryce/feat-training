@@ -12,26 +12,32 @@ import {
   View,
   ScrollView,
   Image,
-  Alert,
   TouchableOpacity,
+  Alert,
   ToastAndroid
 } from "react-native";
-import { ShortField, LongField, LargeField } from "../components/EntryFields";
+import {
+  ShortField,
+  LongField,
+  ShortField2,
+  LargeField,
+} from "../components/EntryFields";
+import { ExerciseText } from "../components/Texts";
 import { LongButton, BackButton } from "../components/LongButton";
-import firebase from "../database";
 
 //import SearchableDropdown component
 import SearchableDropdown from "react-native-searchable-dropdown";
+import firebase from "../database";
 
 //Item array for the dropdown
-export default function EmomCreate5({ navigation, route }) {
+export default function AmrapCreate({ navigation, route }) {
   const [exercises, setExercises] = useState([]);
   const [checklist, isChecklist] = useState(false);
   const { user, date } = route.params;
   const [selected, setSelected] = useState("");
-  const [exercise, setExercise] = useState([]);
   const [type, setType] = useState("workout type");
   const [reps, setReps] = useState("");
+  const [repinput, setRepinput] = useState("");
   const [sets, setSets] = useState("");
   const [equipment, setEquipment] = useState("");
   const [load, setLoad] = useState("");
@@ -42,13 +48,11 @@ export default function EmomCreate5({ navigation, route }) {
   const [wrkttypes, setWrkttpyes] = useState([]);
   const [equips, setEquips] = useState([]);
   const [mylink, setLink] = useState("");
-  const [exerciseset, setExerciseset] = useState([]);
-  const [extime, setExtime] = useState("");
-  const [round, setRound] = useState([]);
-  let thisdate;
-  let tempexercise = [];
+  const [exercise, setExercise] = useState([]);
+
   const [equipdrop, isEquipdrop] = useState(false);
   const [exdrop, isExdrop] = useState(false);
+  let tempexercise = [];
 
   useEffect(() => {
     firebase
@@ -62,6 +66,7 @@ export default function EmomCreate5({ navigation, route }) {
         });
         setExlabels(exercises);
       });
+
     firebase
       .firestore()
       .collection("Equipments")
@@ -101,13 +106,15 @@ export default function EmomCreate5({ navigation, route }) {
                 .doc(user)
                 .collection("wrktmeal")
                 .doc();
-              thisdate = doc;
               batch.set(docRef, {
                 id: idGenerator(),
-                type: "emom 5",
+                type: "amrap",
                 exercise: exercise,
-                note: note,
+                reps: reps,
                 sets: sets,
+                rest: Number(rest),
+                note: note,
+                timer: Number(timer),
                 date: doc,
                 category: "workout",
                 status: "unfinished",
@@ -116,23 +123,22 @@ export default function EmomCreate5({ navigation, route }) {
             batch.commit().then(() => {
               setExercise([]);
               setType("workout type");
-              setReps("");
+              setReps([]);
               setSets("");
               setEquipment("");
               setRest("");
               setLoad("");
               setNote("");
               setTimer("");
-              setExtime("");
               ToastAndroid.show("Successful!", ToastAndroid.SHORT);
               navigation.reset({
                 index: 0,
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
               });
             });
-          }
-        }
-      ])
+          },
+        },
+      ]);
     }
   };
 
@@ -174,13 +180,12 @@ export default function EmomCreate5({ navigation, route }) {
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
         >
-          EMOM 5
+          AMRAP
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
-        <SearchableDropdown
+          <SearchableDropdown
             selectedItems={selected}
             onTextChange={(text) => console.log(text)}
-            //On text change listner on the searchable input
             onItemSelect={(item) => {
               setSelected(item);
               isExdrop(true);
@@ -219,11 +224,9 @@ export default function EmomCreate5({ navigation, route }) {
             itemsContainerStyle={{
               //items container style you can pass maxHeight
               //to restrict the items dropdown hieght
-              maxHeight: "43%",
+              maxHeight: "100%",
             }}
             items={exlabels}
-            //mapping of item array
-            defaultIndex={2}
             //default selected item index
             placeholder="exercise"
             //place holder for the search input
@@ -232,18 +235,16 @@ export default function EmomCreate5({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <ShortField
-              placeholder="reps"
-              value={reps}
-              onChangeText={(text) => setReps(text)}
+                placeholder="load"
+                value={load}
+                onChangeText={(text) => setLoad(text)}
             ></ShortField>
             <ShortField
-              placeholder="load"
-              value={load}
-              onChangeText={(text) => setLoad(text)}
+                placeholder="reps"
+                value={reps}
+                onChangeText={(text) => setReps(text)}
             ></ShortField>
           </View>
           <SearchableDropdown
@@ -301,35 +302,19 @@ export default function EmomCreate5({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}
-          >
-            <ShortField
-              placeholder="ex time"
-              value={extime}
-              onChangeText={(text) => setExtime(text)}
-            ></ShortField>
-            <ShortField
-              placeholder="rest time"
-              value={rest}
-              onChangeText={(text) => setRest(text)}
-            ></ShortField>
-          </View>
           <TouchableOpacity
             onPress={() => {
               exercise.push({
-                exercise: selected,
+                ex: exdrop ? selected.name : selected,
                 lnk: selected.lnk,
-                reps: reps,
                 load: load,
-                equipment: equipment,
-                extime: extime,
-                rest: rest
+                reps: reps,
+                equipment: equipdrop ? equipment.name : equipment,
               });
               setLoad("");
               setReps("");
-              setExtime("");
-              setRest("");
+              isEquipdrop(false);
+              isExdrop(false);
               ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
@@ -345,23 +330,23 @@ export default function EmomCreate5({ navigation, route }) {
               + Add another exercise
             </Text>
           </TouchableOpacity>
-
           <LargeField
             placeholder="note"
-            value={note}
             onChangeText={(text) => setNote(text)}
           ></LargeField>
-            <ShortField
-                marginTop={10}
-                placeholder="rounds"
-                value={sets}
-                onChangeText={(text) => setSets(text)}
-            ></ShortField>
+          <ShortField
+            placeholder="time"
+            value={timer}
+            onChangeText={(text) => setTimer(text)}
+            marginTop={10}
+          ></ShortField>
           <LongButton
             title="Next"
             bgcolor="#32877D"
             marginTop={20}
-            onPress={() => addWorkout()}
+            onPress={() => {
+              addWorkout();
+            }}
           ></LongButton>
         </View>
       </View>
@@ -385,6 +370,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   workoutname: {
+    paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",

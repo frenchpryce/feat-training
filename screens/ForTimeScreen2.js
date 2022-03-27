@@ -16,6 +16,8 @@ import Pause from "../assets/pause.svg";
 import firebase from "../database";
 import Loading from "../components/Loading";
 import Timer from 'react-compound-timer';
+import { Video, AVPlaybackStatus } from 'expo-av';
+import { WebView } from 'react-native-webview';
 
 export default function ForTimeScreen2({ navigation, route }) {
   const { user, id } = route.params;
@@ -26,6 +28,9 @@ export default function ForTimeScreen2({ navigation, route }) {
   const [dataid, setDataid] = useState('');
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState();
+  const video = useRef(null);
+  const [status, setStatus] = React.useState({});
+  const [ex, setEx] = useState(0);
 
   useEffect(() => {
     firebase
@@ -99,7 +104,57 @@ export default function ForTimeScreen2({ navigation, route }) {
           >
           <BackButton onPress={() => navigation.goBack()} />
         </View>
-        <View style={styles.Video}></View>
+        <View style={{height: 235}}>
+          {/* <Video
+            ref={video}
+            style={styles.Video}
+            source={{
+              uri: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+              html: `
+                <html>
+                  <body>
+                    <iframe src="https://vimeo.com/precisionnutrition/5-3-2-sets" width="100%" height="200px" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                    <script src="https://player.vimeo.com/api/player.js"></script>
+                  </body>
+                </html>
+              `,
+            }}
+            useNativeControls
+            resizeMode="contain"
+            isLooping
+            onPlaybackStatusUpdate={status => setStatus(() => status)}
+          />  */}
+          <WebView 
+            style={styles.Video}
+            source={{
+              uri: exercises[ex].lnk
+            }}
+          />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <TouchableOpacity style={{padding: 5, width: 80, height: 'auto', alignSelf: 'flex-start', backgroundColor: "#3F3D56"}}
+            onPress={() => {
+              if(ex >= exercises.length-1 || ex != 0) {
+                setEx(ex-1);
+              } else {
+                doneWorkout();
+              }
+            }}
+          >
+            <Text style={{fontFamily: "Poppins_700Bold", fontSize: 10, color: "#FFFFFF", textAlign: 'center'}}>Prev Video</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{padding: 5, width: 80, height: 'auto', alignSelf: 'flex-end', backgroundColor: "#3F3D56"}}
+            onPress={() => {
+              if(ex < exercises.length-1) {
+                setEx(ex+1);
+              } else {
+                doneWorkout();
+              }
+            }}
+          >
+            <Text style={{fontFamily: "Poppins_700Bold", fontSize: 10, color: "#FFFFFF", textAlign: 'center'}}>Next Video</Text>
+          </TouchableOpacity>
+          </View>
+        </View>
         <Timer
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}

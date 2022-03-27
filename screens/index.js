@@ -31,6 +31,7 @@ export { default as EmomScreen5 } from './EmomScreen5';
 export { default as EmomScreen6 } from './EmomScreen6';
 export { default as EmomScreen7 } from './EmomScreen7';
 export { default as Amrap } from './Amrap';
+export { default as AmrapCreate } from './AmrapCreate';
 export { default as ForTimeCreate1 } from './ForTimeCreate1';
 export { default as ForTimCreate2 } from './ForTimeCreate2';
 export { default as ForTimCreate3 } from './ForTimeCreate3';
@@ -47,10 +48,5 @@ export { default as Subscription } from './Subscription';
 export { default as Details } from './Details';
 export { default as ArticleScreen } from './ArticleScreen';
 export { default as EditPage } from './EditPage';
-<<<<<<< HEAD
-export { default as AboutPage } from './About';
-export { default as FAQsPage } from './FAQ';
-=======
 export { default as About } from './About';
-export { default as FAQ } from './FAQ';
->>>>>>> 1f3f819d604c2a70c79245094f01e8e3086210ff
+export { default as FAQsPage } from './FAQ';

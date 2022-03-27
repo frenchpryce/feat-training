@@ -58,7 +58,7 @@ export default function EmomCreate6({ navigation, route }) {
       .then((snap) => {
         let exercises = [];
         snap.forEach((doc) => {
-          exercises.push({ name: doc.id, id: doc.id });
+          exercises.push({ name: doc.id, id: doc.id, lnk: doc.data().links });
         });
         setExlabels(exercises);
       });
@@ -180,6 +180,7 @@ export default function EmomCreate6({ navigation, route }) {
         <SearchableDropdown
             selectedItems={selected}
             //On text change listner on the searchable input
+            onTextChange={(text) => console.log(text)}
             onItemSelect={(item) => {
               setSelected(item);
               isExdrop(true);
@@ -247,6 +248,7 @@ export default function EmomCreate6({ navigation, route }) {
           </View>
           <SearchableDropdown
             selectedItems={equipment}
+            onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
             onItemSelect={(item) => {
               setEquipment(item);
@@ -317,6 +319,7 @@ export default function EmomCreate6({ navigation, route }) {
             onPress={() => {
               exercise.push({
                 exercise: selected,
+                lnk: selected.lnk,
                 reps: reps,
                 load: load,
                 equipment: equipment,

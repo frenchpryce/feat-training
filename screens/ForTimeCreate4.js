@@ -58,7 +58,7 @@ export default function ForTimeCreate4({ navigation, route }) {
       .then((snap) => {
         let exercises = [];
         snap.forEach((doc) => {
-          exercises.push({ name: doc.id, id: doc.id });
+          exercises.push({ name: doc.id, id: doc.id, lnk: doc.data().links });
         });
         setExlabels(exercises);
       });
@@ -301,6 +301,7 @@ export default function ForTimeCreate4({ navigation, route }) {
             onPress={() => {
               exercise.push({
                 exercise: selected,
+                lnk: selected.lnk,
                 reps: reps,
                 load: load,
                 equipment: equipment,
