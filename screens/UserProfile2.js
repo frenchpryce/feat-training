@@ -29,7 +29,7 @@ export default function UserProfile2({ navigation, route }) {
   const [weight, setWeight] = useState();
   const [goal, setGoal] = useState();
   const [balance, setBalance] = useState();
-  // const [imagelink, setImagelink] = useState('');
+  const [imagelink, setImagelink] = useState('');
   const [loading, setLoading] = useState(true);
   // const [reminder, setReminder] = useState('');
   const [verif, setVerif] = useState(false);

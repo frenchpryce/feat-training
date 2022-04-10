@@ -129,7 +129,7 @@ export default function EmomScreen3({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].lnk
+              uri: exercises[ex].exercise[ex].lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>

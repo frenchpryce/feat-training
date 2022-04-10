@@ -6,6 +6,7 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
+  Image
 } from "react-native";
 import { BackButton, PicButton } from "../components/LongButton";
 import firebase from '../database';
@@ -44,7 +45,7 @@ export default function UserList({ navigation, route }) {
         setUnverif(unverifusers);
         setLoading2(false);
       })
-      
+      console.log(userlist);
 
     firebase
       .firestore()
@@ -103,13 +104,27 @@ export default function UserList({ navigation, route }) {
                     .filter((type) => type.programtype == programs.title )
                     .map((user, index) => (
                         <View key={index}>
-                        <PicButton
+                        {/* <PicButton
                             mykey={index.toString()}
                             color='#000000'
                             user={user.firstname}
-                            source={user.imagelink}
+                            uri={user.urllink}
                             onPress={() => navigation.navigate('Menu', { user: user.userid, type: 'trainer' })}
-                        />
+                        /> */}
+                        <TouchableOpacity style={{marginRight: 30}}
+                          onPress={() => navigation.navigate('Menu', { user: user.userid, type: 'trainer' })}
+                        >
+                          <Image 
+                            style={{width: 80, height: 80, borderRadius: 50, backgroundColor: "#FFFFFF"}}
+                            source={{uri: user.urllink}}
+                          />
+                          <Text style={{
+                            color: "#000000",
+                            textAlign: 'center',
+                            fontFamily: 'OpenSans_400Regular',
+                            fontSize: 16,
+                        }}>{user.firstname}</Text>
+                        </TouchableOpacity>
                         </View>
                     ))}
                     </ScrollView>

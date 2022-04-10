@@ -64,7 +64,8 @@ import {
   EditPage,
   About,
   FAQsPage,
-  AmrapCreate
+  AmrapCreate,
+  NormalScreen
 } from "./screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -169,6 +170,7 @@ export default function App() {
           <Stack.Screen name="EmomCreate7" component={EmomCreate7} />
           <Stack.Screen name="MealCreate" component={MealCreate} />
           <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
+          <Stack.Screen name="NormalScreen" component={NormalScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

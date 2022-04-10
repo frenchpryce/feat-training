@@ -33,6 +33,7 @@ export default function UserWorkout2({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [dateField, setDateField] = useState();
   const [choose, isChoosing] = useState(false);
+  const [color, setColor] = useState("#FFFFFF");
   const isFocused = useIsFocused();
 
   const wait = (timeout) => {
@@ -236,10 +237,11 @@ export default function UserWorkout2({ navigation, route }) {
                   mykey={index.toString()}
                   wrkt={label.type}
                   color="#000000"
+                  backgroundColor={color}
                   onLongPress={() => deleteData(label.id)}
                 />
                 </View>
-              ))}
+            ))}
           </ScrollView>
           <WrktModal
             visible={choose}

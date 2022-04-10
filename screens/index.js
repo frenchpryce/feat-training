@@ -50,3 +50,4 @@ export { default as ArticleScreen } from './ArticleScreen';
 export { default as EditPage } from './EditPage';
 export { default as About } from './About';
 export { default as FAQsPage } from './FAQ';
+export { default as NormalScreen } from './NormalScreen';

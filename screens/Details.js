@@ -72,8 +72,33 @@ export default function Details({navigation, route}) {
                 <LongButton 
                   marginTop={50}
                   onPress={() => {
-                    
-                    navigation.navigate('Menu', { user: user })
+                    Alert.alert(
+                      "Subscribing to " + prog,
+                      "Do you want to subscribe?",
+                      [
+                        {
+                          text: 'YES',
+                          onPress: () => {
+                            firebase
+                              .firestore()
+                              .collection("Users")
+                              .doc(user)
+                              .update({
+                                programtype: prog,
+                                status: 'Verified',
+                                payment: {
+                                  balance: price
+                                }
+                              })
+                            navigation.navigate('Menu', { user: user })
+                          }
+                        },
+                        {
+                          text: "NO",
+                          style: 'cancel'
+                        }
+                      ]
+                    )
                   }}
                   title='Subscribe'
                   bgcolor='#FF6F61'

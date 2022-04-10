@@ -148,7 +148,7 @@ const WorkoutButton = (props) => {
     return (
         <TouchableOpacity
             key={props.mykey}
-            style={[styles.wrktbutton, { marginTop: props.marginTop }]}
+            style={[styles.wrktbutton, { marginTop: props.marginTop, backgroundColor: props.backgroundColor }]}
             onPress={props.onPress}
             onLongPress={props.onLongPress}
         >
@@ -164,7 +164,7 @@ const PicButton = (props) => {
                 style={styles.picbutton}
                 onPress={props.onPress}
             >
-                <Image style={{backgroundColor: '#58DCC4'}} source={{uri: props.source}}/>
+                <Image source={{ uri: props.uri }}/>
             </TouchableOpacity>
             <Text style={{
                 color: props.color,

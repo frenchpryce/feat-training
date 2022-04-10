@@ -31,7 +31,9 @@ export default function EmomScreen1({ navigation, route }) {
   const [currtime, setCurrtime] = useState(0);
   const video = useRef(null);
   const [status, setStatus] = useState({});
+  const [currex, setCurrex] = useState(0);
   const [ex, setEx] = useState(0);
+  const timeRef = React.createRef();
 
   useEffect(() => {
     firebase
@@ -159,11 +161,24 @@ export default function EmomScreen1({ navigation, route }) {
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              
+              ref={timeRef}
               checkpoints={[
                 {
                   time: 0,
-                  callback: () => console.log('Timer Finished'),
+                  callback: () => Alert.alert(
+                    "Time's Up!",
+                    "Proceed to next workout",
+                    [
+                      {
+                        text: "Continue",
+                        style: 'cancel',
+                        onPress: () => {
+                          timeRef.current.reset();
+                          timeRef.current.start();
+                        }
+                      }
+                    ]
+                  ),
                 }
               ]}
         >

@@ -30,7 +30,7 @@ export default function WorkoutPlans({navigation}) {
 const styles = StyleSheet.create({
     view: {
       flex: 1,
-      backgroundColor: 'transparent',
+      backgroundColor: '#FFFFFF',
       justifyContent: 'center',
       paddingTop: 40,
     },

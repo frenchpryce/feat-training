@@ -16,6 +16,7 @@ import Pause from "../assets/pause.svg";
 import firebase from "../database";
 import Loading from "../components/Loading";
 import Timer from 'react-compound-timer';
+import { TimerModal } from "../components/Modals";
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { WebView } from 'react-native-webview';
 
@@ -31,6 +32,8 @@ export default function EmomScreen5({ navigation, route }) {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
+  const [timermodal, setTimermodal] = useState(false);
+  const timeRef = React.createRef();
 
   useEffect(() => {
     firebase
@@ -89,6 +92,10 @@ export default function EmomScreen5({ navigation, route }) {
     )
   }
 
+  const onRest = (rest_time) => {
+    setTimermodal(true);
+  }
+
 
   return (
     <ScrollView style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20, flex: 1, backgroundColor: "#FFFFFF"  }}>
@@ -127,7 +134,7 @@ export default function EmomScreen5({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].lnk
+              uri: exercises[ex].exercise.lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -159,11 +166,23 @@ export default function EmomScreen5({ navigation, route }) {
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              
+              ref={timeRef}
               checkpoints={[
                 {
                   time: 0,
-                  callback: () => console.log('Timer Finished'),
+                  callback: () => Alert.alert(
+                    "Time's Up!",
+                    "Proceed to next workout",
+                    [
+                      {
+                        text: "Continue",
+                        style: 'cancel',
+                        onPress: () => {
+                          setTimermodal(true)
+                        }
+                      }
+                    ]
+                  ),
                 }
               ]}
         >
@@ -303,6 +322,55 @@ export default function EmomScreen5({ navigation, route }) {
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();
+          }}
+        />
+        <View
+          style={{
+            position: "absolute",
+            top: "27%",
+            right: 0,
+            zIndex: 1
+          }}
+          >
+          <TouchableOpacity
+            style={{
+              width: 80,
+              height: 80,
+              backgroundColor: "#3F3D56",
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 40
+            }}
+            onPress={() => {
+              onRest(3);
+            }}
+          >
+            <Text style={{fontFamily: 'Poppins_700Bold', color: "#FFFFFF"}}>Rest</Text>
+          </TouchableOpacity>
+        </View>
+        <TimerModal 
+          timer={exercises[ex].rest}
+          visible={timermodal}
+          onPress={() => {
+            Alert.alert(
+              "Stopping rest",
+              "Are you sure to stop resting?",
+              [
+                {
+                  text: "YES",
+                  style: 'cancel',
+                  onPress: () => {
+                    timeRef.current.reset();
+                    timeRef.current.start();
+                    setTimermodal(false);
+                  }
+                },
+                {
+                  text: "NO",
+                  style: 'cancel'
+                }
+              ]
+            )
           }}
         />
       </View>

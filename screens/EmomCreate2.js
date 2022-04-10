@@ -157,7 +157,7 @@ export default function EmomCreate2({ navigation, route }) {
   };
 
   return (
-    <ScrollView style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20, flex: 1, backgroundColor: "#FFFFFF"}}>
+    <View style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20, flex: 1, backgroundColor: "#FFFFFF", alignItems: 'center'}}>
       <View
         style={{
           position: "absolute",
@@ -174,6 +174,7 @@ export default function EmomCreate2({ navigation, route }) {
         >
           EMOM 2
         </Text>
+      </View>
         <View style={{ width: 290, marginBottom: 50 }}>
         <SearchableDropdown
             selectedItems={selected}
@@ -339,7 +340,6 @@ export default function EmomCreate2({ navigation, route }) {
               + Add another exercise
             </Text>
           </TouchableOpacity>
-
           <LargeField
             placeholder="note"
             value={note}
@@ -393,8 +393,7 @@ export default function EmomCreate2({ navigation, route }) {
             onPress={() => addWorkout()}
           ></LongButton>
         </View>
-      </View>
-    </ScrollView>
+    </View>
   );
 }
 

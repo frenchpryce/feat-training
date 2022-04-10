@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, StyleSheet, ImageBackground } from 'react-native';
-import { ShortButton, MiniButton } from '../components/LongButton';
+import { ShortButton, MiniButton, TextButton } from '../components/LongButton';
 import LottieView from 'lottie-react-native';
 
 export default function Welcome({navigation}) {
@@ -39,6 +39,17 @@ export default function Welcome({navigation}) {
                 />
             </View>
             </View>
+            <View style={{
+              position: "absolute",
+              bottom: 100,
+              right: 40
+            }}>
+              <TextButton
+                title="Skip"
+                color="#000000"
+                onPress={() => navigation.navigate('MainScreen')}
+              />
+            </View>
         </ImageBackground>
     )
 }
@@ -46,7 +57,7 @@ export default function Welcome({navigation}) {
 const styles = StyleSheet.create({
     view: {
       flex: 1,
-      backgroundColor: 'transparent',
+      backgroundColor: '#FFFFFF',
       justifyContent: 'center',
       paddingTop: 40,
       paddingBottom: 250

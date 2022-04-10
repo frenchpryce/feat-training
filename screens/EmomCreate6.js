@@ -111,6 +111,7 @@ export default function EmomCreate6({ navigation, route }) {
                 date: doc,
                 category: "workout",
                 status: "unfinished",
+                curreps: exercise[0].reps
               });
             });
             batch.commit().then(() => {

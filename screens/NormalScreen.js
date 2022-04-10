@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   FlatList,
+  ToastAndroid,
   Alert
 } from "react-native";
 import Play from "../assets/play.svg";
@@ -20,25 +21,19 @@ import { TimerModal } from "../components/Modals";
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { WebView } from 'react-native-webview';
 
-export default function EmomScreen7({ navigation, route }) {
+export default function NormalScreen({ navigation, route }) {
   const { user, id } = route.params;
   const [pressed, isPressed] = useState(false);
   const [loading, setLoading] = useState(true);
   const [exercises, setExercises] = useState([]);
-  const [reps, setReps] = useState([]);
+  const [reps, setReps] = useState([]); 
   const [dataid, setDataid] = useState('');
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState();
-  // const [currround, setCurrround] = useState(0);
-  // const [currex, setCurrex] = useState(0);
   const video = useRef(null);
-  const [status, setStatus] = useState({});
+  const [status, setStatus] = React.useState({});
   const [ex, setEx] = useState(0);
-  const [curreps, setCurreps] = useState(0);
-  const [currtime, setCurrtime] = useState(0);
-  const timeRef = React.createRef();
   const [timermodal, setTimermodal] = useState(false);
-  const [total, setTotal] = useState();
 
   useEffect(() => {
     firebase
@@ -52,25 +47,22 @@ export default function EmomScreen7({ navigation, route }) {
           if (doc.data().id == id && doc.data().status == 'unfinished') {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
-            setTotal(doc.data().totaltime);
-            setCurreps(doc.data().exercise[ex].reps);
-            setCurrtime(doc.data().exercise[0].extime);
-            setReps(doc.data().exercise);
             setNote(doc.data().note);
-            if(doc.data().exercise[0].extime == 0) {
+            if(doc.data().timer == 0) {
               setTimer(0);
             } else {
-              setTimer(doc.data().exercise[0].extime);
+              setTimer(doc.data().timer);
             }
             setLoading(false);
           }
+          console.log(timer);
         });
       });
   }, []);
 
   const doneWorkout = () => {
     Alert.alert(
-      'Finished Exercises!',
+      'Finished Exercise',
       'Are you done with your workout?',
       [
           {
@@ -97,6 +89,10 @@ export default function EmomScreen7({ navigation, route }) {
           }
       ]
     )
+  }
+
+  const onRest = (rest_time) => {
+    setTimermodal(true);
   }
 
 
@@ -137,7 +133,7 @@ export default function EmomScreen7({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].exercise.lnk
+              uri: exercises[ex].lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -166,20 +162,16 @@ export default function EmomScreen7({ navigation, route }) {
           </View>
         </View>
         <Timer
-              initialTime={timer*1000*60}
-              direction={timer == 0 ? 'forward' : 'backward'}
+              initialTime={0*1000*60}
+              direction={0 == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              ref={timeRef}
+              
               checkpoints={[
                 {
                   time: 0,
-                  callback: () => {
-                      setCurreps(Number(curreps)+Number(curreps));
-                      setTimermodal(true);
-                      setCurrtime(currtime+timer);
-                    } 
-                  }
-                ]}
+                  callback: () => console.log('Timer Finished'),
+                }
+              ]}
         >
         {({ start, pause, reset, stop }) =>  (
         <React.Fragment>
@@ -264,7 +256,7 @@ export default function EmomScreen7({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle}>{label.exercise.name}</Text>
+                    <Text style={styles.listyle[index]}>{label.ex.name}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
                     {label.load} {label.equipment.name}
@@ -276,35 +268,44 @@ export default function EmomScreen7({ navigation, route }) {
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "center",
+              justifyContent: "space-between",
               alignItems: "center",
             }}
           >
             <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
               Reps
             </Text>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+              Sets
+            </Text>
           </View>
           <View
             style={{
               height: 50,
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: "space-between",
               marginBottom: 10,
             }}
           >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-                <TouchableOpacity>
-                  <Text style={styles.listyle}>{curreps}</Text>
+            {exercises.length && exercises.map((label, index) => (
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }} key={index}>
+                <TouchableOpacity
+                onPress={() => {
+                    setColor("#32877D");
+                    setFont("Poppins_700Bold");
+                }}
+                >
+                    <Text style={styles.listyle}>{label.reps}</Text>
                 </TouchableOpacity>
-              </View>
+                <TouchableOpacity
+                onPress={() => {
+                    setColor("#32877D");
+                    setFont("Poppins_700Bold");
+                }}
+                >
+                    <Text style={styles.listyle}>{label.sets}</Text>
+                </TouchableOpacity>
             </View>
+            ))}
           </View>
         </View>
         {/* <LongButton
@@ -317,8 +318,32 @@ export default function EmomScreen7({ navigation, route }) {
             doneWorkout();
           }}
         />
+        <View
+        style={{
+            position: "absolute",
+            top: "27%",
+            right: 0,
+            zIndex: 1
+            }}
+        >
+        <TouchableOpacity
+            style={{
+              width: 80,
+              height: 80,
+              backgroundColor: "#3F3D56",
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 40
+            }}
+            onPress={() => {
+              onRest(3);
+            }}
+          >
+            <Text style={{fontFamily: 'Poppins_700Bold', color: "#FFFFFF"}}>Rest</Text>
+          </TouchableOpacity>
+        </View>
         <TimerModal 
-          timer={exercises[ex].rest}
+          timer={3}
           visible={timermodal}
           onPress={() => {
             Alert.alert(
@@ -329,8 +354,6 @@ export default function EmomScreen7({ navigation, route }) {
                   text: "YES",
                   style: 'cancel',
                   onPress: () => {
-                    timeRef.current.reset(),
-                    timeRef.current.start(),
                     setTimermodal(false);
                   }
                 },

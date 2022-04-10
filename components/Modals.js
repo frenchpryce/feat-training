@@ -1,9 +1,11 @@
-import React from 'react';
-import { Modal, View, StyleSheet, Text, ScrollView } from 'react-native';
+import React, { useEffect, Fragment } from 'react';
+import { Modal, View, StyleSheet, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { ModalButton, ModalButton2, TextButton } from './LongButton';
 import { LongField } from './EntryFields';
+import LottieView from 'lottie-react-native';
 import Log from '../assets/log.svg';
 import Choose from '../assets/choose.svg';
+import Timer from 'react-compound-timer';
 
 const AlertModal = (props) => {
     return(
@@ -263,6 +265,78 @@ const CalModal = (props) => {
     )
 }
 
+const TimerModal = (props) => {
+    let animation = React.createRef();
+    let timer = props.timer;
+    return (
+        <Modal
+            visible={props.visible}
+            onRequestClose={props.onRequestClose}
+            transparent={true}
+            animationType='fade'
+            on
+            onShow={() => {
+                animation.current.play()
+            }}
+        >
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.25)'
+                }}
+            >
+                <View style={styles.modal}>
+                <LottieView 
+                    ref={animation}
+                    loop={true}
+                    style={{
+                    width: 150,
+                    height: 150,
+                    backgroundColor: '#FFFFFF',
+                    }}
+                    source={require('../assets/loading.json')}
+                />
+                    <Text style={[styles.heading2, {textAlign: 'left'}]}>Take a rest...</Text>
+                    <Timer
+                        initialTime={timer*1000*60}
+                        direction={timer == 0 ? 'forward' : 'backward'}
+                        startImmediately={true}
+                        checkpoints={[
+                            {
+                            time: 0,
+                            callback: () => console.log('Timer Finished'),
+                            }
+                        ]}
+                    >
+                    {({ start, pause, reset, stop }) =>  (
+                    <Fragment>
+                        <View style={{ justifyContent: "center", flexDirection: 'row' }}>
+                            <Text style={{ fontFamily: "Poppins_700Bold", fontSize: 20 }}>
+                            <Timer.Minutes />
+                            </Text>
+                            <Text style={{ fontFamily: "Poppins_700Bold", fontSize: 20 }}>
+                            :
+                            </Text>
+                            <Text style={{ fontFamily: "Poppins_700Bold", fontSize: 20 }}>
+                            <Timer.Seconds />
+                            </Text>
+                        </View>
+                    </Fragment>
+                    )}
+                    </Timer>
+                    <TextButton 
+                        title="Continue" 
+                        onPress={props.onPress}
+                        color="#37877D"  
+                    />
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
 const AllModal = (props) => {
     return (
         <Modal
@@ -296,7 +370,7 @@ const AllModal = (props) => {
     )
 }
 
-export { AlertModal, MealModal, WrktModal, CheckList, MealChooseModal, CalModal, AllModal };
+export { AlertModal, MealModal, WrktModal, CheckList, MealChooseModal, CalModal, AllModal, TimerModal };
 
 const styles = StyleSheet.create({
     modal: {

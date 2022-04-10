@@ -16,6 +16,7 @@ import Pause from "../assets/pause.svg";
 import firebase from "../database";
 import Loading from "../components/Loading";
 import Timer from 'react-compound-timer';
+import { TimerModal } from "../components/Modals";
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { WebView } from 'react-native-webview';
 
@@ -34,6 +35,10 @@ export default function EmomScreen2({ navigation, route }) {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
+  const timeRef = React.createRef();
+  const wrktimeRef = React.createRef();
+  const [timermodal, setTimermodal] = useState(false);
+  const [newtime, setNewtime] = useState();
 
   useEffect(() => {
     firebase
@@ -129,7 +134,7 @@ export default function EmomScreen2({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].lnk
+              uri: exercises[ex].exercise[ex].lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -161,12 +166,48 @@ export default function EmomScreen2({ navigation, route }) {
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              
+              ref={wrktimeRef}
               checkpoints={[
                 {
-                  time: 0,
-                  callback: () => console.log('Timer Finished'),
-                }
+                  time: ((timer*1000*60)-(exercises[ex].exercise[ex].extime*1000*60)),
+                  callback: () => {
+                    wrktimeRef.current.pause(),
+                    Alert.alert(
+                      "Time's Up!",
+                      "Proceed to next workout",
+                      [
+                        {
+                          text: "Continue",
+                          style: 'cancel',
+                          onPress: () => {
+                            setTimermodal(true),
+                            setNewtime(((timer*1000*60)-(exercises[ex].exercise[ex].extime*1000*60)))
+                          }
+                        }
+                      ]
+                    )
+                  }
+                },
+                {
+                  time: ((newtime)-(exercises[ex].exercise[ex].extime*1000*60)),
+                  callback: () => {
+                    wrktimeRef.current.pause(),
+                    Alert.alert(
+                      "Time's Up!",
+                      "Proceed to next workout",
+                      [
+                        {
+                          text: "Continue",
+                          style: 'cancel',
+                          onPress: () => {
+                            setTimermodal(true),
+                            setNewtime(((newtime)-(exercises[ex].exercise[ex].extime*1000*60)))
+                          }
+                        }
+                      ]
+                    )
+                  }
+                },
               ]}
         >
         {({ start, pause, reset, stop }) =>  (
@@ -313,6 +354,30 @@ export default function EmomScreen2({ navigation, route }) {
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();
+          }}
+        />
+        <TimerModal 
+          timer={exercises[ex].exercise[ex].rest}
+          visible={timermodal}
+          onPress={() => {
+            Alert.alert(
+              "Stopping rest",
+              "Are you sure to stop resting?",
+              [
+                {
+                  text: "YES",
+                  style: 'cancel',
+                  onPress: () => {
+                    wrktimeRef.current.start(),
+                    setTimermodal(false);
+                  }
+                },
+                {
+                  text: "NO",
+                  style: 'cancel'
+                }
+              ]
+            )
           }}
         />
       </View>

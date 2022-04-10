@@ -6,6 +6,7 @@ import {
     ScrollView,
     TouchableOpacity,
     SafeAreaView,
+    ToastAndroid,
     Alert
 } from 'react-native';
 import { LongField, ShortField, LargeField } from '../components/EntryFields';
@@ -22,7 +23,7 @@ export default function NormalWrkt({navigation, route}) {
     const { user, date } = route.params;
     const [selected, setSelected] = useState("");
     const [type, setType] = useState("workout type");
-    const [reps, setReps] = useState([]);
+    const [reps, setReps] = useState("");
     const [repinput, setRepinput] = useState("");
     const [sets, setSets] = useState("");
     const [equipment, setEquipment] = useState("");
@@ -50,75 +51,80 @@ export default function NormalWrkt({navigation, route}) {
         .get()
         .then((snap) => {
             snap.forEach((doc) => {
-                exercises.push({name: doc.id, id: doc.id});
+                exercises.push({name: doc.id, id: doc.id, lnk: doc.data().links});
             });
             setExlabels(exercises);
         })
+
+        firebase
+            .firestore()
+            .collection("Equipments")
+            .get()
+            .then((snap) => {
+                let equipments = [];
+                snap.forEach((doc) => {
+                equipments.push({ name: doc.id, id: doc.id });
+                });
+                setEquips(equipments);
+            });
     },[])
 
     const addWorkout = () => {
-        if(exercise=='exercise' || reps=='' || sets=='') {
-            Alert.alert(
-                'Invalid Input',
-                'Please fill up the necessary fields',
-                [
-                    {
-                        text: 'Close',
-                        style: 'cancel'
-                    }
-                ]
-            );
-        } else {
-            Alert.alert("Submitting", "Done creating exercises?", [
-                 {
-                    text: "Back",
-                    style: "cancel",
-                 },
-                 {
-                    text: "Done",
-                    onPress: () => {
-                        var db = firebase.firestore();
-                        var batch = db.batch();
-                        date.forEach((doc) => {
-                            console.log(doc);
-                            var docRef = db.collection('Users').doc(user).collection('wrktmeal').doc();
-                            batch.set(docRef, {
-                                id: idGenerator(),
-                                type: 'normal',
-                                exercise: selected,
-                                reps: reps,
-                                sets: sets,
-                                rest: Number(rest),
-                                equipment: equipment,
-                                load: load,
-                                note: note,
-                                timer: Number(timer),
-                                date: doc,
-                                category: 'workout',
-                                status: 'unfinished',
-                            })
-                        })
-                        batch.commit()
-                        .then(() => {
-                            setSelected('exercise');
-                            setType('workout type');
-                            setReps('');
-                            setSets('');
-                            setEquipment('');
-                            setRest('');
-                            setLoad('');
-                            setNote('');
-                            setTimer('');
-
-                            navigation.reset({
-                                index: 0,
-                                routes: [{ name: 'UserWorkout2', params: {user: user}}],
-                            })
-                        })
-                    }
-                }
+        if (exercise == null || reps == null) {
+            Alert.alert("Invalid Input", "Please fill up the necessary fields", [
+              {
+                text: "Close",
+                style: "cancel",
+              },
             ]);
-            }
+          } else {
+            Alert.alert("Submitting", "Done creating exercises?", [
+              {
+                text: "Back",
+                style: "cancel",
+              },
+              {
+                text: "Done",
+                onPress: () => {
+                  var db = firebase.firestore();
+                  var batch = db.batch();
+                  date.forEach((doc) => {
+                    console.log(doc);
+                    var docRef = db
+                      .collection("Users")
+                      .doc(user)
+                      .collection("wrktmeal")
+                      .doc();
+                    batch.set(docRef, {
+                      id: idGenerator(),
+                      type: "normal",
+                      exercise: exercise,
+                      note: note,
+                      date: doc,
+                      category: "workout",
+                      status: "unfinished",
+                    });
+                  });
+                  batch.commit().then(() => {
+                    setExercise([]);
+                    setType("workout type");
+                    setReps([]);
+                    setSets("");
+                    setEquipment("");
+                    setRest("");
+                    setLoad("");
+                    setNote("");
+                    setTimer("");
+                    ToastAndroid.show("Successful!", ToastAndroid.SHORT);
+                    navigation.reset({
+                      index: 0,
+                      routes: [{ name: "UserWorkout2", params: { user: user } }],
+                    });
+                  });
+                },
+              },
+            ]);
+          }
     }
 
     let idGenerator = () => {
@@ -192,38 +198,113 @@ export default function NormalWrkt({navigation, route}) {
                     //To remove the underline from the android input
                 />
                 </SafeAreaView>
-                <View style={{ flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row', marginBottom: 10}}>
                     <ShortField 
+                        value={reps}
                         marginRight={5}
                         placeholder='reps'
                         onChangeText={(text) => setReps(text)}
                     />
                     <ShortField 
+                        value={sets}
                         placeholder='sets'
                         onChangeText={(text) => setSets(text)}
                     />
                 </View>
-                <LongField 
-                    marginTop={10}
+                <SearchableDropdown 
+                    selectedItems={equipment}
+                    onTextChange={(text) => console.log(text)}
+                    //On text change listner on the searchable input
+                    onItemSelect={(item) => setEquipment(item)}
+                    //onItemSelect called after the selection from the dropdown
+                    containerStyle={{ paddingBottom: 10 }}
+                    //suggestion container style
+                    textInputStyle={{
+                        //inserted text style
+                        padding: 12, borderRadius:15,
+                        backgroundColor: '#FFFF',
+                        width:'100%',
+                        borderRadius: 30,
+                        elevation: 5,
+                        fontFamily: 'OpenSans_300Light_Italic',
+                        fontSize: 16,
+                        textAlign:'center',
+                    }}
+                    itemStyle={{
+                        //single dropdown item style
+                        marginTop:5,
+                        padding:10,
+                        backgroundColor: '#FAF9F8',
+                        borderColor: '#bbb',
+                        borderWidth: 1,
+                        height:50,
+                        width:'100%',
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }}
+                    itemTextStyle={{
+                        //text style of a single dropdown item
+                        color: '#222',
+                    }}
+                    itemsContainerStyle={{
+                        //items container style you can pass maxHeight
+                        //to restrict the items dropdown hieght
+                        maxHeight: '100%',
+                    }}
+                    items={equips}
+                    //default selected item index
                     placeholder='equipment'
-                    onChangeText={(text) => setEquipment(text)}
+                    //place holder for the search input
+                    resetValue={false}
+                    //reset textInput Value with true and false state
+                    underlineColorAndroid="transparent"
+                    //To remove the underline from the android input
                 />
-                <View style={{marginTop: 10, flexDirection: 'row'}}>
+                <View style={{ flexDirection: 'row'}}>
                     <ShortField 
+                        value={load}
                         marginRight={5}
                         placeholder='load'
                         onChangeText={(text) => setLoad(text)}
                     />
                     <ShortField 
-                        placeholder='ex time'
-                        onChangeText={(text) => setTimer(text)}
+                        value={rest}
+                        placeholder='rest time'
+                        onChangeText={(text) => setRest(text)}
                     />
                 </View>
-                <ShortField 
-                    marginTop={10}
-                    placeholder='rest time'
-                    onChangeText={(text) => setRest(text)}
-                />
+                <TouchableOpacity
+                    onPress={() => {
+                    exercise.push({
+                        ex: exdrop ? selected.name : selected,
+                        lnk: selected.lnk,
+                        load: load,
+                        equipment: equipdrop ? equipment.name : equipment,
+                        reps: reps,
+                        sets: sets,
+                        rest: rest
+                    });
+                    setLoad("");
+                    setReps("");
+                    setSets("");
+                    setRest("");
+                    isEquipdrop(false);
+                    isExdrop(false);
+                    ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
+                    }}
+                >
+                    <Text
+                    style={{
+                        color: "#32877D",
+                        fontSize: 16,
+                        marginTop: 10,
+                        marginLeft: 5,
+                        marginBottom: 10,
+                    }}
+                    >
+                    + Add another exercise
+                    </Text>
+                </TouchableOpacity>
                 <LargeField 
                     placeholder='note'
                     marginTop={10}

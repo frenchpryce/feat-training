@@ -17,6 +17,7 @@ import Pause from "../assets/pause.svg";
 import firebase from "../database";
 import Loading from "../components/Loading";
 import Timer from 'react-compound-timer';
+import { TimerModal } from "../components/Modals";
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { WebView } from 'react-native-webview';
 
@@ -33,8 +34,11 @@ export default function ForTimeScreen3({ navigation, route }) {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
+  const [timermodal, setTimermodal] = useState(false);
 
   useEffect(() => {
+    setCircuit(0);
+    setEx(0);
     firebase
       .firestore()
       .collection("Users")
@@ -93,8 +97,12 @@ export default function ForTimeScreen3({ navigation, route }) {
     )
   }
 
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
   const onRest = (rest_time) => {
-    
+    setTimermodal(true);
   }
 
 
@@ -298,7 +306,6 @@ export default function ForTimeScreen3({ navigation, route }) {
             </ScrollView>
           </View>
         </View>
-
         <LongButton
           title="Next Round"
           bgcolor="#3F3D56"
@@ -335,12 +342,35 @@ export default function ForTimeScreen3({ navigation, route }) {
               borderRadius: 40
             }}
             onPress={() => {
-
+              onRest(3);
             }}
           >
             <Text style={{fontFamily: 'Poppins_700Bold', color: "#FFFFFF"}}>Rest</Text>
           </TouchableOpacity>
         </View>
+        <TimerModal 
+          timer={3}
+          visible={timermodal}
+          onPress={() => {
+            Alert.alert(
+              "Stopping rest",
+              "Are you sure to stop resting?",
+              [
+                {
+                  text: "YES",
+                  style: 'cancel',
+                  onPress: () => {
+                    setTimermodal(false);
+                  }
+                },
+                {
+                  text: "NO",
+                  style: 'cancel'
+                }
+              ]
+            )
+          }}
+        />
       </View>
     }
     </ScrollView>

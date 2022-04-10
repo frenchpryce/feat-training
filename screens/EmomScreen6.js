@@ -16,6 +16,7 @@ import Pause from "../assets/pause.svg";
 import firebase from "../database";
 import Loading from "../components/Loading";
 import Timer from 'react-compound-timer';
+import { TimerModal } from "../components/Modals";
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { WebView } from 'react-native-webview';
 
@@ -33,6 +34,9 @@ export default function EmomScreen6({ navigation, route }) {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
+  const [curreps, setCurreps] = useState(0);
+  const timeRef = React.createRef();
+  const [timermodal, setTimermodal] = useState(false);
 
   useEffect(() => {
     firebase
@@ -47,6 +51,7 @@ export default function EmomScreen6({ navigation, route }) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().note);
+            setCurreps(doc.data().curreps);
             if(doc.data().exercise[0].extime == 0) {
               setTimer(0);
             } else {
@@ -54,7 +59,6 @@ export default function EmomScreen6({ navigation, route }) {
             }
             setLoading(false);
           }
-          console.log(timer);
         });
       });
   }, []);
@@ -128,7 +132,7 @@ export default function EmomScreen6({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].lnk
+              uri: exercises[ex].exercise.lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -160,13 +164,17 @@ export default function EmomScreen6({ navigation, route }) {
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              
+              ref={timeRef}
               checkpoints={[
                 {
                   time: 0,
-                  callback: () => console.log('Timer Finished'),
-                }
-              ]}
+                  callback: () => {
+                      setCurreps(curreps+1),
+                      setTimermodal(true)
+                      console.log(curreps);
+                    }
+                  }
+                ]}
         >
         {({ start, pause, reset, stop }) =>  (
         <React.Fragment>
@@ -279,20 +287,10 @@ export default function EmomScreen6({ navigation, route }) {
               marginBottom: 10,
             }}
           >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              {exercises.length && exercises.map((label, index) => (
-                <View style={{ paddingLeft: 10, paddingRight: 10 }} >
-                  <TouchableOpacity>
-                    <Text style={styles.listyle} key={index}>{label.reps}</Text>
-                  </TouchableOpacity>
-                </View>
-              ))}
+            <View style={{ paddingLeft: 10, paddingRight: 10 }} >
+              <TouchableOpacity>
+                <Text style={styles.listyle}>{curreps}</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -304,6 +302,31 @@ export default function EmomScreen6({ navigation, route }) {
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();
+          }}
+        />
+        <TimerModal 
+          timer={exercises[ex].rest}
+          visible={timermodal}
+          onPress={() => {
+            Alert.alert(
+              "Stopping rest",
+              "Are you sure to stop resting?",
+              [
+                {
+                  text: "YES",
+                  style: 'cancel',
+                  onPress: () => {
+                    timeRef.current.reset(),
+                    timeRef.current.start(),
+                    setTimermodal(false);
+                  }
+                },
+                {
+                  text: "NO",
+                  style: 'cancel'
+                }
+              ]
+            )
           }}
         />
       </View>

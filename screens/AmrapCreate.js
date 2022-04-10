@@ -97,7 +97,8 @@ export default function AmrapCreate({ navigation, route }) {
         {
           text: "Done",
           onPress: () => {
-            var db = firebase.firestore();
+            try {
+              var db = firebase.firestore();
             var batch = db.batch();
             date.forEach((doc) => {
               console.log(doc);
@@ -136,6 +137,9 @@ export default function AmrapCreate({ navigation, route }) {
                 routes: [{ name: "UserWorkout2", params: { user: user } }],
               });
             });
+            } catch {
+              console.log();
+            }
           },
         },
       ]);

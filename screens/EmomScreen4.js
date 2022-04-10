@@ -34,6 +34,8 @@ export default function EmomScreen4({ navigation, route }) {
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
+  const timeRef = React.createRef();
+  const [currsets, setCurrsets] = useState(0);
 
   useEffect(() => {
     firebase
@@ -130,7 +132,7 @@ export default function EmomScreen4({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].lnk
+              uri: exercises[ex].exercise[ex].lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -162,11 +164,24 @@ export default function EmomScreen4({ navigation, route }) {
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              
+              ref={timeRef}
               checkpoints={[
                 {
                   time: 0,
-                  callback: () => console.log('Timer Finished'),
+                  callback: () => Alert.alert(
+                    "Time's Up!",
+                    "Proceed to next workout",
+                    [
+                      {
+                        text: "Continue",
+                        style: 'cancel',
+                        onPress: () => {
+                          timeRef.current.reset(),
+                          timeRef.current.start()
+                        }
+                      }
+                    ]
+                  ),
                 }
               ]}
         >
@@ -270,7 +285,7 @@ export default function EmomScreen4({ navigation, route }) {
             }}
           >
             <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
-              Reps
+              Sets
             </Text>
           </View>
           <View
