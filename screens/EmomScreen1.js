@@ -167,7 +167,7 @@ export default function EmomScreen1({ navigation, route }) {
                   time: 0,
                   callback: () => Alert.alert(
                     "Time's Up!",
-                    "Proceed to next workout",
+                    "Do another round",
                     [
                       {
                         text: "Continue",
@@ -300,13 +300,11 @@ export default function EmomScreen1({ navigation, route }) {
                 flexDirection: "row",
               }}
             >
-              {exercises.length && exercises.map((label, index) => (
-                <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
+                <View style={{ paddingLeft: 10, paddingRight: 10 }}>
                   <TouchableOpacity>
-                    <Text style={styles.listyle}>{label.reps}</Text>
+                    <Text style={styles.listyle}>{exercises[0].reps}</Text>
                   </TouchableOpacity>
                 </View>
-              ))}
             </View>
           </View>
         </View>

@@ -6,6 +6,7 @@ import {
     Image,
     ScrollView
 } from 'react-native';
+
 export default function About({navigation}) {
 
     const B = (props) => <Text style={{fontWeight: 'bold'}}>{props.children}</Text>
@@ -13,6 +14,7 @@ export default function About({navigation}) {
     return(
         <ScrollView>
             <View style={styles.container}>
+                
                 <Text style={styles.heading}>
                     The Story
                 </Text>

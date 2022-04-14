@@ -148,7 +148,7 @@ const WorkoutButton = (props) => {
     return (
         <TouchableOpacity
             key={props.mykey}
-            style={[styles.wrktbutton, { marginTop: props.marginTop, backgroundColor: props.backgroundColor }]}
+            style={[styles.wrktbutton, { marginTop: props.marginTop }]}
             onPress={props.onPress}
             onLongPress={props.onLongPress}
         >

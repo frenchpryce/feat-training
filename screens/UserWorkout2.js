@@ -239,6 +239,35 @@ export default function UserWorkout2({ navigation, route }) {
                   color="#000000"
                   backgroundColor={color}
                   onLongPress={() => deleteData(label.id)}
+                  onPress={() => {
+                    if(label.status === "finished") {
+                      Alert.alert("Workout Status", "This workout has been finished.", [
+                        {
+                          text: "Back",
+                          style: "cancel",
+                        },
+                        {
+                          text: "Delete",
+                          onPress: () => {
+                            deleteData(label.id);
+                          },
+                        },
+                      ]);
+                    } else {
+                      Alert.alert("Workout Status", "User still needs to finish this workout.", [
+                        {
+                          text: "Back",
+                          style: "cancel",
+                        },
+                        {
+                          text: "Delete",
+                          onPress: () => {
+                            deleteData(label.id);
+                          },
+                        },
+                      ]);
+                    }
+                  }}
                 />
                 </View>
             ))}
