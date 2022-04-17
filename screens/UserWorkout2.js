@@ -120,12 +120,12 @@ export default function UserWorkout2({ navigation, route }) {
     navigation.navigate("MetconTypes", { user: user, date: days });
   };
 
-  const setAmrapWorkout = () => {
+  const setSuperSet = () => {
     for (let i = 0; i < days.length; i++) {
       days[i] = days[i].key;
     }
     console.log(days);
-    navigation.navigate("AmrapCreate", { user: user, date: days });
+    navigation.navigate("SuperSetCreate", { user: user, date: days });
   }
 
   return (
@@ -277,10 +277,12 @@ export default function UserWorkout2({ navigation, route }) {
             onRequestClose={() => {
               isChoosing(false);
             }}
-            title1="Normal"
+            title1="Strengthening"
             title2="METCON"
+            title3="SuperSet"
             bgcolor1="#32877D"
             bgcolor2="#2F2E41"
+            bgcolor3="#736E9E"
             onPress1={() => {
               isChoosing(false);
               setNormalWorkout();
@@ -288,6 +290,10 @@ export default function UserWorkout2({ navigation, route }) {
             onPress2={() => {
               isChoosing(false);
               setMetconWorkout();
+            }}
+            onPress3={() => {
+              isChoosing(false);
+              setSuperSet();
             }}
             marginTop={10}
             warning="Choose a Workout"

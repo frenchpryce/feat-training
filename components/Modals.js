@@ -128,6 +128,12 @@ const WrktModal = (props) => {
                         marginTop={props.marginTop}
                         onPress={props.onPress2}
                     />
+                    <ModalButton2
+                        title={props.title3}
+                        bgcolor={props.bgcolor3}
+                        marginTop={props.marginTop}
+                        onPress={props.onPress3}
+                    />
                 </View>
             </View>
         </Modal>
@@ -249,8 +255,41 @@ const CalModal = (props) => {
                 }}
             >
                 <View style={styles.modal}>
-                    <Text style={[styles.heading2, {textAlign: 'left'}]}>Set the user's daily calorie intake</Text>
+                    <Text style={[styles.heading2, {textAlign: 'left'}]}>Add Calories</Text>
                     <LongField placeholder="Calorie intake" keyboardType="number-pad" marginTop={10} marginBottom={20} onChangeText={props.onChangeText}/>
+                    <TextButton 
+                        title="Done" 
+                        position="absolute" 
+                        bottom={10} 
+                        right={30}
+                        onPress={props.onPress}
+                        color="#37877D"  
+                    />
+                </View>
+            </View>
+        </Modal>
+    )
+}
+
+const AddMealModal = (props) => {
+    return (
+        <Modal
+            visible={props.visible}
+            onRequestClose={props.onRequestClose}
+            transparent={true}
+            animationType='fade'
+        >
+            <View
+                style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'rgba(0, 0, 0, 0.25)'
+                }}
+            >
+                <View style={styles.modal}>
+                    <Text style={[styles.heading2, {textAlign: 'left'}]}>Add Meal</Text>
+                    <LongField keyboardType="number-pad" marginTop={10} marginBottom={20} onChangeText={props.onChangeText}/>
                     <TextButton 
                         title="Done" 
                         position="absolute" 
@@ -370,7 +409,7 @@ const AllModal = (props) => {
     )
 }
 
-export { AlertModal, MealModal, WrktModal, CheckList, MealChooseModal, CalModal, AllModal, TimerModal };
+export { AlertModal, MealModal, WrktModal, CheckList, MealChooseModal, CalModal, AllModal, TimerModal, AddMealModal };
 
 const styles = StyleSheet.create({
     modal: {

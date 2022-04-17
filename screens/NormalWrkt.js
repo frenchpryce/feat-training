@@ -36,6 +36,7 @@ export default function NormalWrkt({navigation, route}) {
     const [equips, setEquips] = useState([]);
     const [mylink, setLink] = useState("");
     const [exercise, setExercise] = useState([]);
+    const [normal, setNormal] = useState([]);
 
     const [equipdrop, isEquipdrop] = useState(false);
     const [exdrop, isExdrop] = useState(false);
@@ -273,6 +274,11 @@ export default function NormalWrkt({navigation, route}) {
                         onChangeText={(text) => setRest(text)}
                     />
                 </View>
+                <LargeField 
+                    placeholder='note'
+                    marginTop={10}
+                    onChangeText={(text) => setNote(text)}
+                />
                 <TouchableOpacity
                     onPress={() => {
                     exercise.push({
@@ -282,7 +288,8 @@ export default function NormalWrkt({navigation, route}) {
                         equipment: equipdrop ? equipment.name : equipment,
                         reps: reps,
                         sets: sets,
-                        rest: rest
+                        rest: rest,
+                        note: note
                     });
                     setLoad("");
                     setReps("");
@@ -290,6 +297,10 @@ export default function NormalWrkt({navigation, route}) {
                     setRest("");
                     isEquipdrop(false);
                     isExdrop(false);
+
+                    normal.push({
+                        exercise: exercise,
+                      });
                     ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
                     }}
                 >
@@ -305,11 +316,6 @@ export default function NormalWrkt({navigation, route}) {
                     + Add another exercise
                     </Text>
                 </TouchableOpacity>
-                <LargeField 
-                    placeholder='note'
-                    marginTop={10}
-                    onChangeText={(text) => setNote(text)}
-                />
                 <LongButton 
                     marginTop={30}
                     marginBottom={30}

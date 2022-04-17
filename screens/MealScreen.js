@@ -10,6 +10,7 @@ import {
   Alert,
 } from "react-native";
 import { BackButton, LongButton } from "../components/LongButton";
+import { AddMealModal } from "../components/Modals";
 import Dinner from "../assets/dinner.svg";
 import firebase from "../database";
 import Loading from "../components/Loading";
@@ -21,6 +22,8 @@ export default function MealScreen({ navigation, route }) {
   const [dataid, setDataid] = useState('');
   const [dailycal, setDailycal] = useState({});
   const [weeklycal, setWeeklycal] = useState({});
+  const [addVis, isAddVis] = useState(false);
+  const [add, setAdd] = useState("");
 
   const getData = () => {
     firebase
@@ -95,7 +98,7 @@ export default function MealScreen({ navigation, route }) {
                 .collection('daily')
                 .doc(user)
                 .update({
-                  dcalintake: dailycal.dcalintake += (meal.meal.cals * meal.serve)
+                  dcalintake: dailycal.dcalintake += (meal.meal.cals * add)
                 })
               firebase
                 .firestore()
@@ -104,7 +107,7 @@ export default function MealScreen({ navigation, route }) {
                 .collection('weekly')
                 .doc(user)
                 .update({
-                  wcalintake: (weeklycal.wcalintake + (meal.meal.cals * meal.serve))
+                  wcalintake: (weeklycal.wcalintake + (meal.meal.cals * add))
                 })
           
               navigation.reset({
@@ -136,18 +139,40 @@ export default function MealScreen({ navigation, route }) {
         <Text style={styles.body}>{meal.ingred}</Text>
         <Text style={styles.heading}>Procedure</Text>
         <Text style={styles.body}>{meal.procd}</Text>
-        <Text style={styles.heading}>Calories: {meal.meal.cals}</Text>
-        <Text style={styles.heading}>Fats: {meal.meal.fats}</Text>
-        <Text style={styles.heading}>Carbohydrates: {meal.meal.carbs}</Text>
-        <Text style={styles.heading}>Proteins: {meal.meal.prots}</Text>
-        <Text style={styles.heading}>Serving: {meal.serve}</Text>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={styles.heading2}>Cals</Text>
+          <Text style={styles.heading2}>Fats</Text>
+          <Text style={styles.heading2}>Carb</Text>
+          <Text style={styles.heading2}>Prot</Text>
+        </View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Text style={styles.subheading}>{meal.meal.cals}</Text>
+          <Text style={styles.subheading}>{meal.meal.fats}</Text>
+          <Text style={styles.subheading}>{meal.meal.carbs}</Text>
+          <Text style={styles.subheading}>{meal.meal.prots}</Text>
+        </View>
+        <Text style={styles.heading}>Serving</Text>
+        <Text style={styles.subheading}>{meal.serve}</Text>
         <LongButton
           title="Finish Meal"
           bgcolor="#32877D"
           marginTop={20}
           onPress={() => {
-            doneMeal();
+            isAddVis(true);
           }}
+        />
+        <AddMealModal 
+            visible={addVis}
+            onRequestClose={() => {
+              isAddVis(false);
+            }}
+            onChangeText={(val) => {
+              setAdd(val);
+            }}
+            onPress={() => {
+              isAddVis(false);
+              doneMeal();
+            }}
         />
       </View>
     }
@@ -174,9 +199,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   heading: {
+    fontFamily: "Poppins_700Bold",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  heading2: {
+    fontFamily: "Poppins_700Bold",
+    fontSize: 16,
+    textAlign: "center",
+    width: "25%"
+  },
+  subheading: {
     fontFamily: "Poppins_400Regular",
     fontSize: 16,
     textAlign: "center",
+    width: "25%"
   },
   body: {
     fontFamily: "OpenSans_300Light",

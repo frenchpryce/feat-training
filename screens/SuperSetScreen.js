@@ -8,7 +8,8 @@ import {
   Image,
   ScrollView,
   FlatList,
-  Alert
+  Alert,
+  Pressable
 } from "react-native";
 import Play from "../assets/play.svg";
 import Reset from "../assets/reset.svg";
@@ -20,27 +21,24 @@ import { TimerModal } from "../components/Modals";
 import { Video, AVPlaybackStatus } from 'expo-av';
 import { WebView } from 'react-native-webview';
 
-export default function EmomScreen7({ navigation, route }) {
+export default function SuperSetScreen({ navigation, route }) {
   const { user, id } = route.params;
   const [pressed, isPressed] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [exercises, setExercises] = useState([]);
+  const [exercises, setExercises] = useState([]);  
   const [reps, setReps] = useState([]);
   const [dataid, setDataid] = useState('');
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState();
-  // const [currround, setCurrround] = useState(0);
-  // const [currex, setCurrex] = useState(0);
+  const [circuit, setCircuit] = useState(0);
   const video = useRef(null);
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
-  const [curreps, setCurreps] = useState(0);
-  const [currtime, setCurrtime] = useState(0);
-  const timeRef = React.createRef();
   const [timermodal, setTimermodal] = useState(false);
-  const [total, setTotal] = useState();
 
   useEffect(() => {
+    setCircuit(0);
+    setEx(0);
     firebase
       .firestore()
       .collection("Users")
@@ -49,20 +47,20 @@ export default function EmomScreen7({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id && doc.data().status == 'unfinished' && doc.data().type == 'superset') {
             setDataid(doc.id);
-            setExercises(doc.data().exercise);
-            setTotal(doc.data().totaltime);
-            setCurreps(doc.data().exercise[ex].reps);
-            setCurrtime(doc.data().exercise[0].extime);
-            setReps(doc.data().exercise[ex].reps);
+            setExercises(doc.data().circuits);
+            setReps(doc.data().reps);
             setNote(doc.data().note);
-            if(doc.data().exercise[0].extime == 0) {
+            if(doc.data().timer == 0) {
               setTimer(0);
             } else {
-              setTimer(doc.data().exercise[0].extime);
+              setTimer(doc.data().timer);
             }
             setLoading(false);
+            // circuit = 0;
+            // console.log(circuit);
+            console.log(exercises);
           }
         });
       });
@@ -70,11 +68,11 @@ export default function EmomScreen7({ navigation, route }) {
 
   const doneWorkout = () => {
     Alert.alert(
-      'Finished Exercises!',
+      'Finished Exercise',
       'Are you done with your workout?',
       [
           {
-              text: 'Done',
+              text: 'Yes',
               onPress: () => {
                 firebase.firestore()
                 .collection('Users')
@@ -91,14 +89,26 @@ export default function EmomScreen7({ navigation, route }) {
                 })
               }
           },
+          {
+              text: 'No',
+              style: 'cancel'
+          }
       ]
     )
+  }
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRest = (rest_time) => {
+    setTimermodal(true);
   }
 
 
   return (
     <ScrollView style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20, flex: 1, backgroundColor: "#FFFFFF"  }}>
-      {loading ? <Loading /> : 
+      { loading ? <Loading /> : 
       <View style={styles.container}>
         <View
           style={{
@@ -133,7 +143,7 @@ export default function EmomScreen7({ navigation, route }) {
           <WebView 
             style={styles.Video}
             source={{
-              uri: exercises[ex].exercise.lnk
+              uri: exercises[circuit].exercise[ex].lnk
             }}
           />
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -165,15 +175,13 @@ export default function EmomScreen7({ navigation, route }) {
               initialTime={timer*1000*60}
               direction={timer == 0 ? 'forward' : 'backward'}
               startImmediately={false}
-              ref={timeRef}
+              
               checkpoints={[
                 {
                   time: 0,
-                  callback: () => {
-                      setTimermodal(true);
-                    } 
-                  }
-                ]}
+                  callback: () => console.log('Timer Finished'),
+                }
+              ]}
         >
         {({ start, pause, reset, stop }) =>  (
         <React.Fragment>
@@ -243,12 +251,13 @@ export default function EmomScreen7({ navigation, route }) {
                 paddingLeft: 115,
               }}
             >
-              Load
+              Reps
             </Text>
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
-              {exercises.length && exercises.map((label, index) => (
+              {/* <Text>{JSON.stringify(exercises)}</Text> */}
+              {exercises.length && exercises[circuit].exercise.map((label, index) => (
                 <View
                   key={index}
                   style={{
@@ -258,61 +267,89 @@ export default function EmomScreen7({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle}>{label.exercise.name}</Text>
+                    <Text style={styles.listyle}>{label.ex}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
-                    {label.load} {label.equipment.name}
+                    {label.reps}
                   </Text>
                 </View>
               ))}
             </ScrollView>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
+          <View style={{flexDirection: "row", justifyContent: 'space-between'}}>
             <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
-              Reps
+              Load
+            </Text>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+              Rounds
             </Text>
           </View>
-          <View
-            style={{
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              <View style={{ paddingLeft: 10, paddingRight: 10 }}>
-                <TouchableOpacity>
-                  <Text style={styles.listyle}>{curreps}</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+          <View style={{ height: 100, width: 290, marginBottom: 10 }}>
+            <ScrollView nestedScrollEnabled={true}>
+              {exercises.length && exercises[circuit].exercise.map((label, index) => (
+                <View
+                  key={index}
+                  style={{
+                    paddingTop: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={styles.listyle}>
+                    {label.load} {label.equipment}
+                  </Text>
+                  <Text style={styles.listyle}>
+                    {label.sets}
+                  </Text>
+                </View>
+              ))}
+            </ScrollView>
           </View>
         </View>
-        {/* <LongButton
+        <LongButton
           title="Next Round"
           bgcolor="#3F3D56"
           marginBottom={10}
-        ></LongButton> */}
+          onPress={() => {
+            if(circuit < exercises.length-1) {
+              setCircuit(circuit+1);
+            } else {
+              doneWorkout();
+            }
+            console.log(circuit);
+          }}
+        ></LongButton>
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();
           }}
         />
+        <View
+          style={{
+            position: "absolute",
+            top: "22%",
+            right: 0,
+            zIndex: 1
+          }}
+          >
+          <TouchableOpacity
+            style={{
+              width: 80,
+              height: 80,
+              backgroundColor: "#3F3D56",
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 40
+            }}
+            onPress={() => {
+              onRest(3);
+            }}
+          >
+            <Text style={{fontFamily: 'Poppins_700Bold', color: "#FFFFFF"}}>Rest</Text>
+          </TouchableOpacity>
+        </View>
         <TimerModal 
-          timer={exercises[ex].rest}
+          timer={3}
           visible={timermodal}
           onPress={() => {
             Alert.alert(
@@ -323,16 +360,7 @@ export default function EmomScreen7({ navigation, route }) {
                   text: "YES",
                   style: 'cancel',
                   onPress: () => {
-                    if(currtime < total) {
-                      timeRef.current.reset(),
-                      timeRef.current.start(),
-                      setCurreps(Number(curreps)+Number(reps)),
-                      setCurrtime(Number(currtime)+Number(timer)),
-                      setTimermodal(false);
-                      console.log(currtime);
-                    } else {
-                      doneWorkout();
-                    }
+                    setTimermodal(false);
                   }
                 },
                 {
@@ -360,7 +388,6 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   Video: {
-    backgroundColor: "#32877D",
     height: 180,
     width: 295,
     justifyContent: "center",

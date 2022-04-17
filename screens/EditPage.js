@@ -37,10 +37,10 @@ export default function EditPage({ navigation, route }) {
         return new Promise((resolve) => setTimeout(resolve, timeout));
       };
     
-      const onRefresh = useCallback(() => {
-        setRefreshing(true);
-        wait(3000).then(() => setRefreshing(false));
-      }, [refreshing]);
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+      wait(3000).then(() => setRefreshing(false));
+    }, [refreshing]);
       
     useEffect(() => {
     if (isFocused) {
@@ -146,6 +146,24 @@ export default function EditPage({ navigation, route }) {
         });
     };
 
+    // const onDonePress = () => {
+    //   firebase
+    //     .firestore()
+    //     .collection("Users")
+    //     .doc(user)
+    //     .update({
+    //       firstname: firstname,
+    //       lastname: lastname,
+    //       email: email,
+    //       height: height,
+    //       weight: weight,
+    //       age: age,
+    //       goal: goal,
+    //       gender: gender,
+    //       weightgoal: option,
+    //   })
+    // }
+
     return (
         <ScrollView
             style={{paddingLeft: 40, paddingRight: 40, backgroundColor: "#FFFFFF"}}
@@ -179,6 +197,7 @@ export default function EditPage({ navigation, route }) {
                         onTextChange={(text) => {
                             setfirstName(text);
                         }}
+                        
                     />
                     <ShortField
                         placeholder={userData.lastname}

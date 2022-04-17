@@ -17,6 +17,7 @@ import {
   ToastAndroid
 } from "react-native";
 import { ShortField, LongField, LargeField } from "../components/EntryFields";
+import { ExerciseText } from "../components/Texts";
 import { LongButton, BackButton } from "../components/LongButton";
 import firebase from "../database";
 
@@ -24,31 +25,31 @@ import firebase from "../database";
 import SearchableDropdown from "react-native-searchable-dropdown";
 
 //Item array for the dropdown
-export default function EmomCreate5({ navigation, route }) {
+export default function SuperSetCreate({ navigation, route }) {
+
   const [exercises, setExercises] = useState([]);
   const [checklist, isChecklist] = useState(false);
   const { user, date } = route.params;
   const [selected, setSelected] = useState("");
   const [exercise, setExercise] = useState([]);
   const [type, setType] = useState("workout type");
-  const [reps, setReps] = useState("");
+  const [reps, setReps] = useState([]);
+  const [repinput, setRepinput] = useState("");
   const [sets, setSets] = useState("");
   const [equipment, setEquipment] = useState("");
   const [load, setLoad] = useState("");
-  const [rest, setRest] = useState("10");
+  const [rest, setRest] = useState("");
   const [note, setNote] = useState("");
   const [timer, setTimer] = useState("");
   const [exlabels, setExlabels] = useState([]);
   const [wrkttypes, setWrkttpyes] = useState([]);
   const [equips, setEquips] = useState([]);
   const [mylink, setLink] = useState("");
-  const [exerciseset, setExerciseset] = useState([]);
-  const [extime, setExtime] = useState("20");
-  const [round, setRound] = useState([]);
-  let thisdate;
-  let tempexercise = [];
+  const [circuit, setCircuit] = useState([]);
   const [equipdrop, isEquipdrop] = useState(false);
   const [exdrop, isExdrop] = useState(false);
+
+  let tempexercise = [];
 
   useEffect(() => {
     firebase
@@ -62,6 +63,7 @@ export default function EmomCreate5({ navigation, route }) {
         });
         setExlabels(exercises);
       });
+
     firebase
       .firestore()
       .collection("Equipments")
@@ -93,46 +95,43 @@ export default function EmomCreate5({ navigation, route }) {
           text: "Done",
           onPress: () => {
             var db = firebase.firestore();
-            var batch = db.batch();
-            date.forEach((doc) => {
-              console.log(doc);
-              var docRef = db
-                .collection("Users")
-                .doc(user)
-                .collection("wrktmeal")
-                .doc();
-              thisdate = doc;
-              batch.set(docRef, {
-                id: idGenerator(),
-                type: "emom 5",
-                exercise: exercise,
-                note: note,
-                sets: sets,
-                date: doc,
-                category: "workout",
-                status: "unfinished",
+              var batch = db.batch();
+              date.forEach((doc) => {
+                console.log(doc);
+                var docRef = db
+                  .collection("Users")
+                  .doc(user)
+                  .collection("wrktmeal")
+                  .doc();
+                batch.set(docRef, {
+                  id: idGenerator(),
+                  type: "superset",
+                  circuits: circuit,
+                  date: doc,
+                  category: "workout",
+                  status: "unfinished",
+                  timer: Number(timer),
+                });
               });
-            });
-            batch.commit().then(() => {
-              setExercise([]);
-              setType("workout type");
-              setReps("");
-              setSets("");
-              setEquipment("");
-              setRest("10");
-              setLoad("");
-              setNote("");
-              setTimer("");
-              setExtime("20");
-              ToastAndroid.show("Successful!", ToastAndroid.SHORT);
-              navigation.reset({
-                index: 0,
-                routes: [{ name: "UserWorkout2", params: { user: user } }],
+              batch.commit().then(() => {
+                setExercise([]);
+                setType("workout type");
+                setReps("");
+                setSets("");
+                setEquipment("");
+                setRest("");
+                setLoad("");
+                setNote("");
+                setTimer("");
+                ToastAndroid.show("Successful!", ToastAndroid.SHORT);
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: "UserWorkout2", params: { user: user } }],
+                });
               });
-            });
           }
         }
-      ])
+      ]);
     }
   };
 
@@ -174,10 +173,10 @@ export default function EmomCreate5({ navigation, route }) {
         <Text
           style={{ fontFamily: "Poppins_700Bold", fontSize: 30, marginTop: 40 }}
         >
-          EMOM 5
+          SuperSet
         </Text>
         <View style={{ height: 500, width: 290, marginBottom: 50 }}>
-        <SearchableDropdown
+          <SearchableDropdown
             selectedItems={selected}
             onTextChange={(text) => console.log(text)}
             //On text change listner on the searchable input
@@ -232,20 +231,26 @@ export default function EmomCreate5({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
+          <View style={{ flexDirection: "row", justifyContent: 'space-between' }}>
             <ShortField
               placeholder="reps"
               value={reps}
               onChangeText={(text) => setReps(text)}
             ></ShortField>
             <ShortField
+              placeholder="rounds/sets"
+              value={sets}
+              onChangeText={(text) => setSets(text)}
+            ></ShortField>
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <ShortField
               placeholder="load"
               value={load}
               onChangeText={(text) => setLoad(text)}
             ></ShortField>
           </View>
+
           <SearchableDropdown
             selectedItems={equipment}
             onTextChange={(text) => console.log(text)}
@@ -304,18 +309,18 @@ export default function EmomCreate5({ navigation, route }) {
           <TouchableOpacity
             onPress={() => {
               exercise.push({
-                exercise: selected,
+                ex: exdrop ? selected.name : selected,
                 lnk: selected.lnk,
                 reps: reps,
                 load: load,
-                equipment: equipment,
-                extime: extime,
-                rest: rest
+                sets: sets,
+                equipment: equipdrop ? equipment.name : equipment,
               });
               setLoad("");
               setReps("");
-              setExtime("20");
-              setRest("10");
+              setSets("");
+              isEquipdrop(false);
+              isExdrop(false);
               ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
             }}
           >
@@ -334,20 +339,36 @@ export default function EmomCreate5({ navigation, route }) {
 
           <LargeField
             placeholder="note"
-            value={note}
             onChangeText={(text) => setNote(text)}
           ></LargeField>
-            <ShortField
-                marginTop={10}
-                placeholder="rounds"
-                value={sets}
-                onChangeText={(text) => setSets(text)}
-            ></ShortField>
+          <TouchableOpacity
+            onPress={() => {
+              circuit.push({
+                exercise: exercise,
+                note: note,
+              });
+              setExercise([]);
+              ToastAndroid.show("Circuit has been added!", ToastAndroid.SHORT);
+            }}
+          >
+            <Text
+              style={{
+                color: "#32877D",
+                fontSize: 16,
+                marginTop: 10,
+                marginLeft: 5,
+                marginBottom: 10,
+              }}
+            >
+              + Add another superset
+            </Text>
+          </TouchableOpacity>
           <LongButton
             title="Next"
             bgcolor="#32877D"
-            marginTop={20}
-            onPress={() => addWorkout()}
+            onPress={() => {
+              addWorkout();
+            }}
           ></LongButton>
         </View>
       </View>
@@ -371,6 +392,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   workoutname: {
+    paddingTop: 30,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",

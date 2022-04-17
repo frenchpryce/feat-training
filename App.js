@@ -65,7 +65,9 @@ import {
   About,
   FAQsPage,
   AmrapCreate,
-  NormalScreen
+  NormalScreen,
+  SuperSetCreate,
+  SuperSetScreen
 } from "./screens";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -171,6 +173,8 @@ export default function App() {
           <Stack.Screen name="MealCreate" component={MealCreate} />
           <Stack.Screen name="ArticleScreen" component={ArticleScreen} />
           <Stack.Screen name="NormalScreen" component={NormalScreen} />
+          <Stack.Screen name="SuperSetCreate" component={SuperSetCreate} />
+          <Stack.Screen name="SuperSetScreen" component={SuperSetScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     );

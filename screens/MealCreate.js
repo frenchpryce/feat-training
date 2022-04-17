@@ -253,7 +253,7 @@ export default function ForTimeCreate1({ navigation, route }) {
             onChangeText={(text) => setProts(text)}
           ></ShortField>
           <ShortField 
-            placeholder="serving"
+            placeholder="Serving size"
             value={serve}
             onChangeText={(text) => setServe(text)}
           ></ShortField>

@@ -35,8 +35,10 @@ export default function EmomScreen6({ navigation, route }) {
   const [status, setStatus] = useState({});
   const [ex, setEx] = useState(0);
   const [curreps, setCurreps] = useState(0);
+  const [currtime, setCurrtime] = useState(0);
   const timeRef = React.createRef();
   const [timermodal, setTimermodal] = useState(false);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     firebase
@@ -51,7 +53,8 @@ export default function EmomScreen6({ navigation, route }) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().note);
-            setCurreps(doc.data().curreps);
+            setCurrtime(doc.data().exercise[0].extime);
+            setTotal(0.6);
             if(doc.data().exercise[0].extime == 0) {
               setTimer(0);
             } else {
@@ -169,7 +172,6 @@ export default function EmomScreen6({ navigation, route }) {
                 {
                   time: 0,
                   callback: () => {
-                      setCurreps(curreps+1),
                       setTimermodal(true)
                       console.log(curreps);
                     }
@@ -289,7 +291,7 @@ export default function EmomScreen6({ navigation, route }) {
           >
             <View style={{ paddingLeft: 10, paddingRight: 10 }} >
               <TouchableOpacity>
-                <Text style={styles.listyle}>{curreps}</Text>
+                <Text style={styles.listyle}>{curreps+1}</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -316,9 +318,16 @@ export default function EmomScreen6({ navigation, route }) {
                   text: "YES",
                   style: 'cancel',
                   onPress: () => {
-                    timeRef.current.reset(),
-                    timeRef.current.start(),
-                    setTimermodal(false);
+                    if(currtime < total){
+                      timeRef.current.reset(),
+                      timeRef.current.start(),
+                      setCurreps(curreps+1),
+                      setCurrtime(Number(currtime)+Number(timer)),
+                      setTimermodal(false);
+                    } else {
+                      doneWorkout();
+                      setTimermodal(false);
+                    }
                   }
                 },
                 {

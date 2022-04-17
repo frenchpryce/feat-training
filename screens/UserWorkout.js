@@ -93,7 +93,7 @@ export default function UserWorkout({ navigation, route }) {
     .get()
     .then((snap) => {
       snap.forEach((doc) => {
-        if(doc.data().category == 'workout' && doc.data().status == 'unfinished') {
+        if(doc.data().category == 'workout') {
           dates.push(doc.data());
         }
       })
@@ -166,13 +166,16 @@ export default function UserWorkout({ navigation, route }) {
             />
           }
         >
-        {wrktlist.filter((wrkt) => ((wrkt.date == compdate) && (wrkt.category == 'workout') && (wrkt.status == 'unfinished'))).map((label, index) => (
+        {wrktlist.filter((wrkt) => ((wrkt.date == compdate) && (wrkt.category == 'workout'))).map((label, index) => (
           <View key={index}>
           <WorkoutButton wrkt={label.type} color="#000000" onPress={() => {
             switch(label.type) {
               case 'normal': 
                 navigation.navigate('NormalScreen', { user: user, id: label.id });
                 break;
+              case 'superset': 
+              navigation.navigate('NormalScreen', { user: user, id: label.id });
+              break;
               case 'amrap': 
                 navigation.navigate('Amrap', { user: user, id: label.id });
                 break;

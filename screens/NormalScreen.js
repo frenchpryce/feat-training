@@ -34,8 +34,10 @@ export default function NormalScreen({ navigation, route }) {
   const [status, setStatus] = React.useState({});
   const [ex, setEx] = useState(0);
   const [timermodal, setTimermodal] = useState(false);
+  const [nrmal, setNrmal] = useState(0);
 
   useEffect(() => {
+    setNrmal(0);
     firebase
       .firestore()
       .collection("Users")
@@ -55,7 +57,7 @@ export default function NormalScreen({ navigation, route }) {
             }
             setLoading(false);
           }
-          console.log(timer);
+          console.log(exercises);
         });
       });
   }, []);
@@ -308,11 +310,19 @@ export default function NormalScreen({ navigation, route }) {
             ))}
           </View>
         </View>
-        {/* <LongButton
+        <LongButton
           title="Next Round"
           bgcolor="#3F3D56"
           marginBottom={10}
-        ></LongButton> */}
+          onPress={() => {
+            if(nrmal < exercises.length-1) {
+              setNrmal(nrmal+1);
+            } else {
+              doneWorkout();
+            }
+            console.log(circuit);
+          }}
+        ></LongButton>
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();
