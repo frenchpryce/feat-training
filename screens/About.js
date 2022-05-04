@@ -76,12 +76,14 @@ const styles = StyleSheet.create({
     heading: {
         fontFamily: 'Poppins_400Regular',
         fontSize: 25,
-        color: '#006266'
+        color:'#32877D',
+        paddingBottom:10
     },
     textContent: {
         fontFamily: 'Poppins_300Light',
         fontSize: 15,
-        color: '#006266',
-        textAlign: 'center'
+        color: 'black',
+        textAlign: 'center',
+        paddingBottom:30,
     }
 })

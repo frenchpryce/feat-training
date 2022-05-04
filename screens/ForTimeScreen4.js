@@ -213,6 +213,7 @@ export default function ForTimeScreen4({ navigation, route }) {
           <Text
             style={{
               fontFamily: "Poppins_400Regular",
+              color:'#32877D',
               fontSize: 16,
               paddingRight: 50,
             }}
@@ -227,12 +228,13 @@ export default function ForTimeScreen4({ navigation, route }) {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
               Exercises
             </Text>
             <Text
               style={{
                 fontFamily: "Poppins_400Regular",
+                color:'#32877D',
                 fontSize: 16,
                 paddingLeft: 115,
               }}
@@ -263,11 +265,11 @@ export default function ForTimeScreen4({ navigation, route }) {
             </ScrollView>
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
-              Load
+            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
+              Rounds
             </Text>
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
-              Sets
+            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
+              Load 
             </Text>
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
@@ -282,11 +284,12 @@ export default function ForTimeScreen4({ navigation, route }) {
                   }}
                 >
                   <Text style={styles.listyle}>
-                    {label.load} {label.equipment.name}
-                  </Text>
-                  <Text style={styles.listyle}>
                     {sets}
                   </Text>
+                  <Text style={styles.listyle}>
+                    {label.load} {label.equipment.name}
+                  </Text>
+                  
                 </View>
               ))}
             </ScrollView>
