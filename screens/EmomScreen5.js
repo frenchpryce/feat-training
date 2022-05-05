@@ -231,6 +231,7 @@ export default function EmomScreen5({ navigation, route }) {
             style={{
               fontFamily: "Poppins_400Regular",
               fontSize: 16,
+              color:'#32877D',
               paddingRight: 50,
             }}
           >
@@ -244,13 +245,14 @@ export default function EmomScreen5({ navigation, route }) {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
               Exercises
             </Text>
             <Text
               style={{
                 fontFamily: "Poppins_400Regular",
                 fontSize: 16,
+                color:'#32877D',
                 paddingLeft: 115,
               }}
             >
@@ -285,7 +287,7 @@ export default function EmomScreen5({ navigation, route }) {
               alignItems: "center",
             }}
           >
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
               Reps
             </Text>
           </View>
