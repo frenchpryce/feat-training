@@ -35,6 +35,7 @@ export default function NormalScreen({ navigation, route }) {
   const [ex, setEx] = useState(0);
   const [timermodal, setTimermodal] = useState(false);
   const [nrmal, setNrmal] = useState(0);
+  const [curr, setCurr] = useState(0);
 
   useEffect(() => {
     setNrmal(0);
@@ -258,10 +259,10 @@ export default function NormalScreen({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle[index]}>{label.ex.name}</Text>
+                    <Text style={[styles.listyle, {width: 180}]}>{label[0].ex.name}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
-                    {label.load} {label.equipment.name}
+                    {label[0 ].load} {label.equipment.name}
                   </Text>
                 </View>
               ))}

@@ -284,7 +284,7 @@ export default function EmomScreen1({ navigation, route }) {
             }}
           >
             <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
-              Reps
+              Rounds
             </Text>
           </View>
           <View

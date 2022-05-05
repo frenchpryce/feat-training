@@ -96,6 +96,10 @@ export default function EmomScreen2({ navigation, route }) {
     )
   }
 
+  const onRest = (rest_time) => {
+    setTimermodal(true);
+  }
+
 
   return (
     <ScrollView style={{ paddingTop: 20, paddingRight: 20, paddingLeft: 20, flex: 1, backgroundColor: "#FFFFFF"  }}>
@@ -110,6 +114,30 @@ export default function EmomScreen2({ navigation, route }) {
           }}
           >
           <BackButton onPress={() => navigation.goBack()} />
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            top: "27%",
+            right: 0,
+            zIndex: 1
+          }}
+          >
+          <TouchableOpacity
+            style={{
+              width: 80,
+              height: 80,
+              backgroundColor: "#3F3D56",
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 40
+            }}
+            onPress={() => {
+              onRest(3);
+            }}
+          >
+            <Text style={{fontFamily: 'Poppins_700Bold', color: "#FFFFFF"}}>Rest</Text>
+          </TouchableOpacity>
         </View>
         <View style={{height: 235}}>
           {/* <Video
