@@ -32,6 +32,7 @@ export default function Register({ navigation }) {
   const [age, setAge] = useState("");
   const [goal, setGoal] = useState("");
   const [alert, isAlert] = useState(false);
+  const [cals, setCals] = useState();
 
   useEffect(() => {
     console.log(new Date());
@@ -111,6 +112,53 @@ export default function Register({ navigation }) {
       })
   };
 
+  const setCalories = () => {
+    let ree;
+    let tdee;
+    let caldeficit;
+    switch(wvalue) {
+      case "Weight Loss":
+        if(gvalue == 'Female') {
+          ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age));
+          tdee = ree * 1.4;
+          caldeficit = tdee * .20;
+          setCals(tdee - caldeficit);
+        } else {
+          ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age)) + 5;
+          tdee = ree * 1.4;
+          caldeficit = tdee * .20;
+          setCals(tdee - caldeficit);
+        }
+      break;
+      case "Weight Maintenance":
+        if(gvalue == 'Female') {
+          ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age));
+          tdee = ree * 1.4;
+          caldeficit = tdee * .20;
+          setCals(tdee);
+        } else {
+          ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age)) + 5;
+          tdee = ree * 1.4;
+          caldeficit = tdee * .20;
+          setCals(tdee);
+        }
+      case "Weight Gain": 
+        if(gvalue == 'Female') {
+          ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age));
+          tdee = ree * 1.4;
+          caldeficit = tdee * .20;
+          setCals(tdee + caldeficit);
+        } else {
+          ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age)) + 5;
+          tdee = ree * 1.4;
+          caldeficit = tdee * .20;
+          setCals(tdee + caldeficit);
+        }
+      break;
+    }
+    console.log(cals);
+  }
+
   const registerUser = () => {
     if (
       fname == "" ||
@@ -173,31 +221,25 @@ export default function Register({ navigation }) {
           }}
           value={username}
         />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            marginTop: 10,
+        <LongField
+          placeholder="first name"
+          marginTop={10}
+          onChangeText={(text) => {
+            setFname(text);
           }}
-        >
-          <ShortField
-            placeholder="first name"
-            onChangeText={(text) => {
-              setFname(text);
-            }}
-            autoCapitalize="words"
-            marginRight={5}
-            value={fname}
-          />
-          <ShortField
-            placeholder="last name"
-            autoCapitalize="words"
-            onChangeText={(text) => {
-              setLname(text);
-            }}
-            value={lname}
-          />
-        </View>
+          autoCapitalize="words"
+          marginRight={5}
+          value={fname}
+        />
+        <LongField
+          placeholder="last name"
+          marginTop={10}
+          autoCapitalize="words"
+          onChangeText={(text) => {
+            setLname(text);
+          }}
+          value={lname}
+        />
         <LongField
           placeholder="email address"
           marginTop={10}
@@ -223,7 +265,7 @@ export default function Register({ navigation }) {
           }}
         >
           <ShortField
-            placeholder="height"
+            placeholder="height in cm"
             marginRight={5}
             keyboardType="numeric"
             onChangeText={(text) => {
@@ -232,7 +274,7 @@ export default function Register({ navigation }) {
             value={height}
           />
           <ShortField
-            placeholder="weight"
+            placeholder="weight in kg"
             keyboardType="numeric"
             onChangeText={(text) => {
               setWeight(text);
@@ -257,7 +299,7 @@ export default function Register({ navigation }) {
             value={age}
           />
           <ShortField
-            placeholder="weight goal"
+            placeholder="weight goal in kg"
             keyboardType="numeric"
             onChangeText={(text) => {
               setGoal(text);

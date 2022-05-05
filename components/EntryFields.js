@@ -42,7 +42,7 @@ const ShortField = (props) => {
         },
       ]}
       autoCapitalize={props.autoCapitalize}
-      keyboardType={props.keyboardType}
+      keyboardType="numeric"
       placeholder={props.placeholder}
       onChangeText={props.onChangeText}
       secureTextEntry={props.security}

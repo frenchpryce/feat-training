@@ -39,15 +39,34 @@ export default function UserCalorie({ navigation, route }) {
         let diffInDays = diffInTime / (1000 * 3600 * 24);
         if (diffInDays <= -31) {
           Alert.alert(
-            "Verfication Failed",
-            "Please confirm with your coach that you are verified.",
+            "Free Trial Expired",
+            "Thank you for Choosing FEAT training, your 30 days trial has ended. To continue enjoying all of our FEAT programs,",
             [
               {
-                text: "Back to Login",
+                text: "Click Here",
                 onPress: () => {
                   navigation.navigate("MainScreen");
                 },
               },
+            ]
+          );
+        }
+        
+        if(diffInDays <= -24){
+          Alert.alert(
+            "Free Trial about to expire: 7 days before expiration",
+            "Your Free Trial is about to expire in (no.) days, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
+            [
+              {
+                text: "Click Here",
+                onPress: () => {
+                  navigation.navigate("MainScreen");
+                }
+              },
+              {
+                text: "Back",
+                style: "cancel"
+              }
             ]
           );
         }

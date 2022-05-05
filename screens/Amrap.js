@@ -238,14 +238,21 @@ export default function Amrap({ navigation, route }) {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16 }}>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16, width: 150 }}>
               Exercises
             </Text>
             <Text
               style={{
                 fontFamily: "Poppins_400Regular",
                 fontSize: 16,
-                paddingLeft: 115,
+              }}
+            >
+              Load
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                fontSize: 16,
               }}
             >
               Reps
@@ -263,16 +270,19 @@ export default function Amrap({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle[index]}>{label.ex}</Text>
+                    <Text style={[styles.listyle, {width: 120}]}>{label.ex}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
                     {label.load} {label.equipment}
+                  </Text>
+                  <Text style={styles.listyle}>
+                    {label.reps}
                   </Text>
                 </View>
               ))}
             </ScrollView>
           </View>
-          <View
+          {/* <View
             style={{
               flexDirection: "row",
               justifyContent: "center",
@@ -311,13 +321,8 @@ export default function Amrap({ navigation, route }) {
                 </View>
               ))}
             </View>
-          </View>
+          </View> */}
         </View>
-        <LongButton
-          title="Next Exercise"
-          bgcolor="#3F3D56"
-          marginBottom={10}
-        ></LongButton>
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             setVisible(true);

@@ -192,7 +192,7 @@ export default function UserProfile2({ navigation, route }) {
             >
               <Text style={styles.name}>{name}</Text>
               <Text style={styles.email}>{email}</Text>
-              <Text style={styles.email}>Balance: PHP {balance}</Text>
+              <Text style={styles.email}>Balance: {balance}</Text>
             </View>
           </View>
         </View>

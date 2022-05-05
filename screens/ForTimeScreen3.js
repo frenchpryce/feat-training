@@ -238,6 +238,13 @@ export default function ForTimeScreen3({ navigation, route }) {
               <Text>{note}</Text>
             </ScrollView>
           </View>
+          <Text
+            style={{
+              fontFamily: "Poppins_700Bold",
+              fontSize: 20,
+              textAlign: 'center'
+            }}
+          >Circuit {circuit+1}</Text>
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
@@ -312,7 +319,23 @@ export default function ForTimeScreen3({ navigation, route }) {
           marginBottom={10}
           onPress={() => {
             if(circuit < exercises.length-1) {
-              setCircuit(circuit+1);
+              Alert.alert(
+                "Next Round",
+                "Are you done with this round?",
+                [
+                  {
+                    text: "YES",
+                    style: 'cancel',
+                    onPress: () => {
+                      setCircuit(circuit+1);
+                    }
+                  },
+                  {
+                    text: "NO",
+                    style: 'cancel'
+                  }
+                ]
+              )
             } else {
               doneWorkout();
             }

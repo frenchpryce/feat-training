@@ -53,10 +53,10 @@ export default function EmomScreen2({ navigation, route }) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().exercise);
-            if(doc.data().exercise[currtime].time == 0) {
+            if(doc.data().exercise[currtime].exercise[currtime].extime == 0) {
               setTimer(0);
             } else {
-              setTimer(doc.data().exercise[currtime].time);
+              setTimer(doc.data().exercise[currtime].exercise[currtime].extime);
             }
             setLoading(false);
           }
