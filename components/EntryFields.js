@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_300Light_Italic",
     fontSize: 16,
     paddingLeft: 20,
+    borderWidth: Platform.OS == 'ios' ? 1 : 1
   },
   shortfield: {
     backgroundColor: "#FFFFFF",
