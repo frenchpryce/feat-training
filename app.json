@@ -1,5 +1,13 @@
 {
   "expo": {
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/featicon.png"
+        }
+      ]
+    ],
     "name": "feat-training",
     "icon": "./assets/featicon.png",
     "slug": "feat-training",

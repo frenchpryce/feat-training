@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -6,13 +6,31 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
-  Image
+  Image,
+  ToastAndroid,
+  TextInput,
+  Platform
 } from "react-native";
 import { BackButton, PicButton } from "../components/LongButton";
 import firebase from '../database';
 import Loading from "../components/Loading";
+import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device'
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function UserList({ navigation, route }) {
+
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
 
   const data = route.params.data;
 
@@ -22,6 +40,59 @@ export default function UserList({ navigation, route }) {
   const [loading, setLoading] = useState(true);
   const [loading2, setLoading2] = useState(true);
   const [unverif, setUnverif] = useState([]);
+  const [reminder, setReminder] = useState("");
+
+  const sendReminder = () => {
+    firebase
+      .firestore()
+      .collection("Reminders")
+      .doc("General")
+      .set({
+        forall: reminder
+      });
+  }
+
+  async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Reminder from Carla! 📬",
+        body: reminder,
+        data: { data: 'goes here' },
+      },
+      trigger: { seconds: 2 },
+    });
+  }
+  
+  async function registerForPushNotificationsAsync() {
+    let token;
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+  
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+  
+    return token;
+  }
 
   useEffect(() => {
     let list = [];
@@ -60,6 +131,21 @@ export default function UserList({ navigation, route }) {
         setProgs(progs);
         setLoading(false);
       });
+
+      registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+      notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        setNotification(notification);
+      });
+
+      responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+        console.log(response);
+      });
+
+      return () => {
+        Notifications.removeNotificationSubscription(notificationListener.current);
+        Notifications.removeNotificationSubscription(responseListener.current);
+      };
   }, []);
 
   return (
@@ -80,6 +166,32 @@ export default function UserList({ navigation, route }) {
       </View>
       { loading && loading2 ? <Loading/> :
       <ScrollView style={styles.view} >
+              <View style={[styles.reminderBox, {justifyContent: 'space-between'}]}>
+                <TextInput 
+                  style={{height: "100%", backgroundColor: "transparent", padding: 10, textAlignVertical: 'top'}}
+                  placeholder="Set reminder..."
+                  value={reminder}
+                  onChangeText={(text) => setReminder(text)}
+                />
+                <TouchableOpacity
+                  style={{
+                    alignSelf: 'flex-end',
+                    justifyContent: 'flex-end',
+                    bottom: 15,
+                    right: 20,
+                    zIndex: 1,
+                    position: 'absolute'
+                  }}
+                  onPress={async () => {
+                      await schedulePushNotification();
+                    sendReminder();
+                    setReminder("");
+                    ToastAndroid.show("Reminder has been sent!", ToastAndroid.SHORT);
+                  }}
+                >
+                  <Text style={{color: 'red', fontWeight: 'bold'}}>Send</Text>
+                </TouchableOpacity>
+              </View>
               { allprogs.map((programs, index) => (
               <View key={index}>
                 <Text style={styles.heading}>{programs.title}</Text>
@@ -145,5 +257,13 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 20,
     fontFamily: "Poppins_700Bold",
+  },
+  reminderBox: {
+    width: "100%",
+    height: 100,
+    borderRadius: 15,
+    backgroundColor: "#EBF3F2",
+    elevation: 5,
+    marginBottom: 10
   },
 });
