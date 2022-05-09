@@ -73,6 +73,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Loading from "./components/Loading";
 import ForTimeCreate2 from "./screens/ForTimeCreate2";
+import 'react-native-gesture-handler';
 
 const Stack = createNativeStackNavigator();
 
