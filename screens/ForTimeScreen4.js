@@ -41,7 +41,7 @@ export default function ForTimeScreen4({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setSets(doc.data().sets);
@@ -266,10 +266,10 @@ export default function ForTimeScreen4({ navigation, route }) {
           </View>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
-              Rounds
+              Load
             </Text>
             <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
-              Load 
+              Rounds 
             </Text>
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
@@ -284,10 +284,10 @@ export default function ForTimeScreen4({ navigation, route }) {
                   }}
                 >
                   <Text style={styles.listyle}>
-                    {sets}
+                    {label.load} {label.equipment.name}
                   </Text>
                   <Text style={styles.listyle}>
-                    {label.load} {label.equipment.name}
+                    {sets}
                   </Text>
                   
                 </View>

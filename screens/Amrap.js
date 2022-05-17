@@ -49,7 +49,7 @@ export default function Amrap({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().note);
@@ -238,13 +238,14 @@ export default function Amrap({ navigation, route }) {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16, width: 150 }}>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16, width: 150, color:'#32877D' }}>
               Exercises
             </Text>
             <Text
               style={{
                 fontFamily: "Poppins_400Regular",
                 fontSize: 16,
+                color:'#32877D',
               }}
             >
               Load
@@ -253,6 +254,7 @@ export default function Amrap({ navigation, route }) {
               style={{
                 fontFamily: "Poppins_400Regular",
                 fontSize: 16,
+                color:'#32877D',
               }}
             >
               Reps

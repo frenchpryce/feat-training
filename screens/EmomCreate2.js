@@ -354,7 +354,7 @@ export default function EmomCreate2({ navigation, route }) {
               onChangeText={(text) => setSets(text)}
             ></ShortField>
             <ShortField
-              placeholder="time"
+              placeholder="minutes"
               value={timer}
               onChangeText={(text) => setTimer(text)}
             ></ShortField>
@@ -382,7 +382,7 @@ export default function EmomCreate2({ navigation, route }) {
                 marginLeft: 5,
               }}
             >
-              + Add another set of minutes
+              + Add another set of exercise time
             </Text>
           </TouchableOpacity>
           <LongButton

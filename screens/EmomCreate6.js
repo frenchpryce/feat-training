@@ -302,7 +302,7 @@ export default function EmomCreate6({ navigation, route }) {
             underlineColorAndroid="transparent"
             //To remove the underline from the android input
           />
-          <View
+          {/* <View
             style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 10 }}
           >
             <ShortField
@@ -315,7 +315,7 @@ export default function EmomCreate6({ navigation, route }) {
               value={rest}
               onChangeText={(text) => setRest(text)}
             ></ShortField>
-          </View>
+          </View> */}
           <TouchableOpacity
             onPress={() => {
               exercise.push({

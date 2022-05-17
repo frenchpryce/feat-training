@@ -49,7 +49,7 @@ export default function EmomScreen2({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().exercise);
@@ -297,7 +297,7 @@ export default function EmomScreen2({ navigation, route }) {
           <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
-            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16, width: 150, color:'#32877D' }}>
               Exercises
             </Text>
             <Text
@@ -305,15 +305,38 @@ export default function EmomScreen2({ navigation, route }) {
                 fontFamily: "Poppins_400Regular",
                 fontSize: 16,
                 color:'#32877D',
-                paddingLeft: 115,
               }}
             >
               Load
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                fontSize: 16,
+                color:'#32877D',
+              }}
+            >
+              Reps
             </Text>
           </View>
           <View style={{ height: 100, width: 290, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
               {exercises.length && exercises[currround].exercise.map((label, index) => (
+                // <View
+                //   key={index}
+                //   style={{
+                //     paddingTop: 10,
+                //     flexDirection: "row",
+                //     justifyContent: "space-between",
+                //   }}
+                // >
+                //   <TouchableOpacity onPress={() => {}}>
+                //     <Text style={styles.listyle}>{label.exercise.name}</Text>
+                //   </TouchableOpacity>
+                //   <Text style={styles.listyle}>
+                //     {label.load} {label.equipment.name}
+                //   </Text>
+                // </View>
                 <View
                   key={index}
                   style={{
@@ -323,53 +346,17 @@ export default function EmomScreen2({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={styles.listyle}>{label.exercise.name}</Text>
+                    <Text style={[styles.listyle, {width: 120}]}>{label.exercise.name}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
                     {label.load} {label.equipment.name}
                   </Text>
+                  <Text style={styles.listyle}>
+                    {label.reps}
+                  </Text>
                 </View>
               ))}
             </ScrollView>
-          </View>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
-              Reps
-            </Text>
-          </View>
-          <View
-            style={{
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              {exercises.length && exercises[currround].exercise.map((label, index) => (
-                <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
-                  <TouchableOpacity>
-                    <Text style={styles.listyle}>{label.reps}</Text>
-                  </TouchableOpacity>
-                </View>
-              ))}
-            </View>
           </View>
         </View>
         <LongButton

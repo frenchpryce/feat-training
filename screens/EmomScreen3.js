@@ -44,7 +44,7 @@ export default function EmomScreen3({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().exercise);

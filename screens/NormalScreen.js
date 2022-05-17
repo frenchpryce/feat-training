@@ -47,7 +47,7 @@ export default function NormalScreen({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setNote(doc.data().note);
@@ -259,10 +259,10 @@ export default function NormalScreen({ navigation, route }) {
                   }}
                 >
                   <TouchableOpacity onPress={() => {}}>
-                    <Text style={[styles.listyle, {width: 180}]}>{label[0].ex.name}</Text>
+                    <Text style={[styles.listyle, {width: 180}]}>{label.ex.name}</Text>
                   </TouchableOpacity>
                   <Text style={styles.listyle}>
-                    {label[0 ].load} {label.equipment.name}
+                    {label.load} {label.equipment.name}
                   </Text>
                 </View>
               ))}
@@ -311,7 +311,7 @@ export default function NormalScreen({ navigation, route }) {
             ))}
           </View>
         </View>
-        <LongButton
+        {/* <LongButton
           title="Next Round"
           bgcolor="#3F3D56"
           marginBottom={10}
@@ -323,7 +323,7 @@ export default function NormalScreen({ navigation, route }) {
             }
             console.log(circuit);
           }}
-        ></LongButton>
+        ></LongButton> */}
         <LongButton title="Finish Workout" bgcolor="#32877D"
           onPress={() =>{
             doneWorkout();

@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_300Light_Italic",
     fontSize: 16,
     paddingLeft: 20,
-    borderWidth: Platform.OS == 'ios' ? 1 : 1
+    borderWidth: Platform.OS == 'ios' ? 0.5 : 0,
+    borderColor: Platform.OS == 'ios' ? "#808080" : 'transparent'
   },
   shortfield: {
     backgroundColor: "#FFFFFF",
@@ -164,6 +165,8 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_300Light_Italic",
     fontSize: 16,
     paddingLeft: 20,
+    borderWidth: Platform.OS == 'ios' ? 0.5 : 0,
+    borderColor: Platform.OS == 'ios' ? "#808080" : 'transparent'
   },
   largefield: {
     backgroundColor: "#FFFFFF",
@@ -174,5 +177,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_300Light_Italic",
     fontSize: 16,
     paddingLeft: 20,
+    borderWidth: Platform.OS == 'ios' ? 0.5 : 0,
+    borderColor: Platform.OS == 'ios' ? "#808080" : 'transparent'
   },
 });

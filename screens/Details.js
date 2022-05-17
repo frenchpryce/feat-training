@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as Linking from 'expo-linking';
 import {
   StyleSheet,
   View,
@@ -91,6 +92,7 @@ export default function Details({navigation, route}) {
                                 }
                               })
                             navigation.navigate('Menu', { user: user })
+                            Linking.openURL("https://www.picktime.com/6a769cc0-56f6-4a31-9cbb-0c350b8fa554");
                           }
                         },
                         {

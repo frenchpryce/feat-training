@@ -318,7 +318,7 @@ export default function EmomCreate3({ navigation, route }) {
           ></LargeField>
           <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop: 10}}>
             <ShortField
-              placeholder="time"
+              placeholder="minutes"
               value={timer}
               onChangeText={(text) => setTimer(text)}
             ></ShortField>

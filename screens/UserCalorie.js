@@ -45,7 +45,7 @@ export default function UserCalorie({ navigation, route }) {
               {
                 text: "Click Here",
                 onPress: () => {
-                  navigation.navigate("MainScreen");
+                  navigation.navigate("Subscription", { user: user });
                 },
               },
             ]
@@ -60,7 +60,7 @@ export default function UserCalorie({ navigation, route }) {
               {
                 text: "Click Here",
                 onPress: () => {
-                  navigation.navigate("MainScreen");
+                  navigation.navigate("Subscription", { user: user });
                 }
               },
               {

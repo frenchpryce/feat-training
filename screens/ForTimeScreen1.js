@@ -41,7 +41,7 @@ export default function ForTimeScreen1({ navigation, route }) {
       .get()
       .then((snap) => {
         snap.forEach((doc) => {
-          if (doc.data().id == id && doc.data().status == 'unfinished') {
+          if (doc.data().id == id) {
             setDataid(doc.id);
             setExercises(doc.data().exercise);
             setReps(doc.data().reps);
@@ -223,7 +223,7 @@ export default function ForTimeScreen1({ navigation, route }) {
               <Text>{note}</Text>
             </ScrollView>
           </View>
-          <View
+          {/* <View
             style={{ flexDirection: "row", justifyContent: "space-between" }}
           >
             <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
@@ -239,8 +239,33 @@ export default function ForTimeScreen1({ navigation, route }) {
             >
               Load
             </Text>
+          </View> */}
+          <View
+            style={{ flexDirection: "row", justifyContent: "space-between" }}
+          >
+            <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 16, width: 150, color:'#32877D' }}>
+              Exercises
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                fontSize: 16,
+                color:'#32877D',
+              }}
+            >
+              Load
+            </Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                fontSize: 16,
+                color:'#32877D',
+              }}
+            >
+              Reps
+            </Text>
           </View>
-          <View style={{ height: 100, width: 290, marginBottom: 10 }}>
+          {/* <View style={{ height: 100, width: 290, marginBottom: 10 }}>
             <ScrollView nestedScrollEnabled={true}>
               {exercises.length && exercises.map((label, index) => (
                 <View
@@ -260,46 +285,30 @@ export default function ForTimeScreen1({ navigation, route }) {
                 </View>
               ))}
             </ScrollView>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text style={{ fontFamily: "Poppins_400Regular", color:'#32877D', fontSize: 16 }}>
-              Reps
-            </Text>
-          </View>
-          <View
-            style={{
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              {reps.length && reps.map((label, index) => (
-                <View style={{ paddingLeft: 10, paddingRight: 10 }} key={index}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setColor("#32877D");
-                      setFont("Poppins_700Bold");
-                    }}
-                  >
-                    <Text style={styles.listyle}>{label}</Text>
+          </View> */}
+          <View style={{ height: 100, width: 290, marginBottom: 10 }}>
+            <ScrollView nestedScrollEnabled={true}>
+              {exercises.length && exercises.map((label, index) => (
+                <View
+                  key={index}
+                  style={{
+                    paddingTop: 10,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <TouchableOpacity onPress={() => {}}>
+                    <Text style={[styles.listyle, {width: 120}]}>{label.ex}</Text>
                   </TouchableOpacity>
+                  <Text style={styles.listyle}>
+                    {label.load} {label.equipment}
+                  </Text>
+                  <Text style={styles.listyle}>
+                    {reps[index]}
+                  </Text>
                 </View>
               ))}
-            </View>
+            </ScrollView>
           </View>
         </View>
         {/* <LongButton
