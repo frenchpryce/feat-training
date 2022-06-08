@@ -52,7 +52,7 @@ export default function CalorieTrack({navigation}) {
                                 setUsername('');
                                 setPassword('');
                                 isShow(false);
-                                navigation.navigate('UserList', { data: x });
+                                navigation.navigate('UserList', { data: x, trainer: true });
                             } 
                             else {
                                 isShow(false);

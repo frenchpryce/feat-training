@@ -289,7 +289,7 @@ const AddMealModal = (props) => {
             >
                 <View style={styles.modal}>
                     <Text style={[styles.heading2, {textAlign: 'left'}]}>Add Meal</Text>
-                    <LongField keyboardType="number-pad" marginTop={10} marginBottom={20} onChangeText={props.onChangeText}/>
+                    <LongField keyboardType="number-pad" marginTop={10} marginBottom={20} onChangeText={props.onChangeText} placeholder={props.placeholder}/>
                     <TextButton 
                         title="Done" 
                         position="absolute" 

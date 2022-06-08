@@ -33,6 +33,7 @@ export default function UserList({ navigation, route }) {
   const responseListener = useRef();
 
   const data = route.params.data;
+  const trainer = route.params.trainer;
 
   const [userlist, setUserlist] = useState([]);
   const [imagelink, setImagelinks] = useState([]);
@@ -201,15 +202,8 @@ export default function UserList({ navigation, route }) {
                     .filter((type) => type.programtype == programs.title )
                     .map((user, index) => (
                         <View key={index}>
-                        {/* <PicButton
-                            mykey={index.toString()}
-                            color='#000000'
-                            user={user.firstname}
-                            uri={user.urllink}
-                            onPress={() => navigation.navigate('Menu', { user: user.userid, type: 'trainer' })}
-                        /> */}
                         <TouchableOpacity style={{marginRight: 30}}
-                          onPress={() => navigation.navigate('Menu', { user: user.userid, type: 'trainer' })}
+                          onPress={() => navigation.navigate('Menu', { user: user.userid, type: 'trainer', trainer: true })}
                         >
                           <Image 
                             style={{width: 80, height: 80, borderRadius: 50, backgroundColor: "#FFFFFF"}}

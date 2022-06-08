@@ -18,6 +18,12 @@
     "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios": {
+        "appleId": "fitand.eatbycja@gmail.com",
+        "ascAppId": "1627846010",
+        "appleTeamId": "Z67PR4K2D7"
+      }
+    }
   }
 }

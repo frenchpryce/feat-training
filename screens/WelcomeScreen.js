@@ -5,10 +5,10 @@ import LottieView from 'lottie-react-native';
 
 export default function Welcome({navigation}) {
 
-    let animation = React.createRef();
-    useEffect(() => {
-      animation.current.play();
-    }, [])
+    // let animation = React.createRef();
+    // useEffect(() => {
+    //   animation.current.play();
+    // }, [])
 
     const [visible, isVisible] = useState(false);
 
@@ -18,7 +18,7 @@ export default function Welcome({navigation}) {
                 style={styles.heading}
             >Welcome to Feat Training</Text>
             <View style={styles.container}>
-            <LottieView 
+            {/* <LottieView 
               ref={animation}
               loop={false}
               style={{
@@ -29,7 +29,7 @@ export default function Welcome({navigation}) {
                 top: -50
               }}
               source={require('../assets/confetti.json')}
-            />
+            /> */}
             <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna, tristique quis nullam duis justo.</Text>
             <View style={{flexDirection: 'row'}}>
                 <ShortButton 

@@ -37,6 +37,9 @@
     },
     "android": {
       "package": "featby.cja.com"
+    },
+    "ios": {
+      "bundleIdentifier": "com.pryceresma.feattraining"
     }
   },
   "name": "feat-training"

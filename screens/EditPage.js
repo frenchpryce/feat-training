@@ -166,7 +166,7 @@ export default function EditPage({ navigation, route }) {
 
     return (
         <ScrollView
-            style={{paddingLeft: 40, paddingRight: 40, backgroundColor: "#FFFFFF"}}
+            style={{backgroundColor: "#FFFFFF"}}
             renderToHardwareTextureAndroid
             shouldRasterizeIOS
             refreshControl={
@@ -174,8 +174,8 @@ export default function EditPage({ navigation, route }) {
             }
         >
             <View style={styles.view}>
-                <View style={{ position: "absolute", top: 60 }}>
-                <BackButton onPress={() => navigation.goBack()} />
+                <View style={{ position: "absolute", top: 60, left: 40 }}>
+                  <BackButton onPress={() => navigation.goBack()} />
                 </View>
                 <Image style={styles.picture} source={{uri: userData.urllink}}/>
                 <TextButton 
@@ -221,14 +221,14 @@ export default function EditPage({ navigation, route }) {
                     }}
                 >
                     <ShortField
-                    placeholder={"" + userData.height}
+                    placeholder={"" + userData.height + " cm"}
                     onTextChange={(text) => {
                         setHeight(text);
                     }}
                     marginRight={5}
                     />
                     <ShortField
-                    placeholder={"" + userData.weight}
+                    placeholder={"" + userData.weight + " kg"}
                     onTextChange={(text) => {
                         setWeight(text);
                     }}
@@ -249,7 +249,7 @@ export default function EditPage({ navigation, route }) {
                     marginRight={5}
                     />
                     <ShortField
-                    placeholder={"" + userData.goal}
+                    placeholder={"" + userData.goal + " kg"}
                     onTextChange={(text) => {
                         setGoal(text);
                     }}
@@ -304,7 +304,9 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#FFFFFF",
         paddingTop: 80,
-        paddingBottom: 50
+        paddingBottom: 50,
+        paddingLeft: 40,
+        paddingRight: 40
     },
     picture: {
         width: 100,

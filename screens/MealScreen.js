@@ -60,7 +60,7 @@ export default function MealScreen({ navigation, route }) {
       .then((snap) => {
         snap.forEach((doc) => {
           if(doc.data().category == "meals"){
-            if (doc.data().id == id && doc.data().status == 'unfinished') {
+            if (doc.data().id == id) {
               setDataid(doc.id);
               setMeal(doc.data());
               setLoading(false);
@@ -163,6 +163,7 @@ export default function MealScreen({ navigation, route }) {
         />
         <AddMealModal 
             visible={addVis}
+            placeholder="How many servings?"
             onRequestClose={() => {
               isAddVis(false);
             }}

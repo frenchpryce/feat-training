@@ -138,25 +138,14 @@ export default function EmomCreate6({ navigation, route }) {
   };
 
   let idGenerator = () => {
-    let id = () => {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    };
-    return (
-      id() +
-      id() +
-      "-" +
-      id() +
-      "-" +
-      id() +
-      "-" +
-      id() +
-      "-" +
-      id() +
-      id() +
-      id()
-    );
+    var id = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            id += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
+        }
+        return id()+id()+'-'+id()+'-'+id()+'-'+id()+'-'+id()+id()+id();
   };
 
   return (

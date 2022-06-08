@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, Alert } from 'react-native';
 import PersonalTrainer from '../assets/personaltrainer.svg';
-import { ProfileBadge, WorkoutBadge, MealBadge, CaloriesBadge, TextButton } from '../components/LongButton';
+import { ProfileBadge, WorkoutBadge, MealBadge, CaloriesBadge, TextButton, BackButton } from '../components/LongButton';
 import { AlertModal } from '../components/Modals';
 
 export default function Menu({navigation, route}) {
 
     const user = route.params.user;
     const type = route.params.type;
-    const [logout, isLogout] = useState(false);
-    const [trainer, isTrainer] = useState(user);
+    const trainer = route.params.trainer;
 
     return (
         <View style={styles.view}>
+            { trainer &&
+            <View
+                style={{
+                    position: "absolute",
+                    top: 50,
+                    left: 40,
+                    zIndex: 1
+                }}
+                >
+                <BackButton onPress={() => navigation.goBack()} />
+            </View>
+            }
             <TextButton 
                 title='Logout'
                 color='#FF6F61'

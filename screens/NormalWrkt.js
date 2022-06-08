@@ -98,7 +98,7 @@ export default function NormalWrkt({navigation, route}) {
                       .doc();
                     batch.set(docRef, {
                       id: idGenerator(),
-                      type: "normal",
+                      type: "strengthening",
                       exercise: exercise,
                       note: note,
                       date: doc,
@@ -129,8 +129,12 @@ export default function NormalWrkt({navigation, route}) {
     }
 
     let idGenerator = () => {
-        let id = () => {
-            return Math.floor((1+Math.random()) * 0x10000).toString(16).substring(1);
+        var id = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            id += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
         }
         return id()+id()+'-'+id()+'-'+id()+'-'+id()+'-'+id()+id()+id();
     }
@@ -147,7 +151,7 @@ export default function NormalWrkt({navigation, route}) {
                 <BackButton onPress={() => navigation.goBack()} />
             </View>
             <View>
-                <Text style={styles.heading}>Normal Workout</Text>
+                <Text style={styles.heading}>Strengthening</Text>
                 <SafeAreaView>
                 <SearchableDropdown 
                     selectedItems={selected}

@@ -234,7 +234,7 @@ export default function UserWorkout2({ navigation, route }) {
               .map((label, index) => (
                 <View key={index}>
                 <WorkoutButton
-                  mykey={index.toString()}
+                  mykey={String(index)}
                   wrkt={label.type}
                   color="#000000"
                   backgroundColor={color}

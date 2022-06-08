@@ -22,6 +22,7 @@ import Loading from "../components/Loading";
 export default function Register({ navigation }) {
   const [gvalue, setgValue] = useState();
   const [wvalue, setwValue] = useState();
+  const [avalue, setaValue] = useState();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [fname, setFname] = useState("");
@@ -33,6 +34,7 @@ export default function Register({ navigation }) {
   const [goal, setGoal] = useState("");
   const [alert, isAlert] = useState(false);
   const [cals, setCals] = useState();
+  let finalcal;
 
   useEffect(() => {
     console.log(new Date());
@@ -83,28 +85,6 @@ export default function Register({ navigation }) {
 
     firebase
       .firestore()
-      .collection("Calories")
-      .doc(id)
-      .collection("daily")
-      .doc(id)
-      .set({
-        dcalamount: 0,
-        dcalintake: 0,
-      });
-
-    firebase
-      .firestore()
-      .collection("Calories")
-      .doc(id)
-      .collection("weekly")
-      .doc(id)
-      .set({
-        wcalamount: 0,
-        wcalintake: 0,
-      });
-
-    firebase
-      .firestore()
       .collection("Reminders")
       .doc(id)
       .set({
@@ -117,46 +97,51 @@ export default function Register({ navigation }) {
     let tdee;
     let caldeficit;
     switch(wvalue) {
-      case "Weight Loss":
+      case "weight loss":
         if(gvalue == 'Female') {
           ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age));
-          tdee = ree * 1.4;
+          tdee = ree * avalue;
           caldeficit = tdee * .20;
-          setCals(tdee - caldeficit);
+          finalcal = (tdee - caldeficit);
+          console.log(finalcal);
         } else {
           ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age)) + 5;
-          tdee = ree * 1.4;
+          tdee = ree * avalue;
           caldeficit = tdee * .20;
-          setCals(tdee - caldeficit);
+          finalcal = (tdee - caldeficit);
+          console.log(finalcal);
         }
       break;
-      case "Weight Maintenance":
+      case "weight maintenance":
         if(gvalue == 'Female') {
           ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age));
-          tdee = ree * 1.4;
+          tdee = ree * avalue;
           caldeficit = tdee * .20;
-          setCals(tdee);
+          finalcal = (tdee);
+          console.log(finalcal);
         } else {
           ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age)) + 5;
-          tdee = ree * 1.4;
+          tdee = ree * avalue;
           caldeficit = tdee * .20;
-          setCals(tdee);
+          finalcal = (tdee);
+          console.log(finalcal);
         }
-      case "Weight Gain": 
+      case "weight gain": 
         if(gvalue == 'Female') {
           ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age));
-          tdee = ree * 1.4;
+          tdee = ree * avalue;
           caldeficit = tdee * .20;
-          setCals(tdee + caldeficit);
+          finalcal = (tdee + caldeficit);
+          console.log(finalcal);
         } else {
           ree = (10 * Number(weight)) + (6.25 * Number(height)) - (5 - Number(age)) + 5;
-          tdee = ree * 1.4;
+          tdee = ree * avalue;
           caldeficit = tdee * .20;
-          setCals(tdee + caldeficit);
+          finalcal = (tdee + caldeficit);
+          console.log(finalcal);
         }
-      break;
-    }
-    console.log(cals);
+        break;
+      }
   }
 
   const registerUser = () => {
@@ -189,6 +174,27 @@ export default function Register({ navigation }) {
             let temp = fname + lname;
             let userid = temp.replace(/\s/g, "");
             registerToDatabase(userid);
+            firebase
+              .firestore()
+              .collection("Calories")
+              .doc(userid)
+              .collection("daily")
+              .doc(userid)
+              .set({
+                dcalamount: finalcal,
+                dcalintake: 0,
+              });
+
+            firebase
+              .firestore()
+              .collection("Calories")
+              .doc(userid)
+              .collection("weekly")
+              .doc(userid)
+              .set({
+                wcalamount: finalcal * 7,
+                wcalintake: 0,
+              });
             navigation.navigate("Login", { user: userid });
           },
         },
@@ -197,20 +203,14 @@ export default function Register({ navigation }) {
   };
 
   return (
-    <ScrollView style={styles.view} contentContainerStyle={{ flexGrow: 1 }}>
+    <ScrollView style={styles.view} contentContainerStyle={{ flexGrow: 1, }}>
       <ImageBackground
         source={require("../assets/bg4.png")}
         resizeMode="cover"
         style={[styles.container]}
       >
-        <View
-          style={{
-            position: "absolute",
-            top: 40,
-            left: 40,
-          }}
-        >
-          <BackButton onPress={() => navigation.navigate("MainScreen")} />
+        <View style={{marginTop: 50}}>
+        <BackButton onPress={() => navigation.navigate("MainScreen")} />
         </View>
         <Text style={styles.heading}>Fill up the form...</Text>
         <LongField
@@ -339,12 +339,32 @@ export default function Register({ navigation }) {
           }}
           defaultValue="weight gain"
         />
+        <LongDropDown
+          placeholder="level of activity"
+          zIndex={10}
+          marginTop={10}
+          item={[
+            { label: "Sedentary-(little to no exercise + work a desk job)", value: 1.1, icon: () => null },
+            { label: "Slightly active-(light exercise 1-3 days / week)", value: 1.2, icon: () => null },
+            { label: "Active-(moderate exercise 3-5 days / week)", value: 1.3, icon: () => null },
+            { label: "Very Active-(heavy exercise 6-7 days / week)", value: 1.4, icon: () => null },
+          ]}
+          onChangeItem={(item) => {
+            console.log(item.value);
+            setaValue(item.value);
+          }}
+          defaultValue={1.3}
+        />
         <LongButton
           marginTop={20}
+          marginBottom={100}
           bgcolor="#58DCC4"
           title="Done"
           elevation={0}
-          onPress={() => registerUser()}
+          onPress={() => {
+            setCalories();
+            registerUser();
+          }}
         />
       </ImageBackground>
     </ScrollView>

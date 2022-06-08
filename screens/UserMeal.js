@@ -112,7 +112,7 @@ export default function UserMeal({ navigation, route }) {
     .get()
     .then((snap) => {
       snap.forEach((doc) => {
-        if(doc.data().category == 'meals' && doc.data().status == 'unfinished') {
+        if(doc.data().category == 'meals') {
           dates.push(doc.data());
         }
       })
@@ -186,7 +186,7 @@ export default function UserMeal({ navigation, route }) {
             />
           }
         >
-          {meallist.filter((meal) => ((meal.date.key == compdate) && (meal.category == 'meals') && (meal.status == 'unfinished'))).map((label, index) => (
+          {meallist.filter((meal) => ((meal.date.key == compdate) && (meal.category == 'meals'))).map((label, index) => (
           <View key={index}>
           <WorkoutButton
             wrkt={label.meal.name}

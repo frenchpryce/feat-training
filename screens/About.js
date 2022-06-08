@@ -6,6 +6,7 @@ import {
     Image,
     ScrollView
 } from 'react-native';
+import { BackButton } from '../components/LongButton';
 
 export default function About({navigation}) {
 
@@ -14,7 +15,16 @@ export default function About({navigation}) {
     return(
         <ScrollView>
             <View style={styles.container}>
-                
+            <View
+                style={{
+                    position: "absolute",
+                    top: 30,
+                    left: 40,
+                    zIndex: 1
+                }}
+                >
+                <BackButton onPress={() => navigation.goBack()} />
+            </View>
                 <Text style={styles.heading}>
                     The Story
                 </Text>

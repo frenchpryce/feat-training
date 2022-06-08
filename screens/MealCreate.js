@@ -123,25 +123,14 @@ export default function ForTimeCreate1({ navigation, route }) {
   };
 
   let idGenerator = () => {
-    let id = () => {
-      return Math.floor((1 + Math.random()) * 0x10000)
-        .toString(16)
-        .substring(1);
-    };
-    return (
-      id() +
-      id() +
-      "-" +
-      id() +
-      "-" +
-      id() +
-      "-" +
-      id() +
-      "-" +
-      id() +
-      id() +
-      id()
-    );
+    var id = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            id += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
+        }
+        return id()+id()+'-'+id()+'-'+id()+'-'+id()+'-'+id()+id()+id();
   };
 
   return (
@@ -169,10 +158,10 @@ export default function ForTimeCreate1({ navigation, route }) {
             setSelected(item);
             recipes.forEach((data) => {
               if (data.name == item.name) {
-                setCals(data.cals.toString());
-                setFats(data.fats.toString());
-                setProts(data.prots.toString());
-                setCarbs(data.carbs.toString());
+                setCals(String(data.cals));
+                setFats(String(data.fats));
+                setProts(String(data.prots));
+                setCarbs(String(data.carbs));
               }
             });
           }}
