@@ -70,6 +70,7 @@ export default function UserCalorie({ navigation, route }) {
         let now = new Date(snap.data().startdate);
         let diffInTime = now.getTime() - date1.getTime();
         let diffInDays = diffInTime / (1000 * 3600 * 24);
+        let expday = Math.round(diffInDays+30);
         if (diffInDays <= -31) {
           Alert.alert(
             "Free Trial Expired",
@@ -87,8 +88,8 @@ export default function UserCalorie({ navigation, route }) {
         
         if(diffInDays <= -24){
           Alert.alert(
-            "Free Trial about to expire: 7 days before expiration",
-            "Your Free Trial is about to expire in (no.) days, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
+            "Free Trial about to expire: " + expday ,
+            "Your Free Trial is about to expire, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
             [
               {
                 text: "Click Here",

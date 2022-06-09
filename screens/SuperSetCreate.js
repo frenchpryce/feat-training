@@ -1,10 +1,5 @@
-// Example of Searchable Dropdown / Picker in React Native
-// https://aboutreact.com/example-of-searchable-dropdown-picker-in-react-native/
-
-// import React in our code
 import React, { useState, useEffect } from "react";
 
-// import all the components we are going to use
 import {
   SafeAreaView,
   StyleSheet,
@@ -193,8 +188,8 @@ export default function SuperSetCreate({ navigation, route }) {
               marginTop: 5,
               padding: 10,
               backgroundColor: "#FAF9F8",
-              borderColor: "#bbb",
-              borderWidth: 1,
+              borderWidth: Platform.OS == 'ios' ? 0.5 : 1,
+              borderColor: Platform.OS == 'ios' ? "#808080" : '#bbb',
               height: 50,
               width: "100%",
               justifyContent: "center",
@@ -268,8 +263,8 @@ export default function SuperSetCreate({ navigation, route }) {
               marginTop: 5,
               padding: 10,
               backgroundColor: "#FAF9F8",
-              borderColor: "#bbb",
-              borderWidth: 1,
+              borderWidth: Platform.OS == 'ios' ? 0.5 : 1,
+              borderColor: Platform.OS == 'ios' ? "#808080" : '#bbb',
               height: 50,
               width: "100%",
               justifyContent: "center",

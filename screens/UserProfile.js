@@ -54,7 +54,7 @@ export default function UserProfile({ navigation, route }) {
         let diffInTime = now.getTime() - date1.getTime();
         let diffInDays = diffInTime / (1000* 3600 * 24);
 
-        console.log(diffInDays);
+        let expday = Math.round(diffInDays+30);
         if(diffInDays <= -31 && snap.data().programtype == "Free User"){
           firebase
             .firestore()
@@ -79,8 +79,8 @@ export default function UserProfile({ navigation, route }) {
 
         if(diffInDays <= -24){
           Alert.alert(
-            "Free Trial about to expire: 7 days before expiration",
-            "Your Free Trial is about to expire in (no.) days, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
+            "Free Trial about to expire: " + expday,
+            "Your Free Trial is about to expire, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
             [
               {
                 text: "Click Here",

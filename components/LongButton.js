@@ -69,7 +69,9 @@ const BackButton = (props) => {
             style={[styles.backbutton, {marginTop: props.marginTop, marginBottom: props.marginBottom}]}
             onPress={props.onPress}
         >
-            <ArrowLeft height={25} width={25}/>
+            <View style={{ height: 25, width: 25 }}>
+                <ArrowLeft height={15} width={15}/>
+            </View>
         </TouchableOpacity>
     )
 }
@@ -248,11 +250,7 @@ const styles = StyleSheet.create({
         ]
     },
     backbutton: {
-        elevation: 5,
-        width: 20,
-        height:20,
         zIndex: 100,
-        padding: 20
     },
     badges: {
         width: 145,
