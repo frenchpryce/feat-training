@@ -42,7 +42,7 @@ const ShortField = (props) => {
         },
       ]}
       autoCapitalize={props.autoCapitalize}
-      keyboardType="numeric"
+      keyboardType="decimal-pad"
       placeholder={props.placeholder}
       onChangeText={props.onChangeText}
       secureTextEntry={props.security}
@@ -57,6 +57,9 @@ const LongDropDown = (props) => {
       style={{
         height: "auto",
         width: "auto",
+        ...(Platform.OS !== 'android' && {
+          zIndex: props.zIndex
+        })
       }}
     >
       <DropDownPicker
@@ -102,6 +105,9 @@ const ShortDropDown = (props) => {
       style={{
         height: "auto",
         width: "auto",
+        ...(Platform.OS !== 'android' && {
+          zIndex: props.zIndex
+        })
       }}
     >
       <DropDownPicker

@@ -66,7 +66,7 @@ export default function UserWorkout({ navigation, route }) {
 
         if(diffInDays <= -24){
           Alert.alert(
-            "Free Trial about to expire: " + expday,
+            "Free Trial about to expire: " + expday + " days",
             "Your Free Trial is about to expire, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
             [
               {

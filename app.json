@@ -36,10 +36,10 @@
       ]
     },
     "android": {
-      "package": "featby.cja.com"
+      "package": "com.fitandeat.bycja"
     },
     "ios": {
-      "bundleIdentifier": "com.pryceresma.feattraining"
+      "bundleIdentifier": "com.fitandeat.bycja"
     }
   },
   "name": "feat-training"

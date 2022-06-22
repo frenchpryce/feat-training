@@ -23,7 +23,7 @@ export default function FAQsPage({navigation}) {
                 <BackButton onPress={() => navigation.goBack()} />
             </View>
                 <Text style={styles.heading}>FAQ </Text>
-                <View style={{marginLeft: 20, marginBottom: 20}}>
+                {/* <View style={{marginLeft: 20, marginBottom: 20}}>
                     <Text style={styles.subHeading}>Q1: </Text>
                     <Text style={styles.textContent}>Ut eu orci nunc. Donec eget bibendum urna. Maecenas a ultrices ipsum. Nulla volutpat nunc ante, tincidunt eleifend massa mattis quis.</Text>
                 </View>
@@ -54,7 +54,7 @@ export default function FAQsPage({navigation}) {
                 <View style={{marginLeft: 20, marginBottom: 20}}>
                     <Text style={styles.subHeading}>Q8: </Text>
                     <Text style={styles.textContent}>Ut eu orci nunc. Donec eget bibendum urna. Maecenas a ultrices ipsum. Nulla volutpat nunc ante, tincidunt eleifend massa mattis quis.</Text>
-                </View>
+                </View> */}
             </View>
         </ScrollView>
     );

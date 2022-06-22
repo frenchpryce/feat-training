@@ -11,7 +11,7 @@ export default function MealPlans({navigation}) {
             >Meal Plans</Text>
             <MealPlan width={290} height={255} marginLeft={40}/>
             <View style={styles.container}>
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna, tristique quis nullam duis justo.</Text>
+            <Text style={styles.text}>This app also allow it's user to follow an interactive nutritional guide to help them stay on track with their diet.</Text>
             <View style={{flexDirection: 'row'}}>
                 <MiniButton 
                     onPress={() => navigation.goBack()}

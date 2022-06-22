@@ -310,6 +310,7 @@ export default function Register({ navigation }) {
         <ShortDropDown
           placeholder="gender"
           marginTop={10}
+          zIndex={12}
           item={[
             { label: "Male", value: "male", icon: () => null },
             { label: "Female", value: "female", icon: () => null },
@@ -322,8 +323,8 @@ export default function Register({ navigation }) {
         />
         <LongDropDown
           placeholder="weight options"
-          zIndex={10}
           marginTop={10}
+          zIndex={11}
           item={[
             { label: "Weight Gain", value: "weight gain", icon: () => null },
             { label: "Wegith Loss", value: "weight loss", icon: () => null },
@@ -340,9 +341,8 @@ export default function Register({ navigation }) {
           defaultValue="weight gain"
         />
         <LongDropDown
-          placeholder="level of activity"
-          zIndex={10}
           marginTop={10}
+          zIndex={10}
           item={[
             { label: "Sedentary-(little to no exercise + work a desk job)", value: 1.1, icon: () => null },
             { label: "Slightly active-(light exercise 1-3 days / week)", value: 1.2, icon: () => null },

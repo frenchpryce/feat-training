@@ -30,7 +30,7 @@ export default function Welcome({navigation}) {
               }}
               source={require('../assets/confetti.json')}
             /> */}
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna, tristique quis nullam duis justo.</Text>
+            <Text style={styles.text}>Feat Training is a mobile fitness application providing workout and meal plans for its users. It's quick, easy, and efficient.</Text>
             <View style={{flexDirection: 'row'}}>
                 <ShortButton 
                     onPress={() => navigation.navigate('WelcomeScreen2')}

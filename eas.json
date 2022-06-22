@@ -20,8 +20,8 @@
   "submit": {
     "production": {
       "ios": {
-        "appleId": "fitand.eatbycja@gmail.com",
-        "ascAppId": "1627846010",
+        "appleId": "com.fitandeat.bycja",
+        "ascAppId": "1629270962",
         "appleTeamId": "Z67PR4K2D7"
       }
     }

@@ -11,7 +11,7 @@ export default function WorkoutPlans({navigation}) {
             >Workout Plans</Text>
             <Workoutplan width={375} height={255}/>
             <View style={styles.container}>
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna, tristique quis nullam duis justo.</Text>
+            <Text style={styles.text}>The app provides a workout schedule for the user to follow, it also displays the exercises in a list and with detailed video on how to perform each one.</Text>
             <View style={{flexDirection: 'row'}}>
                 <MiniButton 
                     onPress={() => navigation.goBack()}

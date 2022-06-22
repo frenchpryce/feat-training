@@ -7,6 +7,7 @@ import {
   Text,
   ScrollView,
   RefreshControl,
+  ToastAndroid,
 } from "react-native";
 import { LongButton, TextButton, BackButton } from "../components/LongButton";
 import {
@@ -167,7 +168,7 @@ export default function EditProfile({ navigation, route }) {
         weightgoal: option,
       })
       .then(() => {
-        console.log("User Profile Updated");
+        ToastAndroid.show("Profile has been updated!", ToastAndroid.SHORT);
       });
     navigation.navigate("UserProfile");
   };

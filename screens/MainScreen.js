@@ -11,7 +11,7 @@ export default function CalorieTrack({navigation}) {
                 style={styles.heading}
             >Get Started!</Text>
             <View style={styles.container}>
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna, tristique quis nullam duis justo.</Text>
+            <Text style={styles.text}>We'd love to help you start your journey!</Text>
             <View>
                 <LongButton 
                     onPress={() => {

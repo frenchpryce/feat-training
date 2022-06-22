@@ -66,7 +66,7 @@ const MiniButton = (props) => {
 const BackButton = (props) => {
     return (
         <TouchableOpacity
-            style={[styles.backbutton, {marginTop: props.marginTop, marginBottom: props.marginBottom}]}
+            style={[styles.backbutton, {marginTop: props.marginTop, marginBottom: props.marginBottom, zIndex: 10}]}
             onPress={props.onPress}
         >
             <View style={{ height: 25, width: 25 }}>

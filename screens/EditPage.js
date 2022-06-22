@@ -146,23 +146,26 @@ export default function EditPage({ navigation, route }) {
         });
     };
 
-    // const onDonePress = () => {
-    //   firebase
-    //     .firestore()
-    //     .collection("Users")
-    //     .doc(user)
-    //     .update({
-    //       firstname: firstname,
-    //       lastname: lastname,
-    //       email: email,
-    //       height: height,
-    //       weight: weight,
-    //       age: age,
-    //       goal: goal,
-    //       gender: gender,
-    //       weightgoal: option,
-    //   })
-    // }
+    const onDonePress = () => {
+      firebase
+        .firestore()
+        .collection("Users")
+        .doc(user)
+        .update({
+          firstname: firstname,
+          lastname: lastname,
+          email: email,
+          height: height,
+          weight: weight,
+          age: age,
+          goal: goal,
+          gender: gender,
+          weightgoal: option,
+        })
+        .then(() => {
+          ToastAndroid.show("Exercise has been added!", ToastAndroid.SHORT);
+        })
+    }
 
     return (
         <ScrollView
@@ -194,22 +197,21 @@ export default function EditPage({ navigation, route }) {
                     <ShortField
                         placeholder={userData.firstname}
                         marginRight={5}
-                        onTextChange={(text) => {
+                        onChangeText={(text) => {
                             setfirstName(text);
                         }}
-                        
                     />
                     <ShortField
                         placeholder={userData.lastname}
-                        onTextChange={(text) => {
+                        onChangeText={(text) => {
                             setlastName(text);
                         }}
                     />
                 </View>
                 <LongField
                     placeholder={userData.email}
-                    onTextChange={(text) => {
-                    setEmail(text);
+                    onChangeText={(text) => {
+                      setEmail(text);
                     }}
                     marginTop={10}
                 />
@@ -222,14 +224,15 @@ export default function EditPage({ navigation, route }) {
                 >
                     <ShortField
                     placeholder={"" + userData.height + " cm"}
-                    onTextChange={(text) => {
+                    onChangeText={(text) => {
                         setHeight(text);
+                        console.log(height);
                     }}
                     marginRight={5}
                     />
                     <ShortField
                     placeholder={"" + userData.weight + " kg"}
-                    onTextChange={(text) => {
+                    onChangeText={(text) => {
                         setWeight(text);
                     }}
                     />
@@ -243,20 +246,21 @@ export default function EditPage({ navigation, route }) {
                 >
                     <ShortField
                     placeholder={"" + userData.age}
-                    onTextChange={(text) => {
+                    onChangeText={(text) => {
                         setAge(text);
                     }}
                     marginRight={5}
                     />
                     <ShortField
                     placeholder={"" + userData.goal + " kg"}
-                    onTextChange={(text) => {
+                    onChangeText={(text) => {
                         setGoal(text);
                     }}
                     />
                 </View>
                 <ShortDropDown
                     placeholder={userData.gender}
+                    zIndex={11}
                     marginTop={10}
                     item={[
                     { label: "Male", value: "male", icon: () => null },
@@ -266,7 +270,7 @@ export default function EditPage({ navigation, route }) {
                     console.log(item.value);
                     setGender(item.value);
                     }}
-                    defaultValue="male"
+                    defaultValue={userData.gender}
                 />
                 <LongDropDown
                     placeholder={userData.weightgoal}
@@ -285,7 +289,7 @@ export default function EditPage({ navigation, route }) {
                     console.log(item.value);
                     setOption(item.value);
                     }}
-                    defaultValue="weight gain"
+                    defaultValue={userData.weightgoal}
                 />
                 <LongButton
                     marginTop={20}

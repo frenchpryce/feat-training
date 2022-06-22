@@ -11,7 +11,7 @@ export default function CalorieTrack({navigation}) {
             >Track Your Calories</Text>
             <CalorieTracker width={375} height={255}/>
             <View style={styles.container}>
-            <Text style={styles.text}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nibh urna, tristique quis nullam duis justo.</Text>
+            <Text style={styles.text}>With Feat Training, you can get in shape without going to the gym. The application is free to to download in play store and app store.</Text>
             <View style={{flexDirection: 'row'}}>
                 <MiniButton 
                     onPress={() => navigation.goBack()}
