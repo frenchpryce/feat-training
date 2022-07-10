@@ -80,7 +80,7 @@ export default function UserProfile({ navigation, route }) {
         if(diffInDays <= -24){
           Alert.alert(
             "Free Trial about to expire: " + expday + " days",
-            "Your Free Trial is about to expire, subscribe to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
+            "Your Free Trial is about to expire, contact your coach to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
             [
               {
                 text: "Click Here",
@@ -259,7 +259,7 @@ export default function UserProfile({ navigation, route }) {
               >
                 <Text style={styles.name}>{name}</Text>
                 <Text style={styles.email}>{email}</Text>
-                <Text style={styles.email}>Balance: PHP {balance}</Text>
+                <Text style={styles.email}>Balance: {balance}</Text>
               </View>
             </View>
             <View
@@ -287,7 +287,7 @@ export default function UserProfile({ navigation, route }) {
             >
               <TextButton
                 color="#FF6F61"
-                title="Subscribe"
+                title="Choose Program"
                 marginRight={15}
                 onPress={() => {
                   navigation.navigate('Subscription', { user: user })

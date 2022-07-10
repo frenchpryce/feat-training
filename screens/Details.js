@@ -29,7 +29,7 @@ export default function Details({navigation, route}) {
         .get()
         .then((snap) => {
             setDetails(snap.data().details);
-            setPrice("PHP " + snap.data().price + ".00");
+            setPrice(snap.data().price + ".00");
             setImg(snap.data().img);
             setLoading(false);
         });
@@ -68,14 +68,13 @@ export default function Details({navigation, route}) {
                 <Image style={{height: 200, width: "100%", borderRadius: 20}}
                 source={{uri: img}}
                 />
-                <Text style={styles.price}>{price}</Text>
                 <Text style={styles.textstyle}>{details}</Text>
                 <LongButton 
                   marginTop={50}
                   onPress={() => {
                     Alert.alert(
-                      "Subscribing to " + prog,
-                      "Do you want to subscribe?",
+                      "You are choosing " + prog,
+                      "Do you want to proceed?",
                       [
                         {
                           text: 'YES',
@@ -102,7 +101,7 @@ export default function Details({navigation, route}) {
                       ]
                     )
                   }}
-                  title='Subscribe'
+                  title='Choose Program'
                   bgcolor='#FF6F61'
                 />
                 </View>
