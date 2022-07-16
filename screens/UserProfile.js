@@ -64,8 +64,8 @@ export default function UserProfile({ navigation, route }) {
               status: "Unverified"
             })
           Alert.alert(
-            "Free Trial Expired",
-            "Thank you for Choosing FEAT training, your 30 days trial has ended. To continue enjoying all of our FEAT programs,",
+            "Hey there!",
+            "Thank you for Choosing FEAT training, it's been 30 days since you joined. Email us to continue enjoying all of our FEAT programs,",
             [
               {
                 text: "Click Here",
@@ -79,8 +79,8 @@ export default function UserProfile({ navigation, route }) {
 
         if(diffInDays <= -24){
           Alert.alert(
-            "Free Trial about to expire: " + expday + " days",
-            "Your Free Trial is about to expire, contact your coach to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
+            "Closing to a month: " + expday + " days",
+            "It's almost 30 days since you joined, contact your coach to enjoy more of our FEAT Programs. We are excited to continue guiding you in your FEATness Journey.",
             [
               {
                 text: "Click Here",
